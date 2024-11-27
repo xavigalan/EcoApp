@@ -1,0 +1,162 @@
+-- Eliminar el esquema anterior si existe
+DROP SCHEMA IF EXISTS `ecoapp`;
+
+-- Crear el esquema nuevo
+CREATE SCHEMA IF NOT EXISTS `ecoapp` DEFAULT CHARACTER SET utf8;
+USE `ecoapp`;
+
+-- --------------------------------------------------------
+-- CREACIÓN DE TABLAS
+
+-- Crear la tabla de Roles
+CREATE TABLE IF NOT EXISTS `roles` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR(50) NOT NULL,
+    `description` TEXT
+) ENGINE = InnoDB;
+
+-- Crear la tabla de Usuarios
+CREATE TABLE IF NOT EXISTS `users` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `first_name` VARCHAR(100),
+    `last_name` VARCHAR(200),
+    `dni` VARCHAR(9),
+    `phone` VARCHAR(15),
+    `email` VARCHAR(255) NOT NULL UNIQUE,
+    `password` VARCHAR(255) NOT NULL,
+    `role_id` INT,
+    `creation_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (`role_id`) REFERENCES `roles`(`id`)
+) ENGINE = InnoDB;
+
+-- Crear la tabla de Tipos de Servicios
+CREATE TABLE IF NOT EXISTS `service_types` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `type` VARCHAR(50) NOT NULL,
+    `description` VARCHAR(255)
+) ENGINE = InnoDB;
+
+-- Crear la tabla de Estados de Servicio
+CREATE TABLE IF NOT EXISTS `service_status` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `status` VARCHAR(50) NOT NULL
+) ENGINE = InnoDB;
+
+-- Crear la tabla de Servicios
+-- Crear la tabla de Servicios
+CREATE TABLE IF NOT EXISTS `services` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `client_id` INT NOT NULL, 
+    `employee_id` INT NOT NULL,  -- Relación con el empleado específico
+    `role_id` INT NOT NULL,      -- Relación con el rol del empleado
+    `manager_id` INT,    
+    `description` TEXT,
+    `type_id` INT NOT NULL, 
+    `location_latitude` DECIMAL(10, 8),
+    `location_longitude` DECIMAL(11, 8),
+    `location_address` VARCHAR(255),
+    `status_id` INT NOT NULL,  
+    FOREIGN KEY (`client_id`) REFERENCES `users`(`id`),
+    FOREIGN KEY (`employee_id`) REFERENCES `users`(`id`),  -- Relación con un empleado específico
+    FOREIGN KEY (`role_id`) REFERENCES `roles`(`id`),  -- Relación con el rol del empleado
+    FOREIGN KEY (`manager_id`) REFERENCES `users`(`id`),  
+    FOREIGN KEY (`type_id`) REFERENCES `service_types`(`id`),
+    FOREIGN KEY (`status_id`) REFERENCES `service_status`(`id`)
+) ENGINE = InnoDB;
+
+
+-- Crear la tabla de Historial de Servicios (con el usuario que hizo el cambio)
+CREATE TABLE IF NOT EXISTS `service_logs` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `service_id` INT NOT NULL,
+    `status_id` INT NOT NULL,  
+    `user_id` INT NOT NULL,  -- Usuario que cambió el estado
+    `date` DATETIME NOT NULL,
+    FOREIGN KEY (`service_id`) REFERENCES `services`(`id`),
+    FOREIGN KEY (`status_id`) REFERENCES `service_status`(`id`),
+    FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)  -- Relación con el usuario que hizo el cambio
+) ENGINE = InnoDB;
+
+-- Crear la tabla de Tipos de Puntos (Type Points)
+CREATE TABLE IF NOT EXISTS `type_points` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `type` VARCHAR(50) NOT NULL  -- Por ejemplo, 'container', 'landfill', etc.
+) ENGINE = InnoDB;
+
+-- Crear la tabla de Puntos en el Mapa
+CREATE TABLE IF NOT EXISTS `map_points` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR(100) NOT NULL,
+    `type_id` INT NOT NULL,  -- Relacionado con la tabla type_points
+    `description` TEXT,
+    `latitude` DECIMAL(10, 8) NOT NULL,  -- Latitud con precisión de 8 decimales
+    `longitude` DECIMAL(11, 8) NOT NULL,  -- Longitud con precisión de 8 decimales
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (`type_id`) REFERENCES `type_points`(`id`)  -- Relación con la tabla de tipos
+) ENGINE = InnoDB;
+
+-- --------------------------------------------------------
+-- INSERTAR DATOS INICIALES
+
+-- Insertar roles
+INSERT INTO `roles` (name, description) VALUES
+('Waste Collector', 'Role for users who collect waste'),
+('Gardener', 'Role for users who perform gardening tasks'),
+('Customer', 'Role for users who are customers consuming services or products'),
+('Manager', 'Role for users who are managers with administrative permissions');
+
+-- Insertar estados de servicio
+INSERT INTO `service_status` (`status`) VALUES 
+('pending'), ('accepted'), ('in progress'), ('completed');
+
+-- Insertar usuarios con sus roles específicos
+INSERT INTO `users` (`first_name`, `last_name`, `dni`, `phone`, `email`, `password`, `role_id`) 
+VALUES 
+('Juan', 'Pérez Gómez', '12345678A', '612345678', 'juan.perez@email.com', 'password123', 
+(SELECT `id` FROM `roles` WHERE `name` = 'Waste Collector')),
+
+('Laura', 'González Pérez', '56789012E', '656789012', 'laura.gonzalez@email.com', 'password202', 
+(SELECT `id` FROM `roles` WHERE `name` = 'Customer')),
+
+('Pedro', 'Martínez Sánchez', '67890123F', '667890123', 'pedro.martinez@email.com', 'password303', 
+(SELECT `id` FROM `roles` WHERE `name` = 'Customer')),
+
+('Carlos', 'García Sánchez', '34567890C', '634567890', 'carlos.garcia@email.com', 'password789', 
+(SELECT `id` FROM `roles` WHERE `name` = 'Manager'));
+
+-- Insertar tipos de servicio
+INSERT INTO `service_types` (`type`, `description`) VALUES
+('Poda', 'Servicios relacionados con la poda de árboles o plantas'),
+('Mueble', 'Servicios relacionados con muebles, como ensamblaje o reparación'),
+('Eventos', 'Servicios relacionados con la organización de eventos'),
+('Otros', 'Cualquier otro tipo de servicio no clasificado anteriormente');
+
+-- Insertar tipos de puntos (mapa)
+INSERT INTO `type_points` (`type`) VALUES
+('container'),
+('contenedor de textiles'),
+('centro de residuos');
+
+-- Insertar algunos ejemplos de puntos en el mapa
+INSERT INTO `map_points` (`name`, `type_id`, `description`, `latitude`, `longitude`) VALUES
+('Contenedor Reciclaje 1', (SELECT `id` FROM `type_points` WHERE `type` = 'container'), 'Contenedor para reciclaje de papel y cartón', 41.387939, 2.170582),
+('Contenedor Reciclaje 2', (SELECT `id` FROM `type_points` WHERE `type` = 'container'), 'Contenedor para reciclaje de vidrio', 41.385730, 2.169287),
+('Vertedero Municipal', (SELECT `id` FROM `type_points` WHERE `type` = 'centro de residuos'), 'Vertedero de residuos urbanos en la periferia', 41.378120, 2.162780);
+
+-- Insertar un servicio de ejemplo
+-- Asignar un servicio a un empleado específico, manteniendo el rol
+INSERT INTO `services` 
+(`client_id`, `employee_id`, `role_id`, `manager_id`, `description`, `type_id`, `location_latitude`, `location_longitude`, `location_address`, `status_id`)
+VALUES
+(2, 
+ (SELECT `id` FROM `users` WHERE `first_name` = 'Juan' AND `last_name` = 'Pérez Gómez' AND `role_id` = (SELECT `id` FROM `roles` WHERE `name` = 'Waste Collector')), 
+ (SELECT `id` FROM `roles` WHERE `name` = 'Waste Collector'), 
+ (SELECT `id` FROM `users` WHERE `first_name` = 'Carlos' AND `last_name` = 'García Sánchez' AND `role_id` = (SELECT `id` FROM `roles` WHERE `name` = 'Manager')), 
+ 'Recogida de residuos urbanos en la zona A del barrio', 
+ (SELECT `id` FROM `service_types` WHERE `type` = 'Poda'), 
+ 41.387939, 
+ 2.170582, 
+ 'Zona A, Calle 1, Ciudad', 
+ (SELECT `id` FROM `service_status` WHERE `status` = 'pending'));
+
+
