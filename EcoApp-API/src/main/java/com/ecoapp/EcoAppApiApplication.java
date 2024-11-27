@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class EcoAppApplication {
+public class EcoAppApiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(EcoAppApplication.class, args);
+		SpringApplication.run(EcoAppApiApplication.class, args);
 	}
 
 }
