@@ -1,18 +1,16 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import 'leaflet/dist/leaflet.css'; // Importa los estilos de Leaflet
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'; // Importa los componentes de React-Leaflet
-import L from 'leaflet'; // Necesario para personalizar el icono del marcador
+import 'leaflet/dist/leaflet.css'; 
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'; 
+import L from 'leaflet'; 
 
 const App = () => {
-  const [position, setPosition] = useState<[number, number] | null>(null); // Inicializamos como null
+  const [position, setPosition] = useState<[number, number] | null>(null); 
 
   useEffect(() => {
-    // Verifica si el navegador soporta geolocalización
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          // Establecer la posición con lat y lon
           const { latitude, longitude } = position.coords;
           setPosition([latitude, longitude]);
         },
@@ -20,34 +18,63 @@ const App = () => {
           console.error("Error al obtener la ubicación: ", error);
         }
       );
-    } else {
-      console.log("La geolocalización no está disponible en este navegador.");
     }
   }, []);
 
-  const defaultPosition: [number, number] = [41.15612, 1.10687]; // Coordenadas de Reus
+  const defaultPosition: [number, number] = [41.15612, 1.10687]; 
+  const fixedPoints = [
+    { lat: 41.158, lng: 1.109, name: 'Punto fijo 1' },
+    { lat: 41.160, lng: 1.110, name: 'Punto fijo 2' },
+    { lat: 41.155, lng: 1.111, name: 'Punto fijo 3' },
+  ];
 
   return (
     <div className="App">
       <h2>Mapa de Reus</h2>
 
-      {/* Contenedor del mapa */}
-      <MapContainer center={position || defaultPosition} zoom={13} style={{ height: '700px', width: '800px' }}>
-        {/* Capa del mapa utilizando OpenStreetMap */}
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+      <div className="map-and-form-container">
+        {/* Mapa */}
+        <div className="map-container">
+          <MapContainer
+            center={position || defaultPosition}
+            zoom={13}
+            style={{ height: '700px', width: '100%' }}
+          >
+            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+            {position && (
+              <Marker position={position}>
+                <Popup>Tu ubicación actual</Popup>
+              </Marker>
+            )}
+            {fixedPoints.map((point, index) => (
+              <Marker key={index} position={[point.lat, point.lng]}>
+                <Popup>{point.name}</Popup>
+              </Marker>
+            ))}
+          </MapContainer>
+        </div>
 
-        {/* Marcador en la ubicación actual (si está disponible) */}
-        {position && (
-          <Marker position={position}>
-            <Popup>Tu ubicación actual</Popup>
-          </Marker>
-        )}
-
-        {/* Marcador en Reus */}
-        <Marker position={defaultPosition}>
-          <Popup>Ubicación de Reus</Popup>
-        </Marker>
-      </MapContainer>
+        {/* Formulario de denuncia */}
+        <div className="form-container">
+          <h3>Denunciar Basura</h3>
+          <form>
+            <div className="form-group">
+              <label htmlFor="description">Descripción:</label>
+              <textarea
+                id="description"
+                rows={4}
+                placeholder="Describe el problema..."
+                required
+              ></textarea>
+            </div>
+            <div className="form-group">
+              <label htmlFor="image">Imagen (opcional):</label>
+              <input type="file" id="image" />
+            </div>
+            <button type="submit">Enviar Denuncia</button>
+          </form>
+        </div>
+      </div>
     </div>
   );
 };
