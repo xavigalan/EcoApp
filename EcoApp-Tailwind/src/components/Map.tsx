@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
-import './App.css';
+import '../App.css';
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 
 // Iconos locales
-import treeIcon from './Iconos/tree.png';
-import furnitureIcon from './Iconos/furniture.png';
-import calendarIcon from './Iconos/calendar.png';
-import recycleBinIcon from './Iconos/recycle-bin.png';
+import treeIcon from '../Iconos/tree.png';
+import furnitureIcon from '../Iconos/furniture.png';
+import calendarIcon from '../Iconos/calendar.png';
+import recycleBinIcon from '../Iconos/recycle-bin.png';
 
 const App = () => {
   const [position, setPosition] = useState<[number, number] | null>(null);
@@ -75,12 +75,13 @@ const App = () => {
   };
 
   // Función para manejar el clic en el mapa solo si el reporte es "eventos"
+
   const LocationClickHandler = () => {
     const map = useMapEvents({
-      click(event) {
-        if (reportType === 'eventos') {  // Solo permitir clic si el reporte es "eventos"
+      click(event: MapMouseEvent) {  // Usamos MapMouseEvent importado
+        if (reportType === 'eventos') {
           const { lat, lng } = event.latlng;
-          setEventLocation([lat, lng]); // Establecer la ubicación del evento al hacer clic
+          setEventLocation([lat, lng]);
         }
       },
     });
