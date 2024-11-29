@@ -7,7 +7,6 @@ USE `ecoapp`;
 
 -- --------------------------------------------------------
 -- CREACIÓN DE TABLAS
-
 -- Crear la tabla de Roles
 CREATE TABLE IF NOT EXISTS `roles` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -42,25 +41,43 @@ CREATE TABLE IF NOT EXISTS `service_status` (
     `status` VARCHAR(50) NOT NULL
 ) ENGINE = InnoDB;
 
--- Crear la tabla de Servicios
--- Crear la tabla de Servicios
+-- Crear la tabla de Solicitudes de Servicio (con manager_id directamente en la tabla)
+CREATE TABLE IF NOT EXISTS `service_requests` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `client_id` INT NOT NULL,  
+    `service_type_id` INT NOT NULL,  
+    `location_latitude` DECIMAL(10, 8),  
+    `location_longitude` DECIMAL(11, 8),  
+    `location_address` VARCHAR(255),  
+    `description` TEXT,              
+    `status_id` INT NOT NULL DEFAULT 1, 
+    `creation_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (`client_id`) REFERENCES `users`(`id`),
+    FOREIGN KEY (`service_type_id`) REFERENCES `service_types`(`id`),
+    FOREIGN KEY (`status_id`) REFERENCES `service_status`(`id`)
+) ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `service_request_managers` (
+    `service_request_id` INT NOT NULL, 
+    `manager_id` INT NOT NULL,
+    PRIMARY KEY (`service_request_id`, `manager_id`),
+    FOREIGN KEY (`service_request_id`) REFERENCES `service_requests`(`id`),
+    FOREIGN KEY (`manager_id`) REFERENCES `users`(`id`)
+) ENGINE = InnoDB;
+
+
 CREATE TABLE IF NOT EXISTS `services` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `client_id` INT NOT NULL, 
-    `employee_id` INT NOT NULL,  -- Relación con el empleado específico
-    `role_id` INT NOT NULL,      -- Relación con el rol del empleado
-    `manager_id` INT,    
-    `description` TEXT,
-    `type_id` INT NOT NULL, 
-    `location_latitude` DECIMAL(10, 8),
-    `location_longitude` DECIMAL(11, 8),
-    `location_address` VARCHAR(255),
-    `status_id` INT NOT NULL,  
-    FOREIGN KEY (`client_id`) REFERENCES `users`(`id`),
-    FOREIGN KEY (`employee_id`) REFERENCES `users`(`id`),  -- Relación con un empleado específico
-    FOREIGN KEY (`role_id`) REFERENCES `roles`(`id`),  -- Relación con el rol del empleado
-    FOREIGN KEY (`manager_id`) REFERENCES `users`(`id`),  
-    FOREIGN KEY (`type_id`) REFERENCES `service_types`(`id`),
+    `service_request_id` INT NOT NULL, 
+    `employee_id` INT NOT NULL,
+    `status_id` INT NOT NULL DEFAULT 2, -- Estado inicial (2: accepted)
+    `start_date` DATETIME,              
+    `end_date` DATETIME,                
+    `remarks` TEXT,
+    `photo_before` LONGBLOB NULL, -- Foto antes de realizar el servicio
+    `photo_after` LONGBLOB NULL,  -- Foto después de realizar el servicio
+    FOREIGN KEY (`service_request_id`) REFERENCES `service_requests`(`id`),
+    FOREIGN KEY (`employee_id`) REFERENCES `users`(`id`),
     FOREIGN KEY (`status_id`) REFERENCES `service_status`(`id`)
 ) ENGINE = InnoDB;
 
@@ -76,6 +93,23 @@ CREATE TABLE IF NOT EXISTS `service_logs` (
     FOREIGN KEY (`status_id`) REFERENCES `service_status`(`id`),
     FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)  -- Relación con el usuario que hizo el cambio
 ) ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `service_employees` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `service_id` INT NOT NULL,      -- Relación con `services`
+    `employee_id` INT NOT NULL,    -- Relación con `users`
+    FOREIGN KEY (`service_id`) REFERENCES `services`(`id`),
+    FOREIGN KEY (`employee_id`) REFERENCES `users`(`id`)
+) ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `service_managers` (
+    `service_id` INT NOT NULL,        -- Relación con el `service`
+    `manager_id` INT NOT NULL,        -- Relación con el `manager`
+    PRIMARY KEY (`service_id`, `manager_id`),
+    FOREIGN KEY (`service_id`) REFERENCES `services`(`id`),
+    FOREIGN KEY (`manager_id`) REFERENCES `users`(`id`)
+) ENGINE = InnoDB;
+
 
 -- Crear la tabla de Tipos de Puntos (Type Points)
 CREATE TABLE IF NOT EXISTS `type_points` (
@@ -95,21 +129,19 @@ CREATE TABLE IF NOT EXISTS `map_points` (
     FOREIGN KEY (`type_id`) REFERENCES `type_points`(`id`)  -- Relación con la tabla de tipos
 ) ENGINE = InnoDB;
 
--- --------------------------------------------------------
--- INSERTAR DATOS INICIALES
 
--- Insertar roles
+-- Insertar Roles
 INSERT INTO `roles` (name, description) VALUES
 ('Waste Collector', 'Role for users who collect waste'),
 ('Gardener', 'Role for users who perform gardening tasks'),
 ('Customer', 'Role for users who are customers consuming services or products'),
 ('Manager', 'Role for users who are managers with administrative permissions');
 
--- Insertar estados de servicio
+-- Insertar Status de Servicios
 INSERT INTO `service_status` (`status`) VALUES 
 ('pending'), ('accepted'), ('in progress'), ('completed');
 
--- Insertar usuarios con sus roles específicos
+-- Insertar Usuarios
 INSERT INTO `users` (`first_name`, `last_name`, `dni`, `phone`, `email`, `password`, `role_id`) 
 VALUES 
 ('Juan', 'Pérez Gómez', '12345678A', '612345678', 'juan.perez@email.com', 'password123', 
@@ -122,41 +154,53 @@ VALUES
 (SELECT `id` FROM `roles` WHERE `name` = 'Customer')),
 
 ('Carlos', 'García Sánchez', '34567890C', '634567890', 'carlos.garcia@email.com', 'password789', 
-(SELECT `id` FROM `roles` WHERE `name` = 'Manager'));
+(SELECT `id` FROM `roles` WHERE `name` = 'Manager')),
 
--- Insertar tipos de servicio
+('Ana', 'Ramírez López', '23456789B', '612345678', 'ana.ramirez@email.com', 'password456', 
+(SELECT `id` FROM `roles` WHERE `name` = 'Employee'));
+
+-- Insertar Tipos de Servicios
 INSERT INTO `service_types` (`type`, `description`) VALUES
-('Poda', 'Servicios relacionados con la poda de árboles o plantas'),
-('Mueble', 'Servicios relacionados con muebles, como ensamblaje o reparación'),
-('Eventos', 'Servicios relacionados con la organización de eventos'),
-('Otros', 'Cualquier otro tipo de servicio no clasificado anteriormente');
+('Pruning', 'Services related to tree or plant pruning'),
+('Furniture', 'Services related to furniture, such as assembly or repair'),
+('Events', 'Services related to event organization'),
+('Others', 'Any other type of service not classified previously');
 
--- Insertar tipos de puntos (mapa)
+-- Insertar Tipos de Puntos
 INSERT INTO `type_points` (`type`) VALUES
-('container'),
-('contenedor de textiles'),
-('centro de residuos');
+('Container'),
+('Textile container'),
+('Waste center'),
+('Others');
 
--- Insertar algunos ejemplos de puntos en el mapa
-INSERT INTO `map_points` (`name`, `type_id`, `description`, `latitude`, `longitude`) VALUES
-('Contenedor Reciclaje 1', (SELECT `id` FROM `type_points` WHERE `type` = 'container'), 'Contenedor para reciclaje de papel y cartón', 41.387939, 2.170582),
-('Contenedor Reciclaje 2', (SELECT `id` FROM `type_points` WHERE `type` = 'container'), 'Contenedor para reciclaje de vidrio', 41.385730, 2.169287),
-('Vertedero Municipal', (SELECT `id` FROM `type_points` WHERE `type` = 'centro de residuos'), 'Vertedero de residuos urbanos en la periferia', 41.378120, 2.162780);
+-- Insertar Puntos en el Mapa
+INSERT INTO `map_points` (`name`, `type_id`, `description`, `latitude`, `longitude`) 
+VALUES 
+('Recycling Center A', 1, 'Central recycling station for the city', 40.712776, -74.005974),
+('Green Waste Depot', 2, 'For green waste disposal', 40.689247, -74.044502);
 
--- Insertar un servicio de ejemplo
--- Asignar un servicio a un empleado específico, manteniendo el rol
-INSERT INTO `services` 
-(`client_id`, `employee_id`, `role_id`, `manager_id`, `description`, `type_id`, `location_latitude`, `location_longitude`, `location_address`, `status_id`)
+-- Insertar Solicitudes de Servicio (Cliente hace la solicitud)
+INSERT INTO `service_requests` (`client_id`, `service_type_id`, `location_latitude`, `location_longitude`, `location_address`, `description`, `status_id`) 
 VALUES
-(2, 
- (SELECT `id` FROM `users` WHERE `first_name` = 'Juan' AND `last_name` = 'Pérez Gómez' AND `role_id` = (SELECT `id` FROM `roles` WHERE `name` = 'Waste Collector')), 
- (SELECT `id` FROM `roles` WHERE `name` = 'Waste Collector'), 
- (SELECT `id` FROM `users` WHERE `first_name` = 'Carlos' AND `last_name` = 'García Sánchez' AND `role_id` = (SELECT `id` FROM `roles` WHERE `name` = 'Manager')), 
- 'Recogida de residuos urbanos en la zona A del barrio', 
- (SELECT `id` FROM `service_types` WHERE `type` = 'Poda'), 
- 41.387939, 
- 2.170582, 
- 'Zona A, Calle 1, Ciudad', 
- (SELECT `id` FROM `service_status` WHERE `status` = 'pending'));
+(2, 1, 40.712776, -74.005974, 'Main Street 123', 'Prune the tree in front of my house', 1);
 
+-- Insertar la relación de Managers y Solicitudes
+INSERT INTO `service_request_managers` (`service_request_id`, `manager_id`)
+VALUES 
+(1, 4);
 
+-- Insertar Servicios (Asignando al Empleado para ejecutar el servicio)
+INSERT INTO `services` (`service_request_id`, `employee_id`, `status_id`, `start_date`, `end_date`) 
+VALUES
+(1, 5, 2, NOW(), DATE_ADD(NOW(), INTERVAL 2 HOUR));
+
+-- Insertar Logs de Servicios (Solo Manager y Employee pueden cambiar el estado)
+-- Empleado cambia el estado del servicio a 'in progress'
+INSERT INTO `service_logs` (`service_id`, `status_id`, `user_id`, `date`) 
+VALUES 
+(1, 3, 5, NOW());
+
+-- Manager cambia el estado del servicio a 'completed'
+INSERT INTO `service_logs` (`service_id`, `status_id`, `user_id`, `date`) 
+VALUES 
+(1, 4, 4, NOW());
