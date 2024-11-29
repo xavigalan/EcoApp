@@ -10,5 +10,4 @@ public class RoleService {
 	@Autowired
 	RoleRepository roleRepository;
 	
-	
 }

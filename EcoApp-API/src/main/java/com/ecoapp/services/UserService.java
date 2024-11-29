@@ -25,15 +25,24 @@ public class UserService {
 	}
 
 	public User addUser(User user) {
+		if (user.getRole() == null) {
+			Role defaultRole = roleRepository.findByName("Customer");
+
+			if (defaultRole == null) {
+				throw new RuntimeException("Role 'Customer' not found");
+			}
+
+			user.setRole(defaultRole);
+		}
+
 		return userRepository.save(user);
 	}
-	
-	
+
 	@Autowired
 	private RoleRepository roleRepository;
 
 	public List<User> findUsersByRoleName(String roleName) {
-	
+
 		Role role = roleRepository.findByName(roleName);
 
 		if (role == null) {
