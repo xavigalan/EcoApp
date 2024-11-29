@@ -44,7 +44,7 @@ public class User implements Serializable {
     @PrePersist
     public void onCreate() {
         if (this.creationDate == null) {
-            this.creationDate = LocalDateTime.now();  // Establecer la fecha actual antes de persistir
+            this.creationDate = LocalDateTime.now();
         }
     }
 }
