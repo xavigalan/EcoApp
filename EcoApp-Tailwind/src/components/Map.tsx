@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Navbar from './Navbar'; // Asegúrate de importar el Navbar correctamente
 import '../App.css';
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
@@ -33,7 +34,6 @@ const App = () => {
 
   const defaultPosition: [number, number] = [41.15612, 1.10687]; // Ubicación por defecto
 
-  // Función para obtener el icono dependiendo del tipo de reporte
   const getIconByType = (type: string) => {
     switch (type) {
       case 'poda':
@@ -74,11 +74,9 @@ const App = () => {
     }
   };
 
-  // Función para manejar el clic en el mapa solo si el reporte es "eventos"
-
   const LocationClickHandler = () => {
     const map = useMapEvents({
-      click(event: MapMouseEvent) {  // Usamos MapMouseEvent importado
+      click(event) {  
         if (reportType === 'eventos') {
           const { lat, lng } = event.latlng;
           setEventLocation([lat, lng]);
@@ -88,7 +86,6 @@ const App = () => {
     return null;
   };
 
-  // Función para determinar el emoticono y color dependiendo del tipo de reporte
   const getEmoticonAndColor = (type: string) => {
     switch (type) {
       case 'poda':
@@ -106,11 +103,9 @@ const App = () => {
 
   const { emoticon, color } = getEmoticonAndColor(reportType);
 
-  // Función para enviar el formulario
   const handleFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault(); // Evitar el refresco de la página al enviar el formulario
     
-    // Crear los datos del formulario para enviar al backend
     const formData = new FormData();
     formData.append('description', description);
     formData.append('reportType', reportType);
@@ -129,7 +124,6 @@ const App = () => {
         throw new Error('Failed to submit the form');
       }
 
-      // Resetear el formulario después de enviar
       setDescription('');
       setImage(null);
       setEventLocation(null);
@@ -143,6 +137,8 @@ const App = () => {
 
   return (
     <div className="App">
+      <Navbar /> {/* Insertamos el Navbar aquí */}
+
       <h2>Formulario de Reporte</h2>
 
       <div className="map-and-form-container">
@@ -192,7 +188,6 @@ const App = () => {
               </select>
             </div>
 
-            {/* Mostrar emoticono con el color correspondiente */}
             {reportType && (
               <div className="report-emoticon" style={{ color }}>
                 <span style={{ fontSize: '3rem' }}>{emoticon}</span>
@@ -200,10 +195,8 @@ const App = () => {
               </div>
             )}
 
-            {/* Mostrar descripción, imagen y botón solo si el tipo de reporte está seleccionado */}
             {reportType && (
               <>
-                {/* Descripción */}
                 <div className="form-group">
                   <label htmlFor="description">Descripción:</label>
                   <textarea
@@ -216,7 +209,6 @@ const App = () => {
                   />
                 </div>
 
-                {/* Imagen (opcional) */}
                 <div className="form-group">
                   <label htmlFor="image">Imagen (opcional):</label>
                   <input
@@ -226,7 +218,6 @@ const App = () => {
                   />
                 </div>
 
-                {/* Botón para enviar el reporte */}
                 <button type="submit">Enviar Reporte</button>
               </>
             )}
