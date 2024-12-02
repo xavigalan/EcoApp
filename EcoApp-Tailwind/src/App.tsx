@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import 'leaflet/dist/leaflet.css'; 
 import LoginPage from './components/LoginPage';
 import Navbar from './components/Navbar';
 import Map from './components/Map';
