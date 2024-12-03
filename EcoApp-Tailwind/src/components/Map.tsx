@@ -3,20 +3,53 @@ import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 
-import furnitureIcon from '../assets/furniture-icon.png';
-import calendarIcon from '../assets/calendar-icon.png';
+import contenedordebasura from '../assets/contenedor-de-basura.png'; // Icono para "Container"
+import wastecenter from '../assets/LogoSolo.png'; // Icono para "Textile container"
+import othersIcon from '../assets/camion-de-la-basura.png'; // Icono para "Others"
+import textile from '../assets/ropa.png'; // Icono para "Textile container"
+
 const Map = () => {
   const [position, setPosition] = useState<[number, number] | null>(null);
   const [eventLocation, setEventLocation] = useState<[number, number] | null>(null);
   const [mapPoints, setMapPoints] = useState<any[]>([]); // Estado para almacenar los puntos del mapa
   
-  const customIcon = L.icon({
-    iconUrl: '/myLocationPointer.png', // Usar la ruta relativa desde la carpeta public
-    iconSize: [38, 38], // Tamaño del icono
-    iconAnchor: [19, 38], // Punto donde se ancla el icono
-    popupAnchor: [0, -38], // Punto donde se ancla el popup
-  });
-  
+  // Función para asignar el icono adecuado según el tipo
+  const getIconByType = (type: string) => {
+    const icons: Record<string, L.Icon> = {
+      Container: L.icon({
+        iconUrl: contenedordebasura,
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32],
+      }),
+      'Textile container': L.icon({
+        iconUrl: textile,
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32],
+      }),
+      'Waste center': L.icon({
+        iconUrl: wastecenter, // Asegúrate de tener este icono
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32],
+      }),
+      Others: L.icon({
+        iconUrl: othersIcon, // Asegúrate de tener este icono
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32],
+      }),
+    };
+
+    // Si el tipo no está en el objeto `icons`, devuelve un icono por defecto
+    return icons[type] || L.icon({
+      iconUrl: '/default-icon.png', // Un icono por defecto si no se encuentra el tipo
+      iconSize: [32, 32],
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -32],
+    });
+  };
 
   useEffect(() => {
     // Obtener la ubicación del usuario
@@ -37,24 +70,8 @@ const Map = () => {
       })
       .catch((error) => console.error('Error al obtener los puntos del mapa:', error));
   }, []);
-  
 
   const defaultPosition: [number, number] = [41.15612, 1.10687];
-
-  const getIconByType = (type: string) => {
-    const icons: Record<string, string> = {
-      Container: 'container-icon-url', // Asegúrate de poner las URLs de tus íconos
-      'Textile container': 'textile-icon-url',
-      otros: 'recycle-bin-icon-url', // Este ícono es solo un ejemplo
-    };
-
-    return new L.Icon({
-      iconUrl: icons[type] || 'default-icon-url',
-      iconSize: [32, 32],
-      iconAnchor: [16, 32],
-      popupAnchor: [0, -32],
-    });
-  };
 
   const LocationClickHandler = () => {
     useMapEvents({
@@ -75,27 +92,37 @@ const Map = () => {
 
           {/* Marcador de la ubicación actual */}
           {position && (
-            <Marker position={position} icon={getIconByType('')}>
+            <Marker position={position} icon={getIconByType('Others')}>
               <Popup>Tu ubicación actual</Popup>
             </Marker>
           )}
 
           {/* Marcador de la ubicación seleccionada */}
           {eventLocation && (
-            <Marker position={eventLocation} icon={getIconByType('eventos')}>
+            <Marker position={eventLocation} icon={getIconByType('Others')}>
               <Popup>Ubicación seleccionada</Popup>
             </Marker>
           )}
 
           {/* Mostrar los puntos obtenidos desde el backend */}
           {mapPoints.map((point) => (
-            <Marker key={point.id} position={[point.latitude, point.longitude]} icon={customIcon}>
-              <Popup>
-                <h3>{point.name}</h3>
-                <p>{point.description}</p>
-              </Popup>
-            </Marker>
-          ))}
+  <Marker key={point.id} position={[point.latitude, point.longitude]} icon={getIconByType(point.type.name)}>
+    <Popup>
+      <h3>{point.name}</h3>
+      <p>{point.description}</p>
+      <p>está en: {point.latitude}, {point.longitude}</p>
+      <a 
+        href={`https://www.google.com/maps?q=${point.latitude},${point.longitude}`} 
+        target="_blank" 
+        rel="noopener noreferrer"
+      >
+        Anar-hi
+      </a>
+    </Popup>
+  </Marker>
+))}
+
+
           <LocationClickHandler />
         </MapContainer>
       </div>
