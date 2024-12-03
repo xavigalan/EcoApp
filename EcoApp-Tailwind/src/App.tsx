@@ -3,6 +3,7 @@ import 'leaflet/dist/leaflet.css';
 import LoginPage from './components/LoginPage';
 import Navbar from './components/Navbar';
 import MapComponent from './components/MapComponent';
+import Map from './components/Map'
 import RegisterPage from './components/RegisterPage';
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
@@ -14,7 +15,7 @@ function App() {
   return (
     <div className="App">
       <Navbar/>
-      <MapComponent />
+      <Map/>
     </div>
   );
 }
