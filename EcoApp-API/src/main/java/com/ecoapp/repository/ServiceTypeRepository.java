@@ -3,11 +3,10 @@ package com.ecoapp.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.ecoapp.entities.TypePoint;
+import com.ecoapp.entities.ServiceType;
 
 @Repository
-public interface TypePointRepository extends JpaRepository<TypePoint, Long> {
+public interface ServiceTypeRepository extends JpaRepository<ServiceType, Long> {
 
-	TypePoint findByName(String type);
-
+	ServiceType findByName(String type);
 }
