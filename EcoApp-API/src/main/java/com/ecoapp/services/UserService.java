@@ -55,4 +55,12 @@ public class UserService {
 	public List<User> findUsersByRole(Role role) {
 		return userRepository.findByRole(role);
 	}
+
+	public void deleteUser(Long id) {
+		if (userRepository.existsById(id)) {
+			userRepository.deleteById(id);
+		} else {
+			throw new RuntimeException("User not found with id: " + id);
+		}
+	}
 }
