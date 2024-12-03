@@ -2,7 +2,6 @@ import { useState } from 'react'
 import 'leaflet/dist/leaflet.css'; 
 import LoginPage from './components/LoginPage';
 import Navbar from './components/Navbar';
-import Map from './components/Map';
 import MapComponent from './components/MapComponent';
 import RegisterPage from './components/RegisterPage';
 import reactLogo from './assets/react.svg'
@@ -14,6 +13,7 @@ function App() {
 
   return (
     <div className="App">
+      <Navbar/>
       <MapComponent />
     </div>
   );

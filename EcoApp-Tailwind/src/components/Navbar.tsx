@@ -4,19 +4,6 @@ const Navbar: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-<<<<<<< HEAD
-        <nav className="bg-green-800 text-white fixed top-0 left-0 w-full z-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
-              {/* Logo */}
-              <div className="flex-shrink-0">
-                <img
-                  alt="EcoApp"
-                  src="/images/LogoSolo.png"
-                  className="mx-auto px-3 h-10 w-auto"
-                />
-              </div>
-=======
         <nav className="bg-green-800 text-white fixed top-0 left-0 w-full z-50 fixed">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
@@ -28,7 +15,6 @@ const Navbar: React.FC = () => {
                             className="h-10 w-auto"
                         />
                     </div>
->>>>>>> 80e9271df3dd875b35ffaeef09f2f4ceebda6a1f
 
                     {/* Desktop Links */}
                     <div className="hidden md:flex space-x-4">
