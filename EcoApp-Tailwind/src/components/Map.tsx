@@ -1,71 +1,34 @@
-import { useState, useEffect } from 'react';
-import Navbar from './Navbar';
-import 'leaflet/dist/leaflet.css';
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
+import React from 'react';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
-const Map = () => {
-  const [position, setPosition] = useState<[number, number] | null>(null);
-  const [eventLocation, setEventLocation] = useState<[number, number] | null>(null);
+const Map: React.FC = () => {
+  // Coordenadas iniciales para centrar el mapa
+  const position: [number, number] = [51.505, -0.09]; // Londres, UK
 
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        ({ coords }) => setPosition([coords.latitude, coords.longitude]),
-        (error) => console.error('Error al obtener la ubicación:', error)
-      );
-    }
-  }, []);
-
-  const defaultPosition: [number, number] = [41.15612, 1.10687];
-
-  const getIconByType = (type: string) => {
-    const icons: Record<string, string> = {
-      poda: 'tree-icon-url',
-      muebles: 'furniture-icon-url',
-      eventos: 'calendar-icon-url',
-      otros: 'recycle-bin-icon-url',
-    };
-
-    return new L.Icon({
-      iconUrl: icons[type] || 'default-icon-url',
-      iconSize: [32, 32],
-      iconAnchor: [16, 32],
-      popupAnchor: [0, -32],
-    });
-  };
-
-  const LocationClickHandler = () => {
-    useMapEvents({
-      click: ({ latlng }) => setEventLocation([latlng.lat, latlng.lng]),
-    });
-    return null;
-  };
+  // Icono personalizado para el marcador
+  const customIcon = new L.Icon({
+    iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    // popupAnchor: [0, -41],
+  });
 
   return (
-    <div className="flex flex-col h-screen">
-      <Navbar />
-      <div className="flex-grow pt-11">
-        <MapContainer
-          center={position || defaultPosition}
-          zoom={13}
-          className="w-full h-full absolute left-0" // Estas clases aseguran que el mapa ocupe todo el espacio disponible
-        >
-          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-          {position && (
-            <Marker position={position} icon={getIconByType('')}>
-              <Popup>Tu ubicación actual</Popup>
-            </Marker>
-          )}
-          {eventLocation && (
-            <Marker position={eventLocation} icon={getIconByType('eventos')}>
-              <Popup>Ubicación seleccionada</Popup>
-            </Marker>
-          )}
-          <LocationClickHandler />
-        </MapContainer>
-      </div>
-    </div>
+    <MapContainer center={position} zoom={13} style={{
+      height: '-webkit-fill-available',
+      width: '-webkit-fill-available',
+      position: 'fixed',
+      zIndex: 1
+    }}>
+      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+      <Marker position={position} icon={customIcon}>
+        <Popup>
+          A pretty CSS3 popup. <br /> Easily customizable.
+        </Popup>
+      </Marker>
+    </MapContainer>
   );
 };
 

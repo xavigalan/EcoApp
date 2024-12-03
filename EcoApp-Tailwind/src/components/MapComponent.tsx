@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Polyline, Polygon } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L, { LatLngExpression } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 //import { events } from '../data'; // Asegúrate de importar los makers desde data.js
@@ -13,13 +13,13 @@ const customIcon = L.icon({
   popupAnchor: [0, -38], // Punto donde se ancla el popup
 });
 
-interface MapComponentProps {
+/*interface MapComponentProps {
   startDate: string;
   endDate: string;
   showFavorites: boolean; // Nueva prop para controlar si mostrar favoritos
-}
+}*/
 
-const MapComponent: React.FC = ({  }) => {
+const MapComponent: React.FC = ({ }) => {
   const [position, setPosition] = useState<LatLngExpression | null>(null);
   //const [filteredEvents, setFilteredEvents] = useState(events); // Al principio, todos los eventos
 
@@ -42,7 +42,7 @@ const MapComponent: React.FC = ({  }) => {
     }
   }, []);
 
-  /*useEffect(() => {
+ /* useEffect(() => {
     // Filtrar los eventos según el rango de fechas y si estamos mostrando solo favoritos
     const filtered = events.filter((event) => {
       const eventDate = new Date(event.date);
@@ -87,7 +87,7 @@ const MapComponent: React.FC = ({  }) => {
         <Popup>¡Hola! Este es tu marcador personalizado. 🚀</Popup>
         </Marker>
 
-        { /*Marcadores de los eventos filtrados }
+        {/* Marcadores de los eventos filtrados }
         {filteredEvents.map((event, idx) => (
           <Marker position={event.coordinates} key={idx}>
             <Popup className='PopEventos'>
@@ -103,9 +103,9 @@ const MapComponent: React.FC = ({  }) => {
               </a>
             </Popup>
           </Marker>
-        ))}
-          */}
-        {/* Aquí van los vecindarios }
+        ))}*/}
+
+        {/* Aquí van los vecindarios 
         {neighborhoods.map((neighborhood) => (
           <>
             <Polygon
