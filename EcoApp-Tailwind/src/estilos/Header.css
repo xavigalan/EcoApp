@@ -1,0 +1,72 @@
+/* Contenedor principal del header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px; /* Espaciado interno */
+    background-color: #333; /* Fondo oscuro */
+    color: white; /* Texto blanco */
+    position: sticky; /* Fija el header al scroll */
+    top: 0;
+    z-index: 1000;
+  }
+  
+  /* Contenedor del logo y selector de fechas */
+  .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Espaciado entre logo y date picker */
+  }
+  
+  /* Estilo del logo */
+  .logo {
+    font-size: 10px;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  /* Navegación */
+  .nav {
+    display: flex;
+    gap: 15px; /* Espaciado uniforme entre los elementos del nav */
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+  }
+  
+  /* Estilo de los botones de filtro */
+  .nav button {
+    padding: 8px 15px;
+    border: none;
+    background-color: #555;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  
+  /* Barra de búsqueda */
+  .nav .barra-busqueda {
+    width: 200%;
+  }
+  
+  /* Botón de mute */
+  .nav .mute-button {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    justify-content: end;
+  }
+  
+  /* Ajusta el DateRangePicker para que se alinee */
+  .logo-container .date-picker {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    color: white;
+  }
+  
+  
