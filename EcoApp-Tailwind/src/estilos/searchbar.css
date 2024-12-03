@@ -1,0 +1,57 @@
+.search-container {
+    position: relative; /* Para que el dropdown se posicione relativo al contenedor */
+    display: inline-block; /* Asegura que no afecte el tamaño del navbar */
+  }
+  
+  .search-bar {
+    padding: 8px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .search-bar:focus {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    outline: none;
+  }
+  
+  .search-dropdown {
+    position: absolute; /* Superpuesto sobre otros elementos */
+    top: 100%; /* Justo debajo del input */
+    left: 0;
+    width: 100%; /* Mismo ancho que el input */
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000; /* Asegura que esté por encima de otros elementos */
+  }
+  
+  .search-item {
+    padding: 8px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    color: black;
+  }
+  
+  .search-item:last-child {
+    border-bottom: none;
+  }
+  
+  .search-item:hover {
+    background: #f4f4f4;
+  }
+  
+  .search-no-results {
+    padding: 8px;
+    font-size: 14px;
+    color: #999;
+    text-align: center;
+  }
+  

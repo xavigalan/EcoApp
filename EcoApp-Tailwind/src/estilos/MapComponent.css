@@ -1,0 +1,42 @@
+/* Animación de pulsación */
+@keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  /* Clase para el icono con animación */
+  .leaflet-marker-icon.pulse-icon {
+    animation: pulse 1.5s infinite; /* La animación ocurre cada 1.5 segundos */
+  }
+
+  .PopEventos {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 5px;
+    font-family: Arial, sans-serif;
+  }
+  
+  #Imagen_PopUp {
+    width: 100%; /* Ajusta el ancho de la imagen */
+    height: auto; /* Mantén las proporciones de la imagen */
+    border-radius: 8px; /* Bordes redondeados para un estilo más limpio */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra suave para la imagen */
+  }
+  
+  .PopEventos p {
+    margin: 0;
+    font-size: 14px; /* Ajusta el tamaño del texto */
+    color: #333; /* Color de texto */
+  }
+  
+
+  

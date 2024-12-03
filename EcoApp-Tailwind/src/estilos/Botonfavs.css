@@ -1,0 +1,36 @@
+/* Estilos para el botÃ³n de "AÃ±adir a Favoritos" con la imagen */
+button.add-to-favorites {
+    background-image: url('/path/to/favs.png'); /* Ruta de la imagen para aÃ±adir a favoritos */
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding-left: 30px; /* Aumenta el padding para que la imagen no se solape con el texto */
+    color: white;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button.add-to-favorites:hover {
+    background-color: #218838;
+    background-image: url('/path/to/favs-hover.png'); /* Imagen para el hover (opcional) */
+  }
+  
+  /* Estilo para el botÃ³n de "Quitar de Favoritos" con la imagen */
+  button.remove-from-favorites {
+    background-image: url('/path/to/favs-remove.png'); /* Ruta de la imagen para quitar de favoritos */
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding-left: 30px; /* Aumenta el padding para que la imagen no se solape con el texto */
+    color: white;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button.remove-from-favorites:hover {
+    background-color: #d9534f; /* Color rojo para "Quitar de favoritos" */
+  }

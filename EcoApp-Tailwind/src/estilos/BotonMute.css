@@ -1,0 +1,38 @@
+/* Botón principal */
+.mute-button {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 20px; /* Tamaño del botón */
+  height: 20px; /* Tamaño del botón */
+  padding: 0; /* Sin padding */
+  border: none; /* Sin borde */
+  cursor: pointer;
+  background-color: transparent; /* Fondo transparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute; /* Posicionamiento absoluto */
+  top: 5%; /* Margen superior */
+  right: 5%; /* Margen derecho */
+  transition: opacity 0.3s ease; /* Transición para hover */
+}
+
+/* Efecto hover */
+.mute-button:hover {
+  opacity: 0.8; /* Reduce la opacidad al pasar el cursor */
+}
+
+/* Icono de mute */
+.mute-button-muted::before {
+  content: url(); /* Ruta al icono de mute */
+  width: 24px; /* Tamaño del icono */
+  height: 24px;
+}
+
+/* Icono de unmute */
+.mute-button-unmuted::before {
+  content: url('../../img/unmuted.png'); /* Ruta al icono de unmute */
+  width: 24px; /* Tamaño del icono */
+  height: 24px;
+}

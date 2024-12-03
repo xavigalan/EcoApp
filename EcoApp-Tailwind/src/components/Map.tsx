@@ -1,80 +1,47 @@
 import { useState, useEffect } from 'react';
+<<<<<<< HEAD
 import Navbar from './Navbar'; // Asegúrate de importar el Navbar correctamente
 import '../App.css';
+=======
+import Navbar from './Navbar';
+>>>>>>> 80e9271df3dd875b35ffaeef09f2f4ceebda6a1f
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 
-// Iconos locales
-import treeIcon from '../Iconos/tree.png';
-import furnitureIcon from '../Iconos/furniture.png';
-import calendarIcon from '../Iconos/calendar.png';
-import recycleBinIcon from '../Iconos/recycle-bin.png';
-
-const App = () => {
+const Map = () => {
   const [position, setPosition] = useState<[number, number] | null>(null);
-  const [reportType, setReportType] = useState<string>(''); // Tipo de reporte
-  const [description, setDescription] = useState<string>(''); // Descripción del reporte
-  const [image, setImage] = useState<File | null>(null); // Imagen adjunta
-  const [eventLocation, setEventLocation] = useState<[number, number] | null>(null); // Ubicación del evento
+  const [eventLocation, setEventLocation] = useState<[number, number] | null>(null);
 
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setPosition([latitude, longitude]);
-        },
-        (error) => {
-          console.error("Error al obtener la ubicación: ", error);
-        }
+        ({ coords }) => setPosition([coords.latitude, coords.longitude]),
+        (error) => console.error('Error al obtener la ubicación:', error)
       );
     }
   }, []);
 
-  const defaultPosition: [number, number] = [41.15612, 1.10687]; // Ubicación por defecto
+  const defaultPosition: [number, number] = [41.15612, 1.10687];
 
   const getIconByType = (type: string) => {
-    switch (type) {
-      case 'poda':
-        return new L.Icon({
-          iconUrl: treeIcon, // Icono para poda
-          iconSize: [32, 32],
-          iconAnchor: [16, 32],
-          popupAnchor: [0, -32],
-        });
-      case 'muebles':
-        return new L.Icon({
-          iconUrl: furnitureIcon, // Icono para muebles
-          iconSize: [32, 32],
-          iconAnchor: [16, 32],
-          popupAnchor: [0, -32],
-        });
-      case 'eventos':
-        return new L.Icon({
-          iconUrl: calendarIcon, // Icono para eventos
-          iconSize: [32, 32],
-          iconAnchor: [16, 32],
-          popupAnchor: [0, -32],
-        });
-      case 'otros':
-        return new L.Icon({
-          iconUrl: recycleBinIcon, // Icono para otros
-          iconSize: [32, 32],
-          iconAnchor: [16, 32],
-          popupAnchor: [0, -32],
-        });
-      default:
-        return new L.Icon({
-          iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Map_marker_icon_%28brown%29.svg/120px-Map_marker_icon_%28brown%29.svg.png', // Icono por defecto
-          iconSize: [32, 32],
-          iconAnchor: [16, 32],
-          popupAnchor: [0, -32],
-        });
-    }
+    const icons: Record<string, string> = {
+      poda: 'tree-icon-url',
+      muebles: 'furniture-icon-url',
+      eventos: 'calendar-icon-url',
+      otros: 'recycle-bin-icon-url',
+    };
+
+    return new L.Icon({
+      iconUrl: icons[type] || 'default-icon-url',
+      iconSize: [32, 32],
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -32],
+    });
   };
 
   const LocationClickHandler = () => {
+<<<<<<< HEAD
     const map = useMapEvents({
       click(event) {  
         if (reportType === 'eventos') {
@@ -82,10 +49,15 @@ const App = () => {
           setEventLocation([lat, lng]);
         }
       },
+=======
+    useMapEvents({
+      click: ({ latlng }) => setEventLocation([latlng.lat, latlng.lng]),
+>>>>>>> 80e9271df3dd875b35ffaeef09f2f4ceebda6a1f
     });
     return null;
   };
 
+<<<<<<< HEAD
   const getEmoticonAndColor = (type: string) => {
     switch (type) {
       case 'poda':
@@ -223,9 +195,37 @@ const App = () => {
             )}
           </form>
         </div>
+=======
+  return (
+    <div className="flex flex-col h-screen">
+      <Navbar />
+      <div className="flex-grow pt-11">
+        <MapContainer
+          center={position || defaultPosition}
+          zoom={13}
+          className="w-full h-full absolute left-0" // Estas clases aseguran que el mapa ocupe todo el espacio disponible
+        >
+          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+          {position && (
+            <Marker position={position} icon={getIconByType('')}>
+              <Popup>Tu ubicación actual</Popup>
+            </Marker>
+          )}
+          {eventLocation && (
+            <Marker position={eventLocation} icon={getIconByType('eventos')}>
+              <Popup>Ubicación seleccionada</Popup>
+            </Marker>
+          )}
+          <LocationClickHandler />
+        </MapContainer>
+>>>>>>> 80e9271df3dd875b35ffaeef09f2f4ceebda6a1f
       </div>
     </div>
   );
 };
 
+<<<<<<< HEAD
 export default App;
+=======
+export default Map;
+>>>>>>> 80e9271df3dd875b35ffaeef09f2f4ceebda6a1f

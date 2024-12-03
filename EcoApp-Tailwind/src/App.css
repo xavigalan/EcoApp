@@ -1,8 +1,9 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
 
 .logo {
@@ -61,22 +62,10 @@ h2 {
   text-align: center;
 }
 
-.map-and-form-container {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px
-  ;
-  width: 100%;
-  max-width: 1200px;
-  margin-top: 20px;
-}
-
 .map-container {
-  width: 70%;  /* El mapa ocupa el 70% del ancho */
-  height: 700px;
-  width: 800px;
+  flex-grow: 1; /* Deja que el mapa ocupe el espacio restante */
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  overflow: hidden; 
 }
 
 .form-container {
