@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MapPointsWithTypePointsDTO {
+public class MapPointWithTypeDTO {
     private Long id;
     private String name;
     private String description;

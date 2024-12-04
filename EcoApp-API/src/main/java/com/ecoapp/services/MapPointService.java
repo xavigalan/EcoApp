@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ecoapp.dtos.MapPointWithTypeDTO;
 import com.ecoapp.entities.MapPoint;
 import com.ecoapp.repository.MapPointRepository;
 
@@ -34,4 +35,9 @@ public class MapPointService {
 			throw new RuntimeException("MapPoint not found with id: " + id);
 		}
 	}
+
+    public List<MapPointWithTypeDTO> findMapPointsByTypeId(Long typeId) {
+        return mappointRepository.findMapPointsByTypeId(typeId);
+    }
+
 }
