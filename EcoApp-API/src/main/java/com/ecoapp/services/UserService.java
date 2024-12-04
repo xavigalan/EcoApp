@@ -24,38 +24,38 @@ public class UserService {
 		return userRepository.findById(id);
 	}
 
+//	public User addUser(User user) {
+//		if (user.getRole() == null) {
+//			Role defaultRole = roleRepository.findByName("Customer");
+//
+//			if (defaultRole == null) {
+//				throw new RuntimeException("Role 'Customer' not found");
+//			}
+//
+//			user.setRole(defaultRole);
+//		}
+
+//	return userRepository.save(user);}
+
 	public User addUser(User user) {
-		if (user.getRole() == null) {
-			Role defaultRole = roleRepository.findByName("Customer");
-
-			if (defaultRole == null) {
-				throw new RuntimeException("Role 'Customer' not found");
-			}
-
-			user.setRole(defaultRole);
-		}
-
 		return userRepository.save(user);
 	}
 
-	@Autowired
-	private RoleRepository roleRepository;
-
-	public List<User> findUsersByRoleName(String roleName) {
-
-		Role role = roleRepository.findByName(roleName);
-
-		if (role == null) {
-			throw new RuntimeException("Role not found: " + roleName);
-		}
-
-		return userRepository.findByRole(role);
-	}
-
-	public List<User> findUsersByRole(Role role) {
-		return userRepository.findByRole(role);
-	}
-
+	/*
+	 * @Autowired private RoleRepository roleRepository;
+	 * 
+	 * public List<User> findUsersByRoleName(String roleName) {
+	 * 
+	 * Role role = roleRepository.findByName(roleName);
+	 * 
+	 * if (role == null) { throw new RuntimeException("Role not found: " +
+	 * roleName); }
+	 * 
+	 * return userRepository.findByRole(role); }
+	 * 
+	 * public List<User> findUsersByRole(Role role) { return
+	 * userRepository.findByRole(role); }
+	 */
 	public void deleteUser(Long id) {
 		if (userRepository.existsById(id)) {
 			userRepository.deleteById(id);
