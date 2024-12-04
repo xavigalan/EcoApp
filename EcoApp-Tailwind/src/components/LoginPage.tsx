@@ -28,7 +28,7 @@ export default function LoginPage() {
           height: "-webkit-fill-available",
           width: "-webkit-fill-available",
           position: "fixed",
-          zIndex: 1,
+          zIndex: 2,
           //marginTop: "-50px",
         }}
       >

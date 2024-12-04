@@ -4,65 +4,67 @@ import { Link } from "react-router-dom";
 const Navbar: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
 
+    const handleLinkClick = () => {
+        setIsOpen(false);  
+    };
+
     return (
         <nav className="bg-green-800 text-white">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="px-6">
                 <div className="flex justify-between items-center h-16">
                     {/* Logo */}
                     <div className="flex-shrink-0 drop-shadow-yellow-glow">
-                        <Link to="/">
+                        <Link to="/"
+                        onClick={handleLinkClick}>
                             <img
                               alt="EcoApp"
                               src="/images/LogoSolo.png"
                               className="h-10 w-auto"
-                        />
+                            />
                         </Link>
-
                     </div>
 
                     {/* Desktop Links */}
-                    <div className="hidden md:flex pt-5 pb-5  space-x-12">
-
+                    <div className="hidden md:flex space-x-12">
                         <a
-                            href="/"
-                            className="text-white hover:text-white hover:bg-green-700 py-2 rounded-md text-sm font-medium"
+                            href="/services"
+                            className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium"
                         >
                             Services
                         </a>
-                       
                         <a
                             href="/about"
-                            className="text-white hover:text-white hover:bg-green-700 py-2 rounded-md text-sm font-medium"
+                            className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium"
                         >
                             Notice
                         </a>
                         <a
                             href="/about"
-                            className="text-white hover:text-white hover:bg-green-700 py-2 rounded-md text-sm font-medium"
+                            className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium"
                         >
                             Contact
                         </a>
                         <a
                             href="/about"
-                            className="text-white hover:text-white hover:bg-green-700 py-2 rounded-md text-sm font-medium"
+                            className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium"
                         >
                             Employees
                         </a>
                         <a
                             href="/about"
-                            className="text-white hover:text-white hover:bg-green-700 py-2 rounded-md text-sm font-medium"
+                            className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium"
                         >
                             Points
                         </a>
-                     </div>
-                     <div className="hidden md:flex pt-5 pb-5  space-x-10">
-                        <Link to="/login" className="text-white hover:text-white hover:bg-green-700 py-2 rounded-md text-sm font-medium">
+                    </div>
+                    <div className="hidden md:flex pt-5 pb-5 space-x-10">
+                        <Link to="/login" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
                             Login
                         </Link>
-                        <Link to="/register" className="text-white hover:text-white hover:bg-green-700 py-2 rounded-md text-sm font-medium">                     
+                        <Link to="/register" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
                             Register
                         </Link>
-                        </div>
+                    </div>
 
                     {/* Mobile Menu Button */}
                     <div className="md:hidden">
@@ -109,51 +111,70 @@ const Navbar: React.FC = () => {
 
             {/* Mobile Links with Animation */}
             <div
-                className={`${
-                    isOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
-                } transition-all ease-in-out duration-300 overflow-hidden md:hidden`}
-            >
-                <div className="space-y-1 px-2 pb-3 pt-2">
+  className={`${
+    isOpen ? "max-h-screen opacity-100 visibility-visible" : "max-h-0 opacity-0 visibility-hidden pointer-events-none"
+  } transition-all ease-in-out duration-300 md:hidden bg-green-800`}
+  style={{
+    position: "fixed",
+    zIndex: 10,
+    width: "100%", // Asegura que ocupe todo el ancho
+  }}
+>
+  <div className="space-y-1 px-2 pb-3 pt-2">
+    <a
+      href="/services"
+      className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
+      onClick={handleLinkClick} // Cerrar menú al hacer clic
+    >
+      Services
+    </a>
+    <a
+      href="/about"
+      className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
+      onClick={handleLinkClick} // Cerrar menú al hacer clic
+    >
+      Notice
+    </a>
+    <a
+      href="/about"
+      className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
+      onClick={handleLinkClick} // Cerrar menú al hacer clic
+    >
+      Contact
+    </a>
+    <a
+      href="/about"
+      className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
+      onClick={handleLinkClick} // Cerrar menú al hacer clic
+    >
+      Employees
+    </a>
+    <a
+      href="/about"
+      className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
+      onClick={handleLinkClick} // Cerrar menú al hacer clic
+    >
+      Points
+    </a>
+  </div>
 
-                <a
-                        href="/contacto"
-                        className="text-white block px-3 py-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
-                    >
-                        Home
-                    </a>
-                    <a
-                        href="/"
-                        className="text-white block px-3 py-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
-                    >
-                        Services
-                    </a>
-                    
-                    <a
-                        href="/about"
-                        className="text-white block px-3 py-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
-                    >
-                        Notice
-                    </a>
-                    <a
-                        href="/about"
-                        className="text-white block px-3 py-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
-                    >
-                        Contact
-                    </a>
-                    <a
-                        href="/about"
-                        className="text-white block px-3 py-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
-                    >
-                        Employees
-                    </a>
-                    <a
-                        href="/about"
-                        className="text-white block px-3 py-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
-                    >
-                        Points
-                    </a>
-                </div>
-            </div>
+  <div className="space-y-1 px-2 pb-3 pt-2">
+    <Link
+      to="/login"
+      className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
+      onClick={handleLinkClick} // Cerrar menú al hacer clic
+    >
+      Login
+    </Link>
+    <Link
+      to="/register"
+      className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
+      onClick={handleLinkClick} // Cerrar menú al hacer clic
+    >
+      Register
+    </Link>
+  </div>
+</div>
         </nav>
     );
 };
