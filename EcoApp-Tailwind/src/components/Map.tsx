@@ -1,237 +1,162 @@
-import { useState, useEffect } from 'react';
-import '../App.css';
+
+ import { useState, useEffect } from 'react';
 import 'leaflet/dist/leaflet.css';
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polygon } from 'react-leaflet';
 import L from 'leaflet';
 
-// Iconos locales
-import treeIcon from '../Iconos/tree.png';
-import furnitureIcon from '../Iconos/furniture.png';
-import calendarIcon from '../Iconos/calendar.png';
-import recycleBinIcon from '../Iconos/recycle-bin.png';
+// Iconos
+import locationIcon from '../iconos/location.png';
 
 const App = () => {
-  const [position, setPosition] = useState<[number, number] | null>(null);
-  const [reportType, setReportType] = useState<string>(''); // Tipo de reporte
-  const [description, setDescription] = useState<string>(''); // Descripción del reporte
-  const [image, setImage] = useState<File | null>(null); // Imagen adjunta
-  const [eventLocation, setEventLocation] = useState<[number, number] | null>(null); // Ubicación del evento
+  const [position, setPosition] = useState<[number, number]>([41.15612, 1.10687]); // Coordenadas actuales
+  const [locationMode, setLocationMode] = useState<'manual' | 'geolocation' | 'map' | ''>(''); // Modo de ubicación
+  const [address, setAddress] = useState<string>(''); // Dirección ingresada manualmente
+  const [manualLocation, setManualLocation] = useState<[number, number] | null>(null); // Ubicación manual
 
+  // Coordenadas del perímetro de Reus
+  const reusPerimeter: L.LatLngTuple[] = [
+    [41.1641532, 1.0910310], [41.1635559, 1.0919380], [41.1641556, 1.0910368],
+    [41.1633924, 1.0919487], [41.1640100, 1.0929460], [41.1631420, 1.0950120],
+    [41.1638990, 1.0953765], [41.1651560, 1.0937417], [41.1666770, 1.0951380],
+    [41.1665931, 1.0954563], [41.1666900, 1.0956903], [41.1664606, 1.0959877],
+    [41.1654430, 1.0976669], [41.1652401, 1.0977396], [41.1647870, 1.0976966],
+    [41.1646371, 1.0977906], [41.1641740, 1.0986986], [41.1641590, 1.0988976],
+    [41.1645270, 1.0991879], [41.1646361, 1.0995870], [41.1647080, 1.0995886],
+    [41.1656111, 1.0993286], [41.1657560, 1.0993756], [41.1658990, 1.0995940],
+    [41.1659810, 1.1001126], [41.1666130, 1.1017604], [41.1666070, 1.1018384],
+    [41.1666118, 1.1018373], [41.1659890, 1.1019850], [41.1659040, 1.1021110],
+    [41.1658630, 1.1022356], [41.1659620, 1.1033797], [41.1661410, 1.1040293],
+    [41.1664340, 1.1045943], [41.1656430, 1.1054497], [41.1655319, 1.1057179],
+    [41.1659160, 1.1068797], [41.1659330, 1.1071513], [41.1660830, 1.1073413],
+    [41.1662700, 1.1074963], [41.1663390, 1.1077950], [41.1664880, 1.1081630],
+    [41.1664900, 1.1082346], [41.1664360, 1.1083800], [41.1656300, 1.1092317],
+    [41.1652120, 1.1094120], [41.1651980, 1.1104986], [41.1653060, 1.1107780],
+    [41.1654080, 1.1108583], [41.1656940, 1.1108647], [41.1685672, 1.1160880],
+    [41.1666723, 1.1183790], [41.1687099, 1.1188213], [41.1702673, 1.1224172],
+    [41.1659657, 1.1235453], [41.1615663, 1.1179288], [41.1606003, 1.1185690],
+    [41.1584193, 1.1198622], [41.1559327, 1.1216522], [41.1520433, 1.1179018],
+    [41.1503117, 1.1244722], [41.1525787, 1.1293040], [41.1498193, 1.1326308],
+    [41.1457193, 1.1235883], [41.1483946, 1.1171957], [41.1468483, 1.1148193],
+    [41.1453027, 1.1166783], [41.1434283, 1.1166350], [41.1405520, 1.1190172],
+    [41.1381823, 1.1206905], [41.1366267, 1.1200472], [41.1352880, 1.1217283],
+    [41.1339343, 1.1222852], [41.1335522, 1.1215290], [41.1308845, 1.1206460],
+    [41.1309088, 1.1182720], [41.1339948, 1.1164360], [41.1329872, 1.1129181],
+    [41.1369255, 1.1097471], [41.1373052, 1.1086272], [41.1377375, 1.1041972],
+    [41.1428998, 1.1028490], [41.1421162, 1.0966410], [41.1518758, 1.0935511],
+    [41.1519882, 1.0897530], [41.1509622, 1.0890022], [41.1512448, 1.0869422],
+    [41.1534745, 1.0875219], [41.1529422, 1.0892811], [41.1548155, 1.0896892],
+    [41.1557122, 1.0854831], [41.1590242, 1.0850860], [41.1591782, 1.0819530],
+    [41.1631845, 1.0835838]
+  ];
+  
+  // Función para manejar la geolocalización
   useEffect(() => {
-    if (navigator.geolocation) {
+    if (navigator.geolocation && locationMode === 'geolocation') {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
           setPosition([latitude, longitude]);
         },
         (error) => {
-          console.error("Error al obtener la ubicación: ", error);
+          console.error('Error al obtener la ubicación: ', error);
         }
       );
     }
-  }, []);
+  }, [locationMode]);
 
-  const defaultPosition: [number, number] = [41.15612, 1.10687]; // Ubicación por defecto
-
-  // Función para obtener el icono dependiendo del tipo de reporte
-  const getIconByType = (type: string) => {
-    switch (type) {
-      case 'poda':
-        return new L.Icon({
-          iconUrl: treeIcon, // Icono para poda
-          iconSize: [32, 32],
-          iconAnchor: [16, 32],
-          popupAnchor: [0, -32],
-        });
-      case 'muebles':
-        return new L.Icon({
-          iconUrl: furnitureIcon, // Icono para muebles
-          iconSize: [32, 32],
-          iconAnchor: [16, 32],
-          popupAnchor: [0, -32],
-        });
-      case 'eventos':
-        return new L.Icon({
-          iconUrl: calendarIcon, // Icono para eventos
-          iconSize: [32, 32],
-          iconAnchor: [16, 32],
-          popupAnchor: [0, -32],
-        });
-      case 'otros':
-        return new L.Icon({
-          iconUrl: recycleBinIcon, // Icono para otros
-          iconSize: [32, 32],
-          iconAnchor: [16, 32],
-          popupAnchor: [0, -32],
-        });
-      default:
-        return new L.Icon({
-          iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Map_marker_icon_%28brown%29.svg/120px-Map_marker_icon_%28brown%29.svg.png', // Icono por defecto
-          iconSize: [32, 32],
-          iconAnchor: [16, 32],
-          popupAnchor: [0, -32],
-        });
-    }
-  };
-
-  // Función para manejar el clic en el mapa solo si el reporte es "eventos"
-
+  // Función para seleccionar una ubicación en el mapa
   const LocationClickHandler = () => {
     const map = useMapEvents({
-      click(event: MapMouseEvent) {  // Usamos MapMouseEvent importado
-        if (reportType === 'eventos') {
+      click(event: L.LeafletMouseEvent) {
+        if (locationMode === 'map') {
           const { lat, lng } = event.latlng;
-          setEventLocation([lat, lng]);
+          setPosition([lat, lng]);
         }
       },
     });
     return null;
   };
 
-  // Función para determinar el emoticono y color dependiendo del tipo de reporte
-  const getEmoticonAndColor = (type: string) => {
-    switch (type) {
-      case 'poda':
-        return { emoticon: '🌳', color: 'green' };
-      case 'muebles':
-        return { emoticon: '🛋️', color: 'brown' };
-      case 'eventos':
-        return { emoticon: '📅', color: 'blue' };
-      case 'otros':
-        return { emoticon: '🗑️', color: 'gray' };
-      default:
-        return { emoticon: '', color: 'black' };
-    }
-  };
-
-  const { emoticon, color } = getEmoticonAndColor(reportType);
-
-  // Función para enviar el formulario
-  const handleFormSubmit = async (event: React.FormEvent) => {
-    event.preventDefault(); // Evitar el refresco de la página al enviar el formulario
-    
-    // Crear los datos del formulario para enviar al backend
-    const formData = new FormData();
-    formData.append('description', description);
-    formData.append('reportType', reportType);
-    if (image) formData.append('image', image);
-    if (position) formData.append('latitude', position[0].toString());
-    if (position) formData.append('longitude', position[1].toString());
-    if (eventLocation) formData.append('eventLocation', eventLocation.join(','));
-
-    try {
-      const response = await fetch('http://your-backend-api-url/submit-report', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to submit the form');
-      }
-
-      // Resetear el formulario después de enviar
-      setDescription('');
-      setImage(null);
-      setEventLocation(null);
-      setReportType('');
-      alert('Reporte enviado con éxito');
-    } catch (error) {
-      console.error('Error al enviar el reporte:', error);
-      alert('Hubo un error al enviar el reporte');
+  // Manejar la búsqueda de dirección
+  const handleAddressSearch = () => {
+    if (address) {
+      fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=YOUR_GOOGLE_API_KEY`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.results && data.results.length > 0) {
+            const { lat, lng } = data.results[0].geometry.location;
+            setManualLocation([lat, lng]);
+            setPosition([lat, lng]);
+          } else {
+            alert('Dirección no encontrada');
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          alert('Error al buscar la dirección');
+        });
+    } else {
+      alert('Por favor, ingresa una dirección');
     }
   };
 
   return (
     <div className="App">
       <h2>Formulario de Reporte</h2>
-
       <div className="map-and-form-container">
-        {/* Mapa */}
-        <div className="map-container">
-          <MapContainer
-            center={position || defaultPosition}
-            zoom={13}
-            style={{ height: '700px', width: '100%' }}
-          >
-            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-            {position && (
-              <Marker position={position} icon={new L.Icon({
-                iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Map_marker_icon_%28brown%29.svg/120px-Map_marker_icon_%28brown%29.svg.png', // Ícono para ubicación actual
-                iconSize: [32, 32],
-                iconAnchor: [16, 32],
-                popupAnchor: [0, -32],
-              })}>
-                <Popup>Tu ubicación actual</Popup>
-              </Marker>
-            )}
-            {eventLocation && (
-              <Marker position={eventLocation} icon={getIconByType('eventos')}>
-                <Popup>Ubicación del Evento</Popup>
-              </Marker>
-            )}
-            <LocationClickHandler />
-          </MapContainer>
-        </div>
-
-        {/* Formulario de reporte */}
-        <div className="form-container">
-          <h3>Selecciona el tipo de reporte</h3>
-          <form onSubmit={handleFormSubmit}>
-            <div className="form-group">
-              <label>Tipo de Reporte:</label>
-              <select
-                value={reportType}
-                onChange={(e) => setReportType(e.target.value)}
-                required
-              >
-                <option value="">Selecciona un tipo de reporte</option>
-                <option value="poda">Poda de árboles</option>
-                <option value="muebles">Recogida de Muebles</option>
-                <option value="eventos">Avisar de Eventos</option>
-                <option value="otros">Otros (Basura, Animales muertos, etc.)</option>
-              </select>
+        {!locationMode && (
+          <div className="location-selection">
+            <h3>Selecciona tu modo de ubicación</h3>
+            <button onClick={() => setLocationMode('manual')}>Ubicación manual</button>
+            <button onClick={() => setLocationMode('geolocation')}>Tu ubicación (Geolocalización)</button>
+            <button onClick={() => setLocationMode('map')}>Seleccionar en el mapa</button>
+          </div>
+        )}
+        {locationMode && (
+          <>
+            <div className="map-container">
+              <MapContainer center={position} zoom={13} style={{ height: '500px', width: '100%' }}>
+                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                {position && (
+                  <Marker position={position} icon={new L.Icon({
+                    iconUrl: locationIcon,
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 32],
+                    popupAnchor: [0, -32],
+                  })}>
+                    <Popup>Ubicación seleccionada</Popup>
+                  </Marker>
+                )}
+                {manualLocation && (
+                  <Marker position={manualLocation} icon={new L.Icon({
+                    iconUrl: locationIcon,
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 32],
+                    popupAnchor: [0, -32],
+                  })}>
+                    <Popup>Ubicación manual</Popup>
+                  </Marker>
+                )}
+                <Polygon positions={reusPerimeter} color="blue" fillColor="blue" fillOpacity={0.2}>
+                  <Popup>Perímetro de Reus</Popup>
+                </Polygon>
+                <LocationClickHandler />
+              </MapContainer>
             </div>
-
-            {/* Mostrar emoticono con el color correspondiente */}
-            {reportType && (
-              <div className="report-emoticon" style={{ color }}>
-                <span style={{ fontSize: '3rem' }}>{emoticon}</span>
-                <p style={{ color }}>Este es tu reporte seleccionado: {reportType}</p>
+            {locationMode === 'manual' && (
+              <div className="manual-location">
+                <h3>Ingresa una dirección manualmente</h3>
+                <input
+                  type="text"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  placeholder="Ingresa la dirección"
+                />
+                <button onClick={handleAddressSearch}>Buscar Dirección</button>
               </div>
             )}
-
-            {/* Mostrar descripción, imagen y botón solo si el tipo de reporte está seleccionado */}
-            {reportType && (
-              <>
-                {/* Descripción */}
-                <div className="form-group">
-                  <label htmlFor="description">Descripción:</label>
-                  <textarea
-                    id="description"
-                    rows={4}
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    placeholder="Describe el reporte"
-                    required
-                  />
-                </div>
-
-                {/* Imagen (opcional) */}
-                <div className="form-group">
-                  <label htmlFor="image">Imagen (opcional):</label>
-                  <input
-                    type="file"
-                    id="image"
-                    onChange={(e) => setImage(e.target.files ? e.target.files[0] : null)}
-                  />
-                </div>
-
-                {/* Botón para enviar el reporte */}
-                <button type="submit">Enviar Reporte</button>
-              </>
-            )}
-          </form>
-        </div>
+          </>
+        )}
       </div>
     </div>
   );
