@@ -1,26 +1,21 @@
 package com.ecoapp.controllers;
 
 import com.ecoapp.entities.MapPoint;
-import com.ecoapp.entities.TypePoint;
 import com.ecoapp.services.MapPointService;
-import com.ecoapp.services.TypePointService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.System.Logger;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin("*")
 @RestController
 public class MapPointController {
 
 	@Autowired
 	private MapPointService mapPointService;
-
-	@Autowired
-	private TypePointService typePointService;
 
 	// Obtener todos los MapPoints
 	@GetMapping("/mappoints")
