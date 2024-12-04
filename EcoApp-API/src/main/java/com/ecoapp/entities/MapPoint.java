@@ -21,7 +21,7 @@ public class MapPoint implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "type_id")
-	private TypePoint type;
+	private Long type;
 
 	@Column(nullable = false, precision = 10, scale = 8)
 	private BigDecimal latitude;

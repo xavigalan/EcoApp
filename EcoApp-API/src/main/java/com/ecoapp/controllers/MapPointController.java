@@ -54,7 +54,6 @@ public class MapPointController {
 			mapPointToUpdate.setLatitude(mapPointDetails.getLatitude());
 			mapPointToUpdate.setLongitude(mapPointDetails.getLongitude());
 			mapPointToUpdate.setDescription(mapPointDetails.getDescription());
-			mapPointToUpdate.setType(mapPointDetails.getType());
 			return ResponseEntity.ok(mapPointService.addMapPoint(mapPointToUpdate));
 		} else {
 			return ResponseEntity.notFound().build();
@@ -70,17 +69,6 @@ public class MapPointController {
 			mapPointService.deleteMapPoint(id);
 			return ResponseEntity.noContent().build();
 		} else {
-			return ResponseEntity.notFound().build();
-		}
-	}
-
-	// Obtener MapPoints por tipo
-	@GetMapping("/mappoints/type/{typeName}")
-	public ResponseEntity<List<MapPoint>> getMapPointsByTypeName(@PathVariable String typeName) {
-		try {
-			List<MapPoint> mapPoints = mapPointService.findByTypeName(typeName);
-			return ResponseEntity.ok(mapPoints);
-		} catch (RuntimeException e) {
 			return ResponseEntity.notFound().build();
 		}
 	}

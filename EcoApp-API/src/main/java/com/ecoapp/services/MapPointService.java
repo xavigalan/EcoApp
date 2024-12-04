@@ -7,18 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ecoapp.entities.MapPoint;
-import com.ecoapp.entities.TypePoint;
 import com.ecoapp.repository.MapPointRepository;
-import com.ecoapp.repository.TypePointRepository;
 
 @Service
 public class MapPointService {
 
 	@Autowired
 	private MapPointRepository mappointRepository;
-
-	@Autowired
-	private TypePointRepository typepointRepository;
 
 	public List<MapPoint> findAllMapPoints() {
 		return mappointRepository.findAll();
@@ -29,23 +24,7 @@ public class MapPointService {
 	}
 
 	public MapPoint addMapPoint(MapPoint mappoint) {
-		if (mappoint.getType() == null) {
-			TypePoint defaultTypePoint = typepointRepository.findByName("Others");
-
-			if (defaultTypePoint == null) {
-				throw new RuntimeException("TypePoint 'Others' not found");
-			}
-			mappoint.setType(defaultTypePoint);
-		}
 		return mappointRepository.save(mappoint);
-	}
-
-	public List<MapPoint> findByTypeName(String typeName) {
-		TypePoint type = typepointRepository.findByName(typeName);
-		if (type == null) {
-			throw new RuntimeException("TypePoint not found: " + typeName);
-		}
-		return mappointRepository.findByType(type);
 	}
 
 	public void deleteMapPoint(Long id) {
