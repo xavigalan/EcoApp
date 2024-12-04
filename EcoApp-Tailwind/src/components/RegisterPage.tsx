@@ -12,7 +12,7 @@
   }
   ```
 */
-export default function Example() {
+export default function RegisterPage() {
     return (
       <>
         {/*
@@ -23,7 +23,13 @@ export default function Example() {
           <body class="h-full">
           ```
         */}
-        <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-2 lg:px-8">
+        <div className="flex flex-col justify-center"style={{
+          height: "-webkit-fill-available",
+          width: "-webkit-fill-available",
+          position: "fixed",
+          zIndex: 1,
+          //marginTop: "-50px",
+        }}>
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
             <img
               alt="EcoApp"

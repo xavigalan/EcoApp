@@ -2,16 +2,22 @@ import Navbar from './components/Navbar';
 import Map from './components/Map';
 
 import './App.css'
-import { BrowserRouter } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
+import LoginPage from './components/LoginPage';
+import RegisterPage from './components/RegisterPage';
+
 
 function App() {
   return (
-    <BrowserRouter>
       <div className="App">
         <Navbar />
-        <Map />
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/" element={<Map />} />
+        </Routes>
+        {/* <Map /> */}
       </div>
-    </BrowserRouter>
   );
 }
 

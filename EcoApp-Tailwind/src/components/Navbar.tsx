@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Navbar: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -9,54 +10,59 @@ const Navbar: React.FC = () => {
                 <div className="flex justify-between items-center h-16">
                     {/* Logo */}
                     <div className="flex-shrink-0 drop-shadow-yellow-glow">
-                        <img
-                            alt="EcoApp"
-                            src="/images/LogoSolo.png"
-                            className="h-10 w-auto"
+                        <Link to="/">
+                            <img
+                              alt="EcoApp"
+                              src="/images/LogoSolo.png"
+                              className="h-10 w-auto"
                         />
+                        </Link>
+
                     </div>
 
                     {/* Desktop Links */}
-                    <div className="hidden md:flex space-x-4">
+                    <div className="hidden md:flex pt-5 pb-5  space-x-12">
 
-                    <a
-                            href="/contacto"
-                            className="text-white hover:text-white hover:bg-green-700 px-3 py-2 rounded-md text-sm font-medium"
-                        >
-                            Home
-                        </a>
                         <a
                             href="/"
-                            className="text-white hover:text-white hover:bg-green-700 px-3 py-2 rounded-md text-sm font-medium"
+                            className="text-white hover:text-white hover:bg-green-700 py-2 rounded-md text-sm font-medium"
                         >
                             Services
                         </a>
                        
                         <a
                             href="/about"
-                            className="text-white hover:text-white hover:bg-green-700 px-3 py-2 rounded-md text-sm font-medium"
+                            className="text-white hover:text-white hover:bg-green-700 py-2 rounded-md text-sm font-medium"
                         >
                             Notice
                         </a>
                         <a
                             href="/about"
-                            className="text-white hover:text-white hover:bg-green-700 px-3 py-2 rounded-md text-sm font-medium"
+                            className="text-white hover:text-white hover:bg-green-700 py-2 rounded-md text-sm font-medium"
                         >
                             Contact
                         </a>
                         <a
                             href="/about"
-                            className="text-white hover:text-white hover:bg-green-700 px-3 py-2 rounded-md text-sm font-medium"
+                            className="text-white hover:text-white hover:bg-green-700 py-2 rounded-md text-sm font-medium"
                         >
                             Employees
                         </a>
                         <a
                             href="/about"
-                            className="text-white hover:text-white hover:bg-green-700 px-3 py-2 rounded-md text-sm font-medium"
+                            className="text-white hover:text-white hover:bg-green-700 py-2 rounded-md text-sm font-medium"
                         >
                             Points
                         </a>
-                    </div>
+                     </div>
+                     <div className="hidden md:flex pt-5 pb-5  space-x-10">
+                        <Link to="/login" className="text-white hover:text-white hover:bg-green-700 py-2 rounded-md text-sm font-medium">
+                            Login
+                        </Link>
+                        <Link to="/register" className="text-white hover:text-white hover:bg-green-700 py-2 rounded-md text-sm font-medium">                     
+                            Register
+                        </Link>
+                        </div>
 
                     {/* Mobile Menu Button */}
                     <div className="md:hidden">
