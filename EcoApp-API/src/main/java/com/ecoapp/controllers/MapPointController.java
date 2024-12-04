@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin("*")
+@RequestMapping("/mappoints")
 @RestController
 public class MapPointController {
 
@@ -18,21 +19,21 @@ public class MapPointController {
 	private MapPointService mapPointService;
 
 	// Obtener todos los MapPoints
-	@GetMapping("/mappoints")
+	@GetMapping
 	public ResponseEntity<List<MapPoint>> getAllMapPoints() {
 		List<MapPoint> mapPoints = mapPointService.findAllMapPoints();
 		return ResponseEntity.ok(mapPoints);
 	}
 
 	// Obtener un MapPoint por ID
-	@GetMapping("/mappoints/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<MapPoint> getMapPointById(@PathVariable Long id) {
 		Optional<MapPoint> mappoint = mapPointService.findMapPointById(id);
 		return mappoint.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
 	// Crear un nuevo MapPoint
-	@PostMapping("/mappoints/add")
+	@PutMapping
 	public ResponseEntity<MapPoint> createMapPoint(@RequestBody MapPoint mapPoint) {
 		try {
 			MapPoint createdMapPoint = mapPointService.addMapPoint(mapPoint);
@@ -43,7 +44,7 @@ public class MapPointController {
 	}
 
 	// Actualizar un MapPoint por ID
-	@PutMapping("/mappoints/{id}")
+	@PatchMapping("/{id}")
 	public ResponseEntity<MapPoint> updateMapPoint(@PathVariable Long id, @RequestBody MapPoint mapPointDetails) {
 		Optional<MapPoint> existingMapPoint = mapPointService.findMapPointById(id);
 
