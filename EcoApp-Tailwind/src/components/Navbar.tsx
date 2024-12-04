@@ -1,8 +1,22 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 const Navbar: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [userProfile, setUserProfile] = useState<string | null>(null);
+
+
+    const handleLogin = () => {
+        setIsLoggedIn(true);
+        setUserProfile("/images/profile-pic.jpg");  // Aquí se setea la foto de perfil
+    };
+
+    const handleLogout = () => {
+        setIsLoggedIn(false);
+        setUserProfile(null);
+    };
+
 
     const handleLinkClick = () => {
         setIsOpen(false);  
