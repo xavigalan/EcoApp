@@ -40,10 +40,6 @@ public class User implements Serializable {
     @Column(name = "role_id", nullable = false)
     private Long roleId;  // Aquí almacenamos el ID del rol
 
-//    @ManyToOne
-//    @JoinColumn(name = "role_id")
-//    private Role role;
-
     private LocalDateTime creationDate;
 
     @PrePersist

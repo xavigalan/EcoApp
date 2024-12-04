@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ecoapp.dtos.UserWithRoleDTO;
 import com.ecoapp.entities.User;
 import com.ecoapp.services.RoleService;
 import com.ecoapp.services.UserService;
@@ -50,14 +51,22 @@ public class UserController {
 		Optional<User> user = userService.findUserById(id);
 		return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}
+	
+	// Obtener un usuarioDtoWithRole por ID
+	@GetMapping("/{id}/with-role")
+    public ResponseEntity<UserWithRoleDTO> getUserWithRole(@PathVariable Long id) {
+        logger.info("Request to get user with id " + id + " and its role");
+
+        Optional<UserWithRoleDTO> userWithRoleDTO = userService.findUserWithRoleById(id);
+        return userWithRoleDTO.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
 	// Crear un nuevo usuario
 	@PutMapping
 	public ResponseEntity<?> addUser(@RequestBody User user) {
 		// Comprobamos si el role_id pasado es válido
-		boolean defaultRole = roleService.findAllRoles()
-                .stream()
-                .anyMatch(role -> role.getId().equals(user.getRoleId()));
+		boolean defaultRole = roleService.findAllRoles().stream()
+				.anyMatch(role -> role.getId().equals(user.getRoleId()));
 		if (defaultRole) {
 			userService.addUser(user);
 			return ResponseEntity.ok(user);
