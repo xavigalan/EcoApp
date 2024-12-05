@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ecoapp.dtos.MapPointWithTypeDTO;
+import com.ecoapp.dtos.MapPointWithTypePointDTO;
 import com.ecoapp.entities.MapPoint;
 import com.ecoapp.services.MapPointService;
 
@@ -41,15 +41,25 @@ public class MapPointController {
 		return mappoint.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
-	@GetMapping("/type/{typeName}")
-	public ResponseEntity<List<MapPointWithTypeDTO>> getMapPointsByTypeId(@PathVariable Long typeId) {
-        List<MapPointWithTypeDTO> mapPoints = mapPointService.findMapPointsByTypeId(typeId);
-        if (!mapPoints.isEmpty()) {
-            return ResponseEntity.ok(mapPoints);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+	@GetMapping("/types")
+	public ResponseEntity<List<MapPointWithTypePointDTO>> getAllMapPointsDTOWithType() {
+		List<MapPointWithTypePointDTO> mapPoints = mapPointService.getAllMapPointsWithType();
+		return ResponseEntity.ok(mapPoints);
+	}
+	
+	 @GetMapping("types/{id}")
+	    public ResponseEntity<MapPointWithTypePointDTO> getMapPointDTOById(@PathVariable Long id) {
+	        MapPointWithTypePointDTO mapPoint = mapPointService.getMapPointWithTypePointById(id);
+	        return ResponseEntity.ok(mapPoint);
+	    }
+//	public ResponseEntity<List<MapPointWithTypeDTO>> getMapPointsByTypeId() {
+//        List<MapPointWithTypeDTO> mapPoints = mapPointService.findMapPointsByTypeId();
+//        if (!mapPoints.isEmpty()) {
+//            return ResponseEntity.ok(mapPoints);
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
 	// Crear un nuevo MapPoint
 	@PutMapping

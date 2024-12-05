@@ -12,12 +12,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MapPointWithTypeDTO {
+public class MapPointWithTypePointDTO {
     private Long id;
     private String name;
     private String description;
     private BigDecimal latitude;
     private BigDecimal longitude;
-    private LocalDateTime creationDate;
-    private TypePoint typepoint;
+    private LocalDateTime createdAt;
+    private TypePoint typePoint;
 }
