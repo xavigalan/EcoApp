@@ -7,7 +7,7 @@ import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 import Notice from './components/Notice';
 import Points from './components/Points';
-import { ReportForm } from './components/ReportForm';
+import Services from './components/Services';
 
 
 function App() {
@@ -17,7 +17,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/services" element={<ReportForm />} />
+          <Route path="/services" element={<Services />} />
           {/*
           <Route path="/notice" element={<Notice />} />
           <Route path="/points" element={<Points />} />
