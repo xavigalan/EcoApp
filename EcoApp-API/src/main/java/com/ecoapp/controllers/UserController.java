@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import com.ecoapp.entities.User;
 import com.ecoapp.services.UserService;
 
+@CrossOrigin("*")
 @RestController
 public class UserController {
 
