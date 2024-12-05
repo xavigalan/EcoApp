@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 
 
@@ -35,13 +35,13 @@ const Navbar: React.FC = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0 drop-shadow-yellow-glow">
-            <Link to="/"
-              onClick={handleLinkClick}>
+            <Link to="/" onClick={handleLinkClick} className="flex items-center space-x-2">
               <img
                 alt="EcoApp"
                 src="/images/LogoSolo.png"
                 className="h-10 w-auto"
               />
+              <span className="text-xl text-orange-300 font-semibold text-gray-900">EcoApp</span>
             </Link>
           </div>
 
