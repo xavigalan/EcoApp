@@ -6,53 +6,42 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ecoapp.dtos.MapPointWithTypePointDTO;
 import com.ecoapp.entities.MapPoint;
-import com.ecoapp.entities.TypePoint;
 import com.ecoapp.repository.MapPointRepository;
-import com.ecoapp.repository.TypePointRepository;
 
 @Service
 public class MapPointService {
 
 	@Autowired
-	private MapPointRepository mappointRepository;
-
-	@Autowired
-	private TypePointRepository typepointRepository;
+	private MapPointRepository mapPointRepository;
 
 	public List<MapPoint> findAllMapPoints() {
-		return mappointRepository.findAll();
+		return mapPointRepository.findAll();
 	}
 
 	public Optional<MapPoint> findMapPointById(Long id) {
-		return mappointRepository.findById(id);
+		return mapPointRepository.findById(id);
 	}
 
 	public MapPoint addMapPoint(MapPoint mappoint) {
-		if (mappoint.getType() == null) {
-			TypePoint defaultTypePoint = typepointRepository.findByName("Others");
-
-			if (defaultTypePoint == null) {
-				throw new RuntimeException("TypePoint 'Others' not found");
-			}
-			mappoint.setType(defaultTypePoint);
-		}
-		return mappointRepository.save(mappoint);
-	}
-
-	public List<MapPoint> findByTypeName(String typeName) {
-		TypePoint type = typepointRepository.findByName(typeName);
-		if (type == null) {
-			throw new RuntimeException("TypePoint not found: " + typeName);
-		}
-		return mappointRepository.findByType(type);
+		return mapPointRepository.save(mappoint);
 	}
 
 	public void deleteMapPoint(Long id) {
-		if (mappointRepository.existsById(id)) {
-			mappointRepository.deleteById(id);
+		if (mapPointRepository.existsById(id)) {
+			mapPointRepository.deleteById(id);
 		} else {
 			throw new RuntimeException("MapPoint not found with id: " + id);
 		}
 	}
+
+	public List<MapPointWithTypePointDTO> getAllMapPointsWithType() {
+        return mapPointRepository.findAllMapPointsWithTypePoint();
+    }
+	
+    public MapPointWithTypePointDTO getMapPointWithTypePointById(Long id) {
+        return mapPointRepository.findMapPointWithTypePointById(id);
+    }
+
 }

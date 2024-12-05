@@ -4,7 +4,13 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
@@ -19,9 +25,8 @@ public class MapPoint implements Serializable {
 
 	private String name;
 
-	@ManyToOne
-	@JoinColumn(name = "type_id")
-	private TypePoint type;
+	@Column(name = "type_id", nullable = false) // Solo almacena el ID de TypePoint
+	private Long typeId;
 
 	@Column(nullable = false, precision = 10, scale = 8)
 	private BigDecimal latitude;
@@ -29,9 +34,9 @@ public class MapPoint implements Serializable {
 	@Column(nullable = false, precision = 11, scale = 8)
 	private BigDecimal longitude;
 
-    @Column(name = "description")
-    private String description;
-    
+	@Column(name = "description")
+	private String description;
+
 	private LocalDateTime createdAt;
 
 	@PrePersist

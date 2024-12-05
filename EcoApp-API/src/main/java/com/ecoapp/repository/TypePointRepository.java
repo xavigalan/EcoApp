@@ -6,8 +6,4 @@ import org.springframework.stereotype.Repository;
 import com.ecoapp.entities.TypePoint;
 
 @Repository
-public interface TypePointRepository extends JpaRepository<TypePoint, Long> {
-
-	TypePoint findByName(String type);
-
-}
+public interface TypePointRepository extends JpaRepository<TypePoint, Long> {}

@@ -1,16 +1,26 @@
 package com.ecoapp.controllers;
 
-import com.ecoapp.entities.MapPoint;
-import com.ecoapp.services.MapPointService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.ecoapp.dtos.MapPointWithTypePointDTO;
+import com.ecoapp.entities.MapPoint;
+import com.ecoapp.services.MapPointService;
+
 @CrossOrigin("*")
+@RequestMapping("/mappoints")
 @RestController
 public class MapPointController {
 
@@ -18,21 +28,41 @@ public class MapPointController {
 	private MapPointService mapPointService;
 
 	// Obtener todos los MapPoints
-	@GetMapping("/mappoints")
+	@GetMapping
 	public ResponseEntity<List<MapPoint>> getAllMapPoints() {
 		List<MapPoint> mapPoints = mapPointService.findAllMapPoints();
 		return ResponseEntity.ok(mapPoints);
 	}
 
 	// Obtener un MapPoint por ID
-	@GetMapping("/mappoints/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<MapPoint> getMapPointById(@PathVariable Long id) {
 		Optional<MapPoint> mappoint = mapPointService.findMapPointById(id);
 		return mappoint.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
+	@GetMapping("/types")
+	public ResponseEntity<List<MapPointWithTypePointDTO>> getAllMapPointsDTOWithType() {
+		List<MapPointWithTypePointDTO> mapPoints = mapPointService.getAllMapPointsWithType();
+		return ResponseEntity.ok(mapPoints);
+	}
+	
+	 @GetMapping("types/{id}")
+	    public ResponseEntity<MapPointWithTypePointDTO> getMapPointDTOById(@PathVariable Long id) {
+	        MapPointWithTypePointDTO mapPoint = mapPointService.getMapPointWithTypePointById(id);
+	        return ResponseEntity.ok(mapPoint);
+	    }
+//	public ResponseEntity<List<MapPointWithTypeDTO>> getMapPointsByTypeId() {
+//        List<MapPointWithTypeDTO> mapPoints = mapPointService.findMapPointsByTypeId();
+//        if (!mapPoints.isEmpty()) {
+//            return ResponseEntity.ok(mapPoints);
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
+
 	// Crear un nuevo MapPoint
-	@PostMapping("/mappoints/add")
+	@PutMapping
 	public ResponseEntity<MapPoint> createMapPoint(@RequestBody MapPoint mapPoint) {
 		try {
 			MapPoint createdMapPoint = mapPointService.addMapPoint(mapPoint);
@@ -43,7 +73,7 @@ public class MapPointController {
 	}
 
 	// Actualizar un MapPoint por ID
-	@PutMapping("/mappoints/{id}")
+	@PatchMapping("/{id}")
 	public ResponseEntity<MapPoint> updateMapPoint(@PathVariable Long id, @RequestBody MapPoint mapPointDetails) {
 		Optional<MapPoint> existingMapPoint = mapPointService.findMapPointById(id);
 
@@ -53,7 +83,6 @@ public class MapPointController {
 			mapPointToUpdate.setLatitude(mapPointDetails.getLatitude());
 			mapPointToUpdate.setLongitude(mapPointDetails.getLongitude());
 			mapPointToUpdate.setDescription(mapPointDetails.getDescription());
-			mapPointToUpdate.setType(mapPointDetails.getType());
 			return ResponseEntity.ok(mapPointService.addMapPoint(mapPointToUpdate));
 		} else {
 			return ResponseEntity.notFound().build();
@@ -69,17 +98,6 @@ public class MapPointController {
 			mapPointService.deleteMapPoint(id);
 			return ResponseEntity.noContent().build();
 		} else {
-			return ResponseEntity.notFound().build();
-		}
-	}
-
-	// Obtener MapPoints por tipo
-	@GetMapping("/mappoints/type/{typeName}")
-	public ResponseEntity<List<MapPoint>> getMapPointsByTypeName(@PathVariable String typeName) {
-		try {
-			List<MapPoint> mapPoints = mapPointService.findByTypeName(typeName);
-			return ResponseEntity.ok(mapPoints);
-		} catch (RuntimeException e) {
 			return ResponseEntity.notFound().build();
 		}
 	}

@@ -16,8 +16,10 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          {/*
           <Route path="/notice" element={<Notice />} />
           <Route path="/points" element={<Points />} />
+          */}
           <Route path="/" element={<Map />} />
         </Routes>
         {/* <Map /> */}
