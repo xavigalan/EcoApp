@@ -1,20 +1,34 @@
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import Cookies from "js-cookie";
 import "react-toastify/dist/ReactToastify.css";
 
 const LoginPage: React.FC = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(!!Cookies.get("userSession"));
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
         // Lógica de validación de login (puedes reemplazarlo con una API real)
-        if (email === "user@example.com" && password === "password123") {
+        if (email === "user@user.com" && password === "123") {
             setIsLoggedIn(true);
-            toast.success("Login successful!");  // Notificación de éxito
+            toast.success('🦄 Welcome!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            });  // Notificación de éxito
+
+            Cookies.set("userSession", email, { expires: 7 });
+            // Forzar la recarga
+            window.location.href = "/";
         } else {
             toast.error("Invalid email or password.");  // Notificación de error
         }
@@ -26,7 +40,7 @@ const LoginPage: React.FC = () => {
     }
 
     return (
-        <div className="flex flex-col justify-center items-center" style={{ height: "100vh",width: "100vw", position: "fixed", zIndex: 2  }}>
+        <div className="flex flex-col justify-center items-center" style={{ height: "100vh", width: "100vw", position: "fixed", zIndex: 2 }}>
             <div className="sm:mx-auto sm:w-full">
                 <img alt="EcoApp" src="/images/LogoSolo.png" className="mx-auto h-20" />
                 <h2 className="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900">Sign in to your account</h2>
