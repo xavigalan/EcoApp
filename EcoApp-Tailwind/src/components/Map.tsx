@@ -159,8 +159,8 @@ const Map = () => {
         </Marker>
       ))}
 
-      <Polygon positions={reusPerimeter} color="transparent" />
-      <Polyline positions={reusPerimeter} color="gray" />
+      <Polygon positions={reusPerimeter} color="#a98a09" />
+      <Polyline positions={reusPerimeter} color="#5b800b" />
 
       <LocationClickHandler />
     </MapContainer>
