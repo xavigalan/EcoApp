@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react';
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polyline, Polygon } from 'react-leaflet';
-import L, { LatLngTuple } from 'leaflet';
 import contenedordebasura from '../assets/contenedor-de-basura.png'; // Icono para "Container"
 import wastecenter from '../assets/LogoSolo.png'; // Icono para "Textile container"
 import othersIcon from '../assets/camion-de-la-basura.png'; // Icono para "Others"
 import textile from '../assets/ropa.png'; // Icono para "Textile container"
+
+
+import L, { LatLngTuple } from 'leaflet';
+import icon from 'leaflet/dist/images/marker-icon.png';
+import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
 const Map = () => {
   const [position, setPosition] = useState<[number, number] | null>(null);
