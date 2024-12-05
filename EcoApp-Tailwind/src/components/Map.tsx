@@ -1,19 +1,14 @@
 import { useState, useEffect } from 'react';
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polyline, Polygon } from 'react-leaflet';
+import L, { LatLngTuple } from 'leaflet';
 import contenedordebasura from '../assets/contenedor-de-basura.png'; // Icono para "Container"
 import wastecenter from '../assets/LogoSolo.png'; // Icono para "Textile container"
 import othersIcon from '../assets/camion-de-la-basura.png'; // Icono para "Others"
 import textile from '../assets/ropa.png'; // Icono para "Textile container"
 
-
-import L, { LatLngTuple } from 'leaflet';
-import icon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
-
 const Map = () => {
   const [position, setPosition] = useState<[number, number] | null>(null);
-  const [eventLocation, setEventLocation] = useState<[number, number] | null>(null);
   const [mapPoints, setMapPoints] = useState<any[]>([]); // Estado para almacenar los puntos del mapa
 
   const reusPerimeter: L.LatLngTuple[] = [
@@ -78,6 +73,12 @@ const Map = () => {
         iconAnchor: [16, 32],
         popupAnchor: [0, -32],
       }),
+      person: L.icon({
+        iconUrl: othersIcon, // Asegúrate de tener este icono
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32],
+      }),
     };
 
     // Si el tipo no está en el objeto `icons`, devuelve un icono por defecto
@@ -111,17 +112,12 @@ const Map = () => {
 
   const defaultPosition: [number, number] = [41.15612, 1.10687];
 
-  const LocationClickHandler = () => {
-    useMapEvents({
-      click: ({ latlng }) => setEventLocation([latlng.lat, latlng.lng]),
-    });
-    return null;
-  };
 
   return (
     <MapContainer
       center={position || defaultPosition}
-      zoom={13}
+      zoom={15}
+      scrollWheelZoom={true}
       className="w-full h-full absolute left-0"
       style={{
         height: '-webkit-fill-available',
@@ -138,12 +134,7 @@ const Map = () => {
         </Marker>
       )}
 
-      {/* Marcador de la ubicación seleccionada */}
-      {eventLocation && (
-        <Marker position={eventLocation} icon={getIconByType('Others')}>
-          <Popup>Ubicación seleccionada</Popup>
-        </Marker>
-      )}
+
 
       {/* Mostrar los puntos obtenidos desde el backend */}
       {mapPoints.map((point) => (
@@ -163,10 +154,8 @@ const Map = () => {
         </Marker>
       ))}
 
-      <Polygon positions={reusPerimeter} color="#a98a09" />
-      <Polyline positions={reusPerimeter} color="#5b800b" />
+      <Polygon positions={reusPerimeter} color="blue" />
 
-      <LocationClickHandler />
     </MapContainer>
   );
 };

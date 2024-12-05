@@ -8,6 +8,48 @@ import L from 'leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
+import contenedordebasura from '../assets/contenedor-de-basura.png'; // Icono para "Container"
+import wastecenter from '../assets/LogoSolo.png'; // Icono para "Textile container"
+import othersIcon from '../assets/camion-de-la-basura.png'; // Icono para "Others"
+import textile from '../assets/ropa.png'; // Icono para "Textile container"
+
+const getIconByType = (type: string) => {
+  const icons: Record<string, L.Icon> = {
+    Container: L.icon({
+      iconUrl: contenedordebasura,
+      iconSize: [32, 32],
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -32],
+    }),
+    'Textile container': L.icon({
+      iconUrl: textile,
+      iconSize: [32, 32],
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -32],
+    }),
+    'Waste center': L.icon({
+      iconUrl: wastecenter, // Asegúrate de tener este icono
+      iconSize: [32, 32],
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -32],
+    }),
+    Others: L.icon({
+      iconUrl: othersIcon, // Asegúrate de tener este icono
+      iconSize: [32, 32],
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -32],
+    }),
+  };
+
+  // Si el tipo no está en el objeto `icons`, devuelve un icono por defecto
+  return icons[type] || L.icon({
+    iconUrl: '/default-icon.png', // Un icono por defecto si no se encuentra el tipo
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32],
+  });
+};
+
 let DefaultIcon = L.icon({
   iconUrl: icon,
   shadowUrl: iconShadow,
@@ -73,7 +115,7 @@ export function MapServices({ position, locationMode, onLocationSelect }: MapPro
   return (
     <MapContainer
       center={position}
-      zoom={13}
+      zoom={16}
       scrollWheelZoom={true}
       className="h-[100px] w-full rounded-lg shadow-md"
     >
