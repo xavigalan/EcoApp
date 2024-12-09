@@ -76,24 +76,21 @@ function Services() {
                         </div>
                     </div>
                 )}
-
-                <div className="grid md:grid-cols-2 gap-8">
-                    <div className="w-full"> {/* Asegura que el mapa ocupe todo el ancho */}
+                <div className="grid md:grid-cols-2 gap-16 items-center h-full">
+                    <div className="w-full h-[75vh]"> {/* Aumenta la altura del mapa */}
                         <MapServices
                             position={position}
                             locationMode={locationMode}
                             onLocationSelect={handleLocationSelect}
                         />
                     </div>
-                    <div>
+                    <div className="w-full h-[75vh] flex flex-col justify-center"> {/* Aumenta la altura del formulario */}
                         <ReportForm
                             onLocationModeChange={setLocationMode}
                             onLocationSelect={handleLocationSelect}
                             onSubmit={handleSubmit}
                         />
                     </div>
-
-
                 </div>
             </div>
         </div>

@@ -12,6 +12,7 @@ import contenedordebasura from '../assets/contenedor-de-basura.png'; // Icono pa
 import wastecenter from '../assets/LogoSolo.png'; // Icono para "Textile container"
 import othersIcon from '../assets/camion-de-la-basura.png'; // Icono para "Others"
 import textile from '../assets/ropa.png'; // Icono para "Textile container"
+import personIcon from '../assets/personIcon.png'; 
 
 const getIconByType = (type: string) => {
   const icons: Record<string, L.Icon> = {
@@ -39,9 +40,14 @@ const getIconByType = (type: string) => {
       iconAnchor: [16, 32],
       popupAnchor: [0, -32],
     }),
+    person: L.icon({
+      iconUrl: personIcon, // Asegúrate de tener este icono
+      iconSize: [40, 40],
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -32],
+    }),
   };
 
-  // Si el tipo no está en el objeto `icons`, devuelve un icono por defecto
   return icons[type] || L.icon({
     iconUrl: '/default-icon.png', // Un icono por defecto si no se encuentra el tipo
     iconSize: [32, 32],
@@ -49,15 +55,6 @@ const getIconByType = (type: string) => {
     popupAnchor: [0, -32],
   });
 };
-
-let DefaultIcon = L.icon({
-  iconUrl: icon,
-  shadowUrl: iconShadow,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-});
-
-L.Marker.prototype.options.icon = DefaultIcon;
 
 type MapProps = {
   position: [number, number];
@@ -124,7 +121,7 @@ export function MapServices({ position, locationMode, onLocationSelect }: MapPro
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <Polygon positions={reusPerimeter} color="blue" />
-      <Marker position={position}>
+      <Marker position={position} icon={getIconByType('person')}>
         <Popup>Selected Location</Popup>
       </Marker>
       {locationMode === 'map' && <MapClickHandler onLocationSelect={onLocationSelect} />}
