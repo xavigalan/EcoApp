@@ -92,6 +92,7 @@ const Map = () => {
 
   };
 
+  // LLAMAR BACKEND
   useEffect(() => {
     fetch('http://localhost:8080/mappoints/types')
       .then((response) => response.json())
@@ -102,18 +103,22 @@ const Map = () => {
       .catch((error) => console.error('Error al obtener los puntos del mapa:', error));
   }, []);
 
+  // GEOLOCALIZACIÓN
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         ({ coords }) => setPosition([coords.latitude, coords.longitude]),
         (error) => {
           console.error('Error al obtener la ubicación:', error);
-          setPosition([41.15612, 1.10687]);
+          setPosition([41.15612, 1.10687]); // Ubicación predeterminada
+          alert('No se ha podido obtener tu ubicación. Se ha usado una ubicación predeterminada.');
         }
       );
     } else {
       console.error('La geolocalización no está soportada en este navegador.');
-      setPosition([41.15612, 1.10687]);     }
+      setPosition([41.15612, 1.10687]); // Ubicación predeterminada
+      alert('La geolocalización no es soportada por tu navegador. Se ha usado una ubicación predeterminada.');
+    }
   }, []);
   
   const defaultPosition: [number, number] = [41.15612, 1.10687];
@@ -142,7 +147,7 @@ const Map = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Abrir en Google Maps
+              Google Maps
             </a>
           </Popup>
         </Marker>

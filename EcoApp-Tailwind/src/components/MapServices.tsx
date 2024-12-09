@@ -74,6 +74,7 @@ function MapClickHandler({ onLocationSelect }: { onLocationSelect?: (lat: number
 export function MapServices({ position, locationMode, onLocationSelect }: MapProps) {
   const [mapPoints, setMapPoints] = useState<any[]>([]); // Estado para almacenar los puntos del mapa
 
+  // BACKEND
   useEffect(() => {
     fetch('http://localhost:8080/mappoints/types')
       .then((response) => response.json())
@@ -131,18 +132,20 @@ export function MapServices({ position, locationMode, onLocationSelect }: MapPro
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <Polygon positions={reusPerimeter} color="blue" />
-      <Marker position={position} icon={getIconByType('person')}>
-        <Popup>Selected Location
-          <br></br>
-          <a
-            href={`https://www.google.com/maps?q=${position[0]},${position[1]}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+      {position && (
+        <Marker position={position} icon={getIconByType('person')}>
+          <Popup>
+            <p>Selected location</p>
+            <a
+              href={`https://www.google.com/maps?q=${position[0]},${position[1]}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
             Google Maps
-          </a>
-        </Popup>
-      </Marker>
+            </a>
+          </Popup>
+        </Marker>
+      )}
       {locationMode === 'map' && <MapClickHandler onLocationSelect={onLocationSelect} />}
       {mapPoints.map((point) => (
         <Marker key={point.id} position={[point.latitude, point.longitude]} icon={getIconByType(point.typePoint.name)}>
