@@ -11,6 +11,7 @@ import wastecenter from '../assets/LogoSolo.png'; // Icono para "Textile contain
 import othersIcon from '../assets/camion-de-la-basura.png'; // Icono para "Others"
 import textile from '../assets/ropa.png'; // Icono para "Textile container"
 import personIcon from '../assets/personIcon.png';
+import selected from '../assets/selected.png';
 
 const getIconByType = (type: string) => {
   const icons: Record<string, L.Icon> = {
@@ -40,6 +41,12 @@ const getIconByType = (type: string) => {
     }),
     person: L.icon({
       iconUrl: personIcon, // Asegúrate de tener este icono
+      iconSize: [40, 40],
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -32],
+    }), 
+    selected: L.icon({
+      iconUrl: selected, // Asegúrate de tener este icono
       iconSize: [40, 40],
       iconAnchor: [16, 32],
       popupAnchor: [0, -32],
@@ -74,6 +81,43 @@ function MapClickHandler({ onLocationSelect }: { onLocationSelect?: (lat: number
 export function MapServices({ position, locationMode, onLocationSelect }: MapProps) {
   const [mapPoints, setMapPoints] = useState<any[]>([]); // Estado para almacenar los puntos del mapa
 
+  const [current, setCurrent] = useState<[number, number] | null>(null);
+
+  const [locationError, setLocationError] = useState<string | null>(null);
+
+  const defaultPosition: [number, number] = [41.15612, 1.10687];
+
+  useEffect(() => {
+    if (locationMode === 'current') {
+      if (!navigator.geolocation) {
+        setLocationError('Geolocation is not supported by your browser');
+        setCurrent(defaultPosition);
+        return;
+      }
+
+      setLocationError(null);
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          setCurrent([pos.coords.latitude, pos.coords.longitude]);
+          setLocationError(null);
+        },
+        (error) => {
+          console.error('Geolocation error:', error);
+          setLocationError(
+            error.code === 1
+              ? 'Location access denied. Please enable location services.'
+              : 'Unable to get your location. Using default position.'
+          );
+          setCurrent(defaultPosition);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0
+        }
+      );
+    }
+  }, [locationMode]);
   // BACKEND
   useEffect(() => {
     fetch('http://localhost:8080/mappoints/types')
@@ -133,7 +177,7 @@ export function MapServices({ position, locationMode, onLocationSelect }: MapPro
       />
       <Polygon positions={reusPerimeter} color="blue" />
       {position && (
-        <Marker position={position} icon={getIconByType('person')}>
+        <Marker position={position} icon={getIconByType('selected')}>
           <Popup>
             <p>Selected location</p>
             <a
@@ -141,11 +185,28 @@ export function MapServices({ position, locationMode, onLocationSelect }: MapPro
               target="_blank"
               rel="noopener noreferrer"
             >
-            Google Maps
+              Google Maps
             </a>
           </Popup>
         </Marker>
       )}
+
+      {/* Marcador de la ubicación actual */}
+      {position && (
+        <Marker position={position} icon={getIconByType('person')}>
+          <Popup>
+            <p>Current location</p>
+            <a
+              href={`https://www.google.com/maps?q=${position[0]},${position[1]}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Google Maps
+            </a>
+          </Popup>
+        </Marker>
+      )}
+
       {locationMode === 'map' && <MapClickHandler onLocationSelect={onLocationSelect} />}
       {mapPoints.map((point) => (
         <Marker key={point.id} position={[point.latitude, point.longitude]} icon={getIconByType(point.typePoint.name)}>
