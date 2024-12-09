@@ -80,14 +80,16 @@ const Map = () => {
         iconAnchor: [16, 32],
         popupAnchor: [0, -32],
       }),
+      
     };
-
     return icons[type] || L.icon({
       iconUrl: '/default-icon.png', // Un icono por defecto si no se encuentra el tipo
       iconSize: [32, 32],
       iconAnchor: [16, 32],
       popupAnchor: [0, -32],
     });
+
+
   };
 
   useEffect(() => {

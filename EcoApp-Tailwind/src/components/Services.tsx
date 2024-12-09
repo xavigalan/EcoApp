@@ -83,6 +83,7 @@ function Services() {
                             locationMode={locationMode}
                             onLocationSelect={handleLocationSelect}
                         />
+
                     </div>
                     <div className="w-full h-[75vh] flex flex-col justify-center"> {/* Aumenta la altura del formulario */}
                         <ReportForm
