@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Polygon, useMapEvents } from 'react-leaflet';
 import { LocationMode } from '../types';
 import 'leaflet/dist/leaflet.css';
@@ -12,7 +12,7 @@ import contenedordebasura from '../assets/contenedor-de-basura.png'; // Icono pa
 import wastecenter from '../assets/LogoSolo.png'; // Icono para "Textile container"
 import othersIcon from '../assets/camion-de-la-basura.png'; // Icono para "Others"
 import textile from '../assets/ropa.png'; // Icono para "Textile container"
-import personIcon from '../assets/personIcon.png'; 
+import personIcon from '../assets/personIcon.png';
 
 const getIconByType = (type: string) => {
   const icons: Record<string, L.Icon> = {
@@ -108,6 +108,19 @@ const reusPerimeter: L.LatLngTuple[] = [
   [41.1631845, 1.0835838]
 ];
 
+
+// const [mapPoints, setMapPoints] = useState<any[]>([]); // Estado para almacenar los puntos del mapa
+// useEffect(() => {
+//   fetch('http://localhost:8080/mappoints/types')
+//     .then((response) => response.json())
+//     .then((data) => {
+//       console.log(data);
+//       setMapPoints(data);
+//     })
+//     .catch((error) => console.error('Error al obtener los puntos del mapa:', error));
+// }, []);
+
+
 export function MapServices({ position, locationMode, onLocationSelect }: MapProps) {
   return (
     <MapContainer
@@ -125,6 +138,23 @@ export function MapServices({ position, locationMode, onLocationSelect }: MapPro
         <Popup>Selected Location</Popup>
       </Marker>
       {locationMode === 'map' && <MapClickHandler onLocationSelect={onLocationSelect} />}
+
+      {/* {mapPoints.map((point) => (
+        <Marker key={point.id} position={[point.latitude, point.longitude]} icon={getIconByType(point.typePoint.name)}>
+          <Popup>
+            <h3>{point.name}</h3>
+            <p>{point.description}</p>
+            <p>Cord {point.latitude}, {point.longitude}</p>
+            <a
+              href={`https://www.google.com/maps?q=${point.latitude},${point.longitude}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Google Maps
+            </a>
+          </Popup>
+        </Marker>
+      ))} */}
     </MapContainer>
   );
 }
