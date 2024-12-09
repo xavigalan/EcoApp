@@ -3,34 +3,56 @@ import { Navigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Cookies from "js-cookie";
 import "react-toastify/dist/ReactToastify.css";
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/20/solid';
 
 const LoginPage: React.FC = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isLoggedIn, setIsLoggedIn] = useState(!!Cookies.get("userSession"));
+    const [showPassword, setShowPassword] = useState(false);
+    
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Lógica de validación de login (puedes reemplazarlo con una API real)
-        if (email === "user@user.com" && password === "123") {
-            setIsLoggedIn(true);
-            toast.success('🦄 Welcome!', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light"
-            });  // Notificación de éxito
+        try {
+            const response = await fetch('http://localhost:8080/users', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
 
-            Cookies.set("userSession", email, { expires: 7 });
-            // Forzar la recarga
-            window.location.href = "/";
-        } else {
-            toast.error("Invalid email or password.");  // Notificación de error
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+
+            const users = await response.json();
+            
+            const user = users.find((u: { email: string; password: string }) => u.email === email && u.password === password);
+
+            if (user) {
+                setIsLoggedIn(true);
+                toast.success('🦄 Welcome!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light"
+                });
+
+                Cookies.set("userSession", email, { expires: 7 });
+                // Forzar la recarga
+                window.location.href = "/";
+            } else {
+                toast.error("Invalid email or password.");  // Notificación de error
+            }
+        } catch (error) {
+            console.error("Error during login:", error);
+            toast.error("An error occurred during login.");
         }
     };
 
@@ -67,21 +89,29 @@ const LoginPage: React.FC = () => {
                     <div>
                         <div className="flex items-center justify-between">
                             <label htmlFor="password" className="block text-sm font-medium text-gray-900">Password</label>
-                            <div className="text-sm">
-                                <a href="#" className="font-semibold text-green-600 hover:text-green-500">Forgot password?</a>
-                            </div>
                         </div>
-                        <div className="mt-2">
+                        <div className="mt-2 relative">
                             <input
                                 id="password"
                                 name="password"
-                                type="password"
+                                type={showPassword ? "text" : "password"} // Condicional para cambiar el tipo de input
                                 required
                                 autoComplete="current-password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm"
                             />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)} // Alternar el estado para mostrar/ocultar la contraseña
+                                className="absolute inset-y-0 right-0 flex items-center pr-3"
+                            >
+                                {showPassword ? (
+                                    <EyeSlashIcon className="h-5 w-5 text-gray-500" />
+                                ) : (
+                                    <EyeIcon className="h-5 w-5 text-gray-500" />
+                                )}
+                            </button>
                         </div>
                     </div>
 
@@ -92,6 +122,9 @@ const LoginPage: React.FC = () => {
                         >
                             Sign in
                         </button>
+                        <div className="text-sm mt-4 me-4 text-right">
+                            <a href="#" className="font-semibold text-green-600 hover:text-green-500">Forgot password?</a>
+                        </div>
                     </div>
                 </form>
             </div>
