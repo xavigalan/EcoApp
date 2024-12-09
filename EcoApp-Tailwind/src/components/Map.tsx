@@ -1,19 +1,15 @@
 import { useState, useEffect } from 'react';
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polyline, Polygon } from 'react-leaflet';
+import L, { LatLngTuple } from 'leaflet';
 import contenedordebasura from '../assets/contenedor-de-basura.png'; // Icono para "Container"
 import wastecenter from '../assets/LogoSolo.png'; // Icono para "Textile container"
 import othersIcon from '../assets/camion-de-la-basura.png'; // Icono para "Others"
 import textile from '../assets/ropa.png'; // Icono para "Textile container"
-
-
-import L, { LatLngTuple } from 'leaflet';
-import icon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+import personIcon from '../assets/personIcon.png'; 
 
 const Map = () => {
   const [position, setPosition] = useState<[number, number] | null>(null);
-  const [eventLocation, setEventLocation] = useState<[number, number] | null>(null);
   const [mapPoints, setMapPoints] = useState<any[]>([]); // Estado para almacenar los puntos del mapa
 
   const reusPerimeter: L.LatLngTuple[] = [
@@ -78,9 +74,14 @@ const Map = () => {
         iconAnchor: [16, 32],
         popupAnchor: [0, -32],
       }),
+      person: L.icon({
+        iconUrl: personIcon, // Asegúrate de tener este icono
+        iconSize: [40, 40],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32],
+      }),
     };
 
-    // Si el tipo no está en el objeto `icons`, devuelve un icono por defecto
     return icons[type] || L.icon({
       iconUrl: '/default-icon.png', // Un icono por defecto si no se encuentra el tipo
       iconSize: [32, 32],
@@ -90,38 +91,36 @@ const Map = () => {
   };
 
   useEffect(() => {
-    // Obtener la ubicación del usuario
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        ({ coords }) => setPosition([coords.latitude, coords.longitude]),
-        (error) => console.error('Error al obtener la ubicación:', error)
-      );
-    }
-  }, []);
-
-  useEffect(() => {
     fetch('http://localhost:8080/mappoints/types')
       .then((response) => response.json())
       .then((data) => {
-        console.log(data); // Verifica que los datos contienen latitudes y longitudes
-        setMapPoints(data); // Asumimos que la API devuelve un array de puntos
+        console.log(data);
+        setMapPoints(data);
       })
       .catch((error) => console.error('Error al obtener los puntos del mapa:', error));
   }, []);
 
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        ({ coords }) => setPosition([coords.latitude, coords.longitude]),
+        (error) => {
+          console.error('Error al obtener la ubicación:', error);
+          setPosition([41.15612, 1.10687]);
+        }
+      );
+    } else {
+      console.error('La geolocalización no está soportada en este navegador.');
+      setPosition([41.15612, 1.10687]);     }
+  }, []);
+  
   const defaultPosition: [number, number] = [41.15612, 1.10687];
-
-  const LocationClickHandler = () => {
-    useMapEvents({
-      click: ({ latlng }) => setEventLocation([latlng.lat, latlng.lng]),
-    });
-    return null;
-  };
 
   return (
     <MapContainer
-      center={position || defaultPosition}
-      zoom={13}
+      center={defaultPosition}
+      zoom={15}
+      scrollWheelZoom={true}
       className="w-full h-full absolute left-0"
       style={{
         height: '-webkit-fill-available',
@@ -133,15 +132,17 @@ const Map = () => {
 
       {/* Marcador de la ubicación actual */}
       {position && (
-        <Marker position={position} icon={getIconByType('Others')}>
-          <Popup>Tu ubicación actual</Popup>
-        </Marker>
-      )}
-
-      {/* Marcador de la ubicación seleccionada */}
-      {eventLocation && (
-        <Marker position={eventLocation} icon={getIconByType('Others')}>
-          <Popup>Ubicación seleccionada</Popup>
+        <Marker position={position} icon={getIconByType('person')}>
+          <Popup>
+            <p>Current location</p>
+            <a
+              href={`https://www.google.com/maps?q=${position[0]},${position[1]}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Abrir en Google Maps
+            </a>
+          </Popup>
         </Marker>
       )}
 
@@ -163,10 +164,8 @@ const Map = () => {
         </Marker>
       ))}
 
-      <Polygon positions={reusPerimeter} color="transparent" />
-      <Polyline positions={reusPerimeter} color="gray" />
+      <Polygon positions={reusPerimeter} color="blue" />
 
-      <LocationClickHandler />
     </MapContainer>
   );
 };
