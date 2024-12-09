@@ -73,7 +73,6 @@ function MapClickHandler({ onLocationSelect }: { onLocationSelect?: (lat: number
 
 export function MapServices({ position, locationMode, onLocationSelect }: MapProps) {
   const [mapPoints, setMapPoints] = useState<any[]>([]); // Estado para almacenar los puntos del mapa
-  const [current, setCurrent] = useState<[number, number] | null>(null);
 
   // BACKEND
   useEffect(() => {
@@ -85,24 +84,7 @@ export function MapServices({ position, locationMode, onLocationSelect }: MapPro
       })
       .catch((error) => console.error('Error al obtener los puntos del mapa:', error));
   }, []);
-  
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        ({ coords }) => setCurrent([coords.latitude, coords.longitude]),
-        (error) => {
-          console.error('Error al obtener la ubicación:', error);
-          setCurrent([41.15612, 1.10687]); // Ubicación predeterminada
-          alert('No se ha podido obtener tu ubicación. Asegúrate de permitir el acceso a la ubicación en tu navegador.');
-        }
-      );
-    } else {
-      console.error('La geolocalización no está soportada en este navegador.');
-      setCurrent([41.15612, 1.10687]); // Ubicación predeterminada
-      alert('La geolocalización no es soportada por tu navegador. Se ha usado una ubicación predeterminada.');
-    }
-  }, []);
-  
+
   const reusPerimeter: L.LatLngTuple[] = [
     [41.1641532, 1.0910310], [41.1635559, 1.0919380], [41.1641556, 1.0910368],
     [41.1633924, 1.0919487], [41.1640100, 1.0929460], [41.1631420, 1.0950120],
@@ -150,12 +132,12 @@ export function MapServices({ position, locationMode, onLocationSelect }: MapPro
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <Polygon positions={reusPerimeter} color="blue" />
-      {current && (
-        <Marker position={current} icon={getIconByType('person')}>
+      {position && (
+        <Marker position={position} icon={getIconByType('person')}>
           <Popup>
             <p>Selected location</p>
             <a
-              href={`https://www.google.com/maps?q=${current[0]},${current[1]}`}
+              href={`https://www.google.com/maps?q=${position[0]},${position[1]}`}
               target="_blank"
               rel="noopener noreferrer"
             >
