@@ -13,6 +13,11 @@ import textile from '../assets/ropa.png'; // Icono para "Textile container"
 import personIcon from '../assets/personIcon.png';
 import selected from '../assets/selected.png';
 
+import poda from '../assets/arbol.png';
+import basura from '../assets/bolsabasura.png';
+import muebles from '../assets/home-furniture.png';
+import events from '../assets/events.png';
+
 const getIconByType = (type: string) => {
   const icons: Record<string, L.Icon> = {
     Container: L.icon({
@@ -44,10 +49,32 @@ const getIconByType = (type: string) => {
       iconSize: [40, 40],
       iconAnchor: [16, 32],
       popupAnchor: [0, -32],
-    }), 
+    }),
     selected: L.icon({
       iconUrl: selected, // Asegúrate de tener este icono
-      iconSize: [40, 40],
+      iconSize: [38, 40],
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -32],
+    }), poda: L.icon({
+      iconUrl: poda, // Asegúrate de tener este icono
+      iconSize: [38, 40],
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -32],
+    }), basura: L.icon({
+      iconUrl: basura, // Asegúrate de tener este icono
+      iconSize: [38, 40],
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -32],
+    }),
+    muebles: L.icon({
+      iconUrl: muebles, // Asegúrate de tener este icono
+      iconSize: [38, 40],
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -32],
+    }),
+    events: L.icon({
+      iconUrl: events, // Asegúrate de tener este icono
+      iconSize: [38, 40],
       iconAnchor: [16, 32],
       popupAnchor: [0, -32],
     }),
@@ -176,12 +203,14 @@ export function MapServices({ position, locationMode, onLocationSelect }: MapPro
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <Polygon positions={reusPerimeter} color="blue" />
-      {position && (
-        <Marker position={position} icon={getIconByType('selected')}>
+
+      {/* Marcador de la ubicación actual */}
+      {current && (
+        <Marker position={current} icon={getIconByType('person')}>
           <Popup>
-            <p>Selected location</p>
+            <p>Current location</p>
             <a
-              href={`https://www.google.com/maps?q=${position[0]},${position[1]}`}
+              href={`https://www.google.com/maps?q=${current[0]},${current[1]}`}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -191,11 +220,10 @@ export function MapServices({ position, locationMode, onLocationSelect }: MapPro
         </Marker>
       )}
 
-      {/* Marcador de la ubicación actual */}
       {position && (
-        <Marker position={position} icon={getIconByType('person')}>
+        <Marker position={position} icon={getIconByType('selected')}>
           <Popup>
-            <p>Current location</p>
+            <p>Selected location</p>
             <a
               href={`https://www.google.com/maps?q=${position[0]},${position[1]}`}
               target="_blank"
