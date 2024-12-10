@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import 'leaflet/dist/leaflet.css';
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polyline, Polygon } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Polygon } from 'react-leaflet';
 import L, { LatLngTuple } from 'leaflet';
 import contenedordebasura from '../assets/contenedor-de-basura.png'; // Icono para "Container"
 import wastecenter from '../assets/LogoSolo.png'; // Icono para "Textile container"

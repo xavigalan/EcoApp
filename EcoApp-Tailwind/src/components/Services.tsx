@@ -61,11 +61,11 @@ function Services() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-100 py-8 px-4 " style={{position:'fixed', width:'-webkit-fill-available', height:'-webkit-fill-available'}}>
+        <div className="min-h-screen bg-gray-100 py-8 px-4" style={{position:'fixed', width:'-webkit-fill-available', height:'-webkit-fill-available'}}>
             <div className="w-full mx-auto space-y-8">
                 <h1 className="text-3xl font-bold text-center text-gray-900">Services</h1>
 
-                {/* {locationError && (
+                {locationError && (
                     <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
                         <div className="flex">
                             <div className="flex-shrink-0">
@@ -78,7 +78,7 @@ function Services() {
                             </div>
                         </div>
                     </div>
-                )} */}
+                )}
                 <div className="grid md:grid-cols-2 gap-16 items-center h-full">
                     <div className="w-full h-[75vh]">
                         <MapServices

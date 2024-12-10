@@ -5,8 +5,8 @@ import './App.css'
 import { Route, Routes } from 'react-router-dom';
 import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
-import Notice from './components/Notice';
-import Points from './components/Points';
+// import Notice from './components/Notice';
+// import Points from './components/Points';
 import Services from './components/Services';
 
 
