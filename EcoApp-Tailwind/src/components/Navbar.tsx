@@ -60,7 +60,7 @@ const Navbar: React.FC = () => {
               Notice
             </a>
             <a
-              href="/about"
+              href="/contact"
               className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium"
             >
               Contact

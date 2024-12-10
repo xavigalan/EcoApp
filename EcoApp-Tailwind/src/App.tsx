@@ -7,6 +7,8 @@ import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 // import Notice from './components/Notice';
 // import Points from './components/Points';
+ import Contact from './components/Contact';
+
 import Services from './components/Services';
 
 
@@ -22,6 +24,8 @@ function App() {
           <Route path="/notice" element={<Notice />} />
           <Route path="/points" element={<Points />} />
           */}
+          <Route path="/contact" element={<Contact />} />
+
           <Route path="/" element={<Map />} />
         </Routes>
         {/* <Map /> */}
