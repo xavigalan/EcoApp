@@ -119,44 +119,46 @@ export default function Contact() {
       </div>
 
       {/* Company Info Section */}
-      <div className="space-y-8 max-w-2xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
-        <div className="space-y-4">
-          <h1 className="text-4xl font-bold text-gray-900">About ECOAPP</h1>
-          <p className="text-lg text-gray-600">
-            Founded in 2020, ECOAPP emerged from a passionate group of environmental enthusiasts 
-            determined to revolutionize waste management and recycling practices globally.
-          </p>
-        </div>
+<div className="space-y-8 max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
+  <div className="space-y-4">
+    <h1 className="text-4xl font-bold text-gray-900">About ECOAPP</h1>
+    <p className="text-lg text-gray-600">
+      Founded in 2020, ECOAPP emerged from a passionate group of environmental enthusiasts 
+      determined to revolutionize waste management and recycling practices globally.
+    </p>
+  </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="p-4 bg-white rounded-lg shadow-md">
-            <Recycle className="w-8 h-8 text-green-600 mb-3" />
-            <h3 className="text-xl font-semibold mb-2">Our Mission</h3>
-            <p className="text-gray-600">
-              To make recycling accessible, efficient, and rewarding for everyone while promoting 
-              sustainable practices worldwide.
-            </p>
-          </div>
+  {/* Section with 3 main pillars: Mission, What We Do, Impact */}
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div className="p-8 bg-white rounded-lg shadow-lg transform transition duration-300 hover:scale-105">
+      <Recycle className="w-12 h-12 text-green-600 mb-4" />
+      <h3 className="text-xl font-semibold mb-4">Our Mission</h3>
+      <p className="text-gray-600">
+        To make recycling accessible, efficient, and rewarding for everyone while promoting 
+        sustainable practices worldwide.
+      </p>
+    </div>
 
-          <div className="p-4 bg-white rounded-lg shadow-md">
-            <Leaf className="w-8 h-8 text-green-600 mb-3" />
-            <h3 className="text-xl font-semibold mb-2">What We Do</h3>
-            <p className="text-gray-600">
-              We develop innovative recycling solutions, educate communities, and connect 
-              recyclers with sustainable businesses.
-            </p>
-          </div>
+    <div className="p-8 bg-white rounded-lg shadow-lg transform transition duration-300 hover:scale-105">
+      <Leaf className="w-12 h-12 text-green-600 mb-4" />
+      <h3 className="text-xl font-semibold mb-4">What We Do</h3>
+      <p className="text-gray-600">
+        We develop innovative recycling solutions, educate communities, and connect 
+        recyclers with sustainable businesses.
+      </p>
+    </div>
 
-          <div className="p-4 bg-white rounded-lg shadow-md">
-            <Globe className="w-8 h-8 text-green-600 mb-3" />
-            <h3 className="text-xl font-semibold mb-2">Our Impact</h3>
-            <p className="text-gray-600">
-              Since our inception, we've helped recycle over 1 million tons of waste and 
-              partnered with 500+ organizations globally.
-            </p>
-          </div>
-        </div>
-      </div>
+    <div className="p-8 bg-white rounded-lg shadow-lg transform transition duration-300 hover:scale-105">
+      <Globe className="w-12 h-12 text-green-600 mb-4" />
+      <h3 className="text-xl font-semibold mb-4">Our Impact</h3>
+      <p className="text-gray-600">
+        Since our inception, we've helped recycle over 1 million tons of waste and 
+        partnered with 500+ organizations globally.
+      </p>
+    </div>
+  </div>
+</div>
+
 
       {/* Team Section */}
       <section className="py-16 bg-gray-50">
