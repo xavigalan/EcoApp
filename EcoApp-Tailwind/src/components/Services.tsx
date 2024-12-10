@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
 import { MapServices } from '../components/MapServices';
 import { ReportForm } from './ReportForm';
-import { LocationMode, Report } from '../types';
+import { LocationMode, Report, ReportType } from '../types';
 
-const defaultPosition: [number, number] = [41.1561, 1.1069]; // Default position (Reus)
+const defaultPosition: [number, number] = [41.1561, 1.1069];
 
 function Services() {
     const [position, setPosition] = useState<[number, number]>(defaultPosition);
     const [locationMode, setLocationMode] = useState<LocationMode>('current');
     const [locationError, setLocationError] = useState<string | null>(null);
+    const [reportType, setReportType] = useState<ReportType>('tree');
 
     useEffect(() => {
         if (locationMode === 'current') {
@@ -52,17 +53,19 @@ function Services() {
             ...reportData,
             location: position,
         };
-
-        // Here you would typically send the report to your backend
         console.log('Submitting report:', report);
     };
 
+    const handleReportTypeChange = (type: ReportType) => {
+        setReportType(type);
+    };
+
     return (
-        <div className="min-h-screen bg-gray-100 py-8 px-4">
-            <div className="w-full mx-auto space-y-8"> {/* Cambié max-w-4xl a w-full */}
+        <div className="min-h-screen bg-gray-100 py-8 px-4 " style={{position:'fixed', width:'-webkit-fill-available', height:'-webkit-fill-available'}}>
+            <div className="w-full mx-auto space-y-8">
                 <h1 className="text-3xl font-bold text-center text-gray-900">Services</h1>
 
-                {locationError && (
+                {/* {locationError && (
                     <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
                         <div className="flex">
                             <div className="flex-shrink-0">
@@ -75,28 +78,28 @@ function Services() {
                             </div>
                         </div>
                     </div>
-                )}
+                )} */}
                 <div className="grid md:grid-cols-2 gap-16 items-center h-full">
-                    <div className="w-full h-[75vh]"> {/* Aumenta la altura del mapa */}
+                    <div className="w-full h-[75vh]">
                         <MapServices
                             position={position}
                             locationMode={locationMode}
                             onLocationSelect={handleLocationSelect}
+                            reportType={reportType}
                         />
-
                     </div>
-                    <div className="w-full h-[75vh] flex flex-col justify-center"> {/* Aumenta la altura del formulario */}
+                    <div className="w-full h-[75vh] flex flex-col justify-center">
                         <ReportForm
                             onLocationModeChange={setLocationMode}
                             onLocationSelect={handleLocationSelect}
                             onSubmit={handleSubmit}
+                            onReportTypeChange={handleReportTypeChange}
                         />
                     </div>
                 </div>
             </div>
         </div>
     );
-
 }
 
 export default Services;

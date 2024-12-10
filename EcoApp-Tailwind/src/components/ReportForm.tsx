@@ -7,13 +7,19 @@ type ReportFormProps = {
   onLocationModeChange: (mode: LocationMode) => void;
   onLocationSelect: (lat: number, lng: number) => void;
   onSubmit: (data: { type: ReportType; description: string; image?: File }) => void;
+  onReportTypeChange: (type: ReportType) => void;
 };
 
-export function ReportForm({ onLocationModeChange, onLocationSelect, onSubmit }: ReportFormProps) {
+export function ReportForm({ onLocationModeChange, onLocationSelect, onSubmit, onReportTypeChange }: ReportFormProps) {
   const [reportType, setReportType] = useState<ReportType>('tree');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState<File | null>(null);
   const [locationMode, setLocationMode] = useState<LocationMode>('current');
+
+  const handleReportTypeChange = (type: ReportType) => {
+    setReportType(type);
+    onReportTypeChange(type);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,7 +42,7 @@ export function ReportForm({ onLocationModeChange, onLocationSelect, onSubmit }:
         <div className="mt-2 grid grid-cols-2 gap-3">
           <button
             type="button"
-            onClick={() => setReportType('tree')}
+            onClick={() => handleReportTypeChange('tree')}
             className={`flex items-center justify-center p-3 border rounded-md ${
               reportType === 'tree' ? 'border-green-500 bg-green-50' : 'border-gray-300'
             }`}
@@ -45,7 +51,7 @@ export function ReportForm({ onLocationModeChange, onLocationSelect, onSubmit }:
           </button>
           <button
             type="button"
-            onClick={() => setReportType('furniture')}
+            onClick={() => handleReportTypeChange('furniture')}
             className={`flex items-center justify-center p-3 border rounded-md ${
               reportType === 'furniture' ? 'border-blue-500 bg-blue-50' : 'border-gray-300'
             }`}
@@ -54,7 +60,7 @@ export function ReportForm({ onLocationModeChange, onLocationSelect, onSubmit }:
           </button>
           <button
             type="button"
-            onClick={() => setReportType('event')}
+            onClick={() => handleReportTypeChange('event')}
             className={`flex items-center justify-center p-3 border rounded-md ${
               reportType === 'event' ? 'border-purple-500 bg-purple-50' : 'border-gray-300'
             }`}
@@ -63,7 +69,7 @@ export function ReportForm({ onLocationModeChange, onLocationSelect, onSubmit }:
           </button>
           <button
             type="button"
-            onClick={() => setReportType('trash')}
+            onClick={() => handleReportTypeChange('trash')}
             className={`flex items-center justify-center p-3 border rounded-md ${
               reportType === 'trash' ? 'border-yellow-500 bg-yellow-50' : 'border-gray-300'
             }`}
@@ -108,4 +114,5 @@ export function ReportForm({ onLocationModeChange, onLocationSelect, onSubmit }:
     </form>
   );
 }
+
 export default ReportForm;
