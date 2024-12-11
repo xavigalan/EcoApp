@@ -7,6 +7,7 @@ import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 import Notice from './components/Notice';
 import Points from './components/Points';
+import ProfileModal from './components/ProfileModal';
 import Services from './components/Services';
 
 
@@ -18,6 +19,8 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/services" element={<Services />} />
+          <Route path="/notice" element={<Notice />} />
+          
           {/*
           <Route path="/notice" element={<Notice />} />
           <Route path="/points" element={<Points />} />
