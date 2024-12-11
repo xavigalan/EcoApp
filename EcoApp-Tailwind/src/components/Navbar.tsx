@@ -1,29 +1,65 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
-
+import ProfileModal from "./ProfileModal";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userProfile, setUserProfile] = useState<string | null>(null);
-
+  const [userProfile, setUserProfile] = useState({
+    name: "",
+    email: "",
+    profilePicture: "",
+  });
 
   useEffect(() => {
     const userSession = Cookies.get("userSession");
+
     if (userSession) {
       setIsLoggedIn(true);
-      setUserProfile("https://i.pinimg.com/222x/57/70/f0/5770f01a32c3c53e90ecda61483ccb08.jpg");
+      
+      // Aquí haces la solicitud al backend para obtener los datos del usuario
+      const fetchUserData = async () => {
+        try {
+          const response = await fetch("http://localhost:8080/user/profile", {
+            method: "GET",
+            headers: {
+              "Authorization": `Bearer ${Cookies.get("userSession")}`, // Suponiendo que usas un token de sesión
+              "Content-Type": "application/json",
+            },
+          });
+          if (!response.ok) {
+            throw new Error("No se pudo obtener el perfil del usuario");
+          }
+
+          const data = await response.json();
+
+          // Establecer los datos del usuario en el estado
+          setUserProfile({
+            name: data.name,
+            email: data.email,
+            profilePicture: data.profilePicture || "/images/default-avatar.png", // Foto de perfil
+          });
+        } catch (error) {
+          console.error("Error al obtener los datos del usuario:", error);
+        }
+      };
+
+      fetchUserData();
     }
   }, []);
+
 
   const handleLogout = () => {
     Cookies.remove("userSession");
     setIsLoggedIn(false);
-    setUserProfile(null);
+    setUserProfile({
+      name: "",
+      email: "",
+      profilePicture: "",
+    });
     setIsOpen(false);
   };
-
 
   const handleLinkClick = () => {
     setIsOpen(false);
@@ -47,18 +83,18 @@ const Navbar: React.FC = () => {
 
           {/* Desktop Links */}
           <div className="hidden md:flex space-x-12">
-            <a
-              href="/services"
+            <Link
+              to="/services"
               className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium"
             >
               Services
-            </a>
-            <a
-              href="/about"
-              className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium"
+            </Link>
+            <Link
+              to="/notice"
+              className="text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium"
             >
               Notice
-            </a>
+            </Link>
             <a
               href="/contact"
               className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium"
@@ -82,9 +118,10 @@ const Navbar: React.FC = () => {
             {isLoggedIn ? (
               <div className="flex items-center space-x-4">
                 <img
-                  src={userProfile || "/images/default-avatar.png"}
+                  src={userProfile.profilePicture}
                   alt="User Profile"
-                  className="h-10 w-10 rounded-full border-2 border-white"
+                  className="h-10 w-10 rounded-full border-2 border-white cursor-pointer"
+                  onClick={() => setIsOpen(true)} // Al hacer click, abre el modal
                 />
                 <button
                   onClick={handleLogout}
@@ -165,38 +202,38 @@ const Navbar: React.FC = () => {
         }}
       >
         <div className="space-y-1 px-2 pb-3 pt-2">
-          <a
-            href="/services"
+          <Link
+            to="/services"
             className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
-            onClick={handleLinkClick} // Cerrar menú al hacer clic
+            onClick={handleLinkClick}
           >
             Services
-          </a>
+          </Link>
           <a
             href="/about"
             className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
-            onClick={handleLinkClick} // Cerrar menú al hacer clic
+            onClick={handleLinkClick}
           >
             Notice
           </a>
           <a
             href="/about"
             className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
-            onClick={handleLinkClick} // Cerrar menú al hacer clic
+            onClick={handleLinkClick}
           >
             Contact
           </a>
           <a
             href="/about"
             className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
-            onClick={handleLinkClick} // Cerrar menú al hacer clic
+            onClick={handleLinkClick}
           >
             Employees
           </a>
           <a
             href="/about"
             className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
-            onClick={handleLinkClick} // Cerrar menú al hacer clic
+            onClick={handleLinkClick}
           >
             Points
           </a>
@@ -204,15 +241,16 @@ const Navbar: React.FC = () => {
 
         <div className="border-t border-white mt-2"></div>
         {isLoggedIn ? (
-          <div className="px-3 py-2">
+          <div className="flex flex-col items-center justify-center px-3 py-2">
             <img
-              src={userProfile || "/images/default-avatar.png"}
+              src={userProfile.profilePicture}
               alt="User Profile"
-              className="h-10 w-10 rounded-full border-2 border-white mx-auto"
+              className="h-10 w-10 rounded-full border-2 border-white cursor-pointer"
+              onClick={() => setIsOpen(true)} // Abre el modal al hacer click
             />
             <button
               onClick={handleLogout}
-              className="block text-center text-white bg-red-700 mt-2 py-2 rounded-md text-sm font-medium hover:bg-red-600"
+              className="block text-center text-white mt-2 p-2 rounded-md text-sm font-medium justify-center items-center hover:bg-red-700"
             >
               Logout
             </button>
@@ -236,7 +274,7 @@ const Navbar: React.FC = () => {
           </>
         )}
       </div>
-
+      <ProfileModal isOpen={isOpen} onClose={() => setIsOpen(false)} user={userProfile} />
     </nav>
   );
 };
