@@ -4,8 +4,10 @@ import { ToastContainer, toast } from "react-toastify";
 import Cookies from "js-cookie";
 import "react-toastify/dist/ReactToastify.css";
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/20/solid';
+import { useTranslation } from 'react-i18next';
 
 const LoginPage: React.FC = () => {
+    const { t } = useTranslation();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isLoggedIn, setIsLoggedIn] = useState(!!Cookies.get("userSession"));
@@ -71,8 +73,8 @@ const LoginPage: React.FC = () => {
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                        <label htmlFor="email" className="block text-left text-sm font-medium text-gray-900">Email address</label>
-                        <div className="mt-2">
+                    <label htmlFor="email" className="block text-left text-sm font-medium text-gray-900">{t('email_address')}</label>
+                    <div className="mt-2">
                             <input
                                 id="email"
                                 name="email"

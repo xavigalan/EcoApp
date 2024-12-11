@@ -3,25 +3,60 @@ import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useTranslation } from 'react-i18next';
 import LanguageSelector from './LanguageSelector';
+import ProfileModal from "./ProfileModal";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userProfile, setUserProfile] = useState<string | null>(null);
   const { t } = useTranslation();
+  const [userProfile, setUserProfile] = useState({
+    name: "",
+    email: "",
+    profilePicture: "",
+  });
 
   useEffect(() => {
     const userSession = Cookies.get("userSession");
+
     if (userSession) {
       setIsLoggedIn(true);
-      setUserProfile("https://i.pinimg.com/222x/57/70/f0/5770f01a32c3c53e90ecda61483ccb08.jpg");
+      
+      const fetchUserData = async () => {
+        try {
+          const response = await fetch("http://localhost:8080/user/profile", {
+            method: "GET",
+            headers: {
+              "Authorization": `Bearer ${Cookies.get("userSession")}`,
+              "Content-Type": "application/json",
+            },
+          });
+          if (!response.ok) {
+            throw new Error("No se pudo obtener el perfil del usuario");
+          }
+
+          const data = await response.json();
+          setUserProfile({
+            name: data.name,
+            email: data.email,
+            profilePicture: data.profilePicture || "/images/default-avatar.png",
+          });
+        } catch (error) {
+          console.error("Error al obtener los datos del usuario:", error);
+        }
+      };
+
+      fetchUserData();
     }
   }, []);
 
   const handleLogout = () => {
     Cookies.remove("userSession");
     setIsLoggedIn(false);
-    setUserProfile(null);
+    setUserProfile({
+      name: "",
+      email: "",
+      profilePicture: "",
+    });
     setIsOpen(false);
   };
 
@@ -36,11 +71,7 @@ const Navbar: React.FC = () => {
           {/* Logo */}
           <div className="flex-shrink-0 drop-shadow-yellow-glow">
             <Link to="/" onClick={handleLinkClick} className="flex items-center space-x-2">
-              <img
-                alt="EcoApp"
-                src="/images/LogoSolo.png"
-                className="h-10 w-auto"
-              />
+              <img alt="EcoApp" src="/images/LogoSolo.png" className="h-10 w-auto" />
               <span className="text-xl text-orange-300 font-semibold text-gray-900">EcoApp</span>
             </Link>
           </div>
@@ -69,9 +100,10 @@ const Navbar: React.FC = () => {
             {isLoggedIn ? (
               <div className="flex items-center space-x-4">
                 <img
-                  src={userProfile || "/images/default-avatar.png"}
+                  src={userProfile.profilePicture}
                   alt="User Profile"
-                  className="h-10 w-10 rounded-full border-2 border-white"
+                  className="h-10 w-10 rounded-full border-2 border-white cursor-pointer"
+                  onClick={() => setIsOpen(true)} // Abre el modal al hacer click
                 />
                 <button
                   onClick={handleLogout}
@@ -82,16 +114,10 @@ const Navbar: React.FC = () => {
               </div>
             ) : (
               <>
-                <Link
-                  to="/login"
-                  className="text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium"
-                >
+                <Link to="/login" className="text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
                   {t('nav.login')}
                 </Link>
-                <Link
-                  to="/register"
-                  className="text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium"
-                >
+                <Link to="/register" className="text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
                   {t('nav.register')}
                 </Link>
               </>
@@ -107,34 +133,12 @@ const Navbar: React.FC = () => {
             >
               <span className="sr-only">Open main menu</span>
               {isOpen ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               ) : (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               )}
             </button>
@@ -144,9 +148,7 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Links with Animation */}
       <div
-        className={`${
-          isOpen ? "max-h-screen opacity-100 visibility-visible" : "max-h-0 opacity-0 visibility-hidden pointer-events-none"
-        } transition-all ease-in-out duration-300 md:hidden bg-green-800`}
+        className={`${isOpen ? "max-h-screen opacity-100 visibility-visible" : "max-h-0 opacity-0 visibility-hidden pointer-events-none"} transition-all ease-in-out duration-300 md:hidden bg-green-800`}
         style={{
           position: "fixed",
           zIndex: 10,
@@ -154,77 +156,51 @@ const Navbar: React.FC = () => {
         }}
       >
         <div className="space-y-1 px-2 pb-3 pt-2">
-          <a
-            href="/services"
-            className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
-            onClick={handleLinkClick}
-          >
+          <Link to="/services" className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700" onClick={handleLinkClick}>
             {t('nav.services')}
-          </a>
-          <a
-            href="/about"
-            className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
-            onClick={handleLinkClick}
-          >
+          </Link>
+          <a href="/about" className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700" onClick={handleLinkClick}>
             {t('nav.notice')}
           </a>
-          <a
-            href="/contact"
-            className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
-            onClick={handleLinkClick}
-          >
+          <a href="/contact" className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700" onClick={handleLinkClick}>
             {t('nav.contact')}
           </a>
-          <a
-            href="/about"
-            className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
-            onClick={handleLinkClick}
-          >
+          <a href="/about" className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700" onClick={handleLinkClick}>
             {t('nav.employees')}
           </a>
-          <a
-            href="/about"
-            className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
-            onClick={handleLinkClick}
-          >
+          <a href="/about" className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700" onClick={handleLinkClick}>
             {t('nav.points')}
           </a>
         </div>
 
         <div className="border-t border-white mt-2"></div>
         {isLoggedIn ? (
-          <div className="px-3 py-2">
+          <div className="flex flex-col items-center justify-center px-3 py-2">
             <img
-              src={userProfile || "/images/default-avatar.png"}
+              src={userProfile.profilePicture}
               alt="User Profile"
-              className="h-10 w-10 rounded-full border-2 border-white mx-auto"
+              className="h-10 w-10 rounded-full border-2 border-white cursor-pointer"
+              onClick={() => setIsOpen(true)}
             />
             <button
               onClick={handleLogout}
-              className="block text-center text-white bg-red-700 mt-2 py-2 rounded-md text-sm font-medium hover:bg-red-600"
+              className="block text-center text-white mt-2 p-2 rounded-md text-sm font-medium justify-center items-center hover:bg-red-700"
             >
               {t('nav.logout')}
             </button>
           </div>
         ) : (
           <>
-            <Link
-              to="/login"
-              className="block text-white px-3 py-2 rounded-md text-base font-medium hover:bg-green-700"
-              onClick={handleLinkClick}
-            >
+            <Link to="/login" className="block text-white px-3 py-2 rounded-md text-base font-medium hover:bg-green-700" onClick={handleLinkClick}>
               {t('nav.login')}
             </Link>
-            <Link
-              to="/register"
-              className="block text-white px-3 py-2 rounded-md text-base font-medium hover:bg-green-700"
-              onClick={handleLinkClick}
-            >
+            <Link to="/register" className="block text-white px-3 py-2 rounded-md text-base font-medium hover:bg-green-700" onClick={handleLinkClick}>
               {t('nav.register')}
             </Link>
           </>
         )}
       </div>
+      <ProfileModal isOpen={isOpen} onClose={() => setIsOpen(false)} user={userProfile} />
     </nav>
   );
 };
