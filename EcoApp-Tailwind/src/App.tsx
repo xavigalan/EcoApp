@@ -8,6 +8,7 @@ import Notice from './components/Notice';
 import Points from './components/Points';
 import ProfileModal from './components/ProfileModal';
 import Contact from './components/Contact';
+import Employees from './components/Employees';
 import Services from './components/Services';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './components/AuthContext';
@@ -22,6 +23,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/services" element={<Services />} />
           <Route path="/notice" element={<Notice />} />
+          <Route path="/employees" element={<Employees />} />
           
           {/*
           <Route path="/notice" element={<Notice />} />

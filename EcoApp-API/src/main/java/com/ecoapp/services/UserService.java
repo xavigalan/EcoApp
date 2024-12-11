@@ -1,13 +1,17 @@
 package com.ecoapp.services;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ecoapp.dtos.UserWithRoleDTO;
+import com.ecoapp.entities.Role;
 import com.ecoapp.entities.User;
+import com.ecoapp.repository.RoleRepository;
 import com.ecoapp.repository.UserRepository;
 
 @Service
@@ -15,6 +19,9 @@ public class UserService {
 	@Autowired
 	UserRepository userRepository;
 
+	@Autowired
+	private RoleRepository roleRepository;
+	
 	public List<User> findAllUsers() {
 		return userRepository.findAll();
 	}
@@ -34,8 +41,62 @@ public class UserService {
 			throw new RuntimeException("User not found with id: " + id);
 		}
 	}
+
+	public Optional<UserWithRoleDTO> findUserWithRoleById(Long userId) {
+		return userRepository.findUserWithRoleById(userId);
+	}
+
+	public List<UserWithRoleDTO> findUsersByRole(Long roleId) {
+	    List<User> users = userRepository.findByRoleId(roleId); // Obtén los usuarios con el roleId proporcionado
+
+	    // Obtén el role correspondiente a `roleId`
+	    Role role = roleRepository.findById(roleId).orElse(null); // Busca el role por ID
+
+	    return users.stream()
+	                .map(user -> new UserWithRoleDTO(
+	                    user.getId(), 
+	                    user.getFirstName(), 
+	                    user.getLastName(), 
+	                    user.getDni(),
+	                    user.getPhone(), 
+	                    user.getEmail(), 
+	                    user.getCreationDate(), 
+	                    role))  // Asigna el objeto Role al DTO
+	                .collect(Collectors.toList());
+	}
+
 	
-	 public Optional<UserWithRoleDTO> findUserWithRoleById(Long userId) {
-	        return userRepository.findUserWithRoleById(userId);
-	    }
+	public List<UserWithRoleDTO> findUsersByRoles(List<Long> roleIds) {
+	    // Obtener todos los usuarios que tengan uno de los roleIds
+	    List<User> users = userRepository.findByRoleIdIn(roleIds); 
+
+	    // Obtener todos los roles correspondientes a los roleIds
+	    List<Role> roles = roleRepository.findAllById(roleIds); 
+
+	    // Crear un mapa de roleId -> Role para poder asignar el rol correspondiente a cada usuario
+	    // Asumimos que un usuario tiene un solo rol, por lo que usamos roleId como clave
+	    Map<Long, Role> roleMap = roles.stream()
+	                                   .collect(Collectors.toMap(Role::getId, role -> role));
+
+	    // Mapear usuarios a UserWithRoleDTO con el rol correspondiente
+	    return users.stream()
+	                .map(user -> {
+	                    // Obtener el rol correspondiente al user
+	                    Role userRole = roleMap.get(user.getRoleId()); 
+	                    return new UserWithRoleDTO(
+	                        user.getId(), 
+	                        user.getFirstName(), 
+	                        user.getLastName(), 
+	                        user.getDni(),
+	                        user.getPhone(), 
+	                        user.getEmail(), 
+	                        user.getCreationDate(), 
+	                        userRole
+	                    );
+	                })
+	                .collect(Collectors.toList());
+	}
+
+
+
 }

@@ -1,5 +1,6 @@
 package com.ecoapp.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,4 +18,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	           "FROM User u JOIN Role r ON u.roleId = r.id " +
 	           "WHERE u.id = :userId")
 	    Optional<UserWithRoleDTO> findUserWithRoleById(@Param("userId") Long userId);
+	 
+	    List<User> findByRoleId(Long roleId);  // Método para obtener usuarios por ID de rol
+	    
+	    public List<User> findByRoleIdIn(List<Long> roleIds);
+
 }
