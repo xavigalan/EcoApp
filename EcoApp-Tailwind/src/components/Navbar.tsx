@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
-import LanguageSelector from "./LanguageSelector";  // Importa el componente de selector de idioma
+import { useTranslation } from 'react-i18next';
+import LanguageSelector from './LanguageSelector';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userProfile, setUserProfile] = useState<string | null>(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const userSession = Cookies.get("userSession");
@@ -45,42 +47,25 @@ const Navbar: React.FC = () => {
 
           {/* Desktop Links */}
           <div className="hidden md:flex space-x-12">
-            <a
-              href="/services"
-              className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium"
-            >
-              Services
+            <a href="/services" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+              {t('nav.services')}
             </a>
-            <a
-              href="/about"
-              className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium"
-            >
-              Notice
+            <a href="/about" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+              {t('nav.notice')}
             </a>
-            <a
-              href="/contact"
-              className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium"
-            >
-              Contact
+            <a href="/contact" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+              {t('nav.contact')}
             </a>
-            <a
-              href="/about"
-              className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium"
-            >
-              Employees
+            <a href="/about" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+              {t('nav.employees')}
             </a>
-            <a
-              href="/about"
-              className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium"
-            >
-              Points
+            <a href="/about" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+              {t('nav.points')}
             </a>
           </div>
 
-          {/* Language Selector */}
           <div className="hidden md:flex items-center space-x-6">
-            <LanguageSelector />  {/* Agregar el componente del selector de idiomas aquí */}
-            
+            <LanguageSelector />
             {isLoggedIn ? (
               <div className="flex items-center space-x-4">
                 <img
@@ -92,7 +77,7 @@ const Navbar: React.FC = () => {
                   onClick={handleLogout}
                   className="text-white hover:bg-red-700 p-2 rounded-md text-sm font-medium"
                 >
-                  Logout
+                  {t('nav.logout')}
                 </button>
               </div>
             ) : (
@@ -101,20 +86,21 @@ const Navbar: React.FC = () => {
                   to="/login"
                   className="text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium"
                 >
-                  Login
+                  {t('nav.login')}
                 </Link>
                 <Link
                   to="/register"
                   className="text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium"
                 >
-                  Register
+                  {t('nav.register')}
                 </Link>
               </>
             )}
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center space-x-2">
+            <LanguageSelector />
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md bg-green-800 text-white hover:text-white hover:bg-green-700 focus:outline-none"
@@ -158,49 +144,50 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Links with Animation */}
       <div
-        className={`${isOpen ? "max-h-screen opacity-100 visibility-visible" : "max-h-0 opacity-0 visibility-hidden pointer-events-none"
-          } transition-all ease-in-out duration-300 md:hidden bg-green-800`}
+        className={`${
+          isOpen ? "max-h-screen opacity-100 visibility-visible" : "max-h-0 opacity-0 visibility-hidden pointer-events-none"
+        } transition-all ease-in-out duration-300 md:hidden bg-green-800`}
         style={{
           position: "fixed",
           zIndex: 10,
-          width: "100%", // Asegura que ocupe todo el ancho
+          width: "100%",
         }}
       >
         <div className="space-y-1 px-2 pb-3 pt-2">
           <a
             href="/services"
             className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
-            onClick={handleLinkClick} // Cerrar menú al hacer clic
+            onClick={handleLinkClick}
           >
-            Services
+            {t('nav.services')}
           </a>
           <a
             href="/about"
             className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
-            onClick={handleLinkClick} // Cerrar menú al hacer clic
+            onClick={handleLinkClick}
           >
-            Notice
+            {t('nav.notice')}
+          </a>
+          <a
+            href="/contact"
+            className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
+            onClick={handleLinkClick}
+          >
+            {t('nav.contact')}
           </a>
           <a
             href="/about"
             className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
-            onClick={handleLinkClick} // Cerrar menú al hacer clic
+            onClick={handleLinkClick}
           >
-            Contact
+            {t('nav.employees')}
           </a>
           <a
             href="/about"
             className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
-            onClick={handleLinkClick} // Cerrar menú al hacer clic
+            onClick={handleLinkClick}
           >
-            Employees
-          </a>
-          <a
-            href="/about"
-            className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
-            onClick={handleLinkClick} // Cerrar menú al hacer clic
-          >
-            Points
+            {t('nav.points')}
           </a>
         </div>
 
@@ -216,7 +203,7 @@ const Navbar: React.FC = () => {
               onClick={handleLogout}
               className="block text-center text-white bg-red-700 mt-2 py-2 rounded-md text-sm font-medium hover:bg-red-600"
             >
-              Logout
+              {t('nav.logout')}
             </button>
           </div>
         ) : (
@@ -226,14 +213,14 @@ const Navbar: React.FC = () => {
               className="block text-white px-3 py-2 rounded-md text-base font-medium hover:bg-green-700"
               onClick={handleLinkClick}
             >
-              Login
+              {t('nav.login')}
             </Link>
             <Link
               to="/register"
               className="block text-white px-3 py-2 rounded-md text-base font-medium hover:bg-green-700"
               onClick={handleLinkClick}
             >
-              Register
+              {t('nav.register')}
             </Link>
           </>
         )}

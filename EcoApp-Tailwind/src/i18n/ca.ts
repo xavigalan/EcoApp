@@ -9,4 +9,9 @@ export const caTranslations = {
       register: 'Registrar-se',
       logout: 'Tancar Sessió'
     }
+
+
+
+
+    
   };

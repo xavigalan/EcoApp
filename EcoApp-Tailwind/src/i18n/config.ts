@@ -5,7 +5,7 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import { esTranslations } from './es';
 import { caTranslations } from './ca';
 import { arTranslations } from './ar';
-
+import { enTranslations } from './en';
 i18n
   .use(LanguageDetector) // Detecta el idioma del navegador
   .use(initReactI18next) // Integra i18next con React
@@ -20,12 +20,14 @@ i18n
       ar: {
         translation: arTranslations, // Traducciones en árabe
       },
+      en: {
+        translation: enTranslations, // Traducciones en inglés (agregadas)
+      },
     },
     fallbackLng: 'es', // Idioma de respaldo si el idioma detectado no tiene traducción
     interpolation: {
       escapeValue: false, // No es necesario escapar valores en React
     },
-    // No se necesita 'languages', eliminamos esa propiedad.
   });
 
 export default i18n;

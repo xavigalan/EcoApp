@@ -1,7 +1,6 @@
 import Navbar from './components/Navbar';
 import Map from './components/Map';
-
-import './App.css'
+import './i18n/Config';
 import { Route, Routes } from 'react-router-dom';
 import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
