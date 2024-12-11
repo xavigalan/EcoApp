@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
-
+import LanguageSelector from "./LanguageSelector";  // Importa el componente de selector de idioma
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userProfile, setUserProfile] = useState<string | null>(null);
-
 
   useEffect(() => {
     const userSession = Cookies.get("userSession");
@@ -23,7 +22,6 @@ const Navbar: React.FC = () => {
     setUserProfile(null);
     setIsOpen(false);
   };
-
 
   const handleLinkClick = () => {
     setIsOpen(false);
@@ -78,7 +76,11 @@ const Navbar: React.FC = () => {
               Points
             </a>
           </div>
+
+          {/* Language Selector */}
           <div className="hidden md:flex items-center space-x-6">
+            <LanguageSelector />  {/* Agregar el componente del selector de idiomas aquí */}
+            
             {isLoggedIn ? (
               <div className="flex items-center space-x-4">
                 <img
@@ -236,7 +238,6 @@ const Navbar: React.FC = () => {
           </>
         )}
       </div>
-
     </nav>
   );
 };

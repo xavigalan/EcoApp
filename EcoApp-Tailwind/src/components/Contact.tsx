@@ -118,13 +118,14 @@ export default function Contact() {
         </div>
       </div>
 
-      {/* Company Info Section */}
+    {/* Company Info Section */}
 <div className="space-y-8 max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
-  <div className="space-y-4">
-    <h1 className="text-4xl font-bold text-gray-900">About ECOAPP</h1>
-    <p className="text-lg text-gray-600">
-      Founded in 2020, ECOAPP emerged from a passionate group of environmental enthusiasts 
-      determined to revolutionize waste management and recycling practices globally.
+  <div className="text-center space-y-4">
+    <h1 className="text-4xl font-bold text-gray-900">
+      About ECOAPP
+    </h1>
+    <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+      Founded in 2020, ECOAPP emerged from a passionate group of environmental enthusiasts determined to revolutionize waste management and recycling practices globally.
     </p>
   </div>
 
@@ -184,63 +185,64 @@ export default function Contact() {
 
       {/* Contact Form Section */}
       <main className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="bg-white p-8 rounded-lg shadow-lg mx-auto">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Get in Touch</h2>
-            <form onSubmit={handleSubmit} className="space-y-6 max-w-md w-full">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 bg-white p-2"
-                  required
-                />
-              </div>
-
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 bg-white p-2"
-                  required
-                />
-              </div>
-
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700">
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  rows={4}
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 bg-white p-2"
-                  required
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-              >
-                <Send className="w-4 h-4 mr-2" />
-                Send Message
-              </button>
-            </form>
-          </div>
+  <div className="grid grid-cols-1 lg:grid-cols-1 gap-8">
+    <div className="bg-white p-8 rounded-lg shadow-lg mx-auto w-full">
+      <h2 className="text-2xl font-bold text-gray-900 mb-6">Get in Touch</h2>
+      <form onSubmit={handleSubmit} className="space-y-6 w-full">
+        <div>
+          <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+            Name
+          </label>
+          <input
+            type="text"
+            id="name"
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 bg-white p-2"
+            required
+          />
         </div>
-      </main>
+
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            Email
+          </label>
+          <input
+            type="email"
+            id="email"
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 bg-white p-2"
+            required
+          />
+        </div>
+
+        <div>
+          <label htmlFor="message" className="block text-sm font-medium text-gray-700">
+            Message
+          </label>
+          <textarea
+            id="message"
+            rows={4}
+            value={formData.message}
+            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 bg-white p-2"
+            required
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 w-full"
+        >
+          <Send className="w-4 h-4 mr-2" />
+          Send Message
+        </button>
+      </form>
+    </div>
+  </div>
+</main>
+
     </div>
   );
 }
