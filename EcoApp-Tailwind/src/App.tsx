@@ -12,6 +12,8 @@ import Employees from './components/Employees';
 import Services from './components/Services';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './components/AuthContext';
+import  AddEmployeeForm from './components/AddEmployeeForm';
+
 
 
 function App() {
@@ -24,7 +26,8 @@ function App() {
           <Route path="/services" element={<Services />} />
           <Route path="/notice" element={<Notice />} />
           <Route path="/employees" element={<Employees />} />
-          
+          <Route path="/add/employees" element={<AddEmployeeForm />} />
+
           {/*
           <Route path="/notice" element={<Notice />} />
           <Route path="/points" element={<Points />} />

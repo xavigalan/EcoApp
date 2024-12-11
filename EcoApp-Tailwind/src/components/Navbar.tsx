@@ -87,7 +87,7 @@ const Navbar: React.FC = () => {
             <a href="/contact" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
               {t('nav.contact')}
             </a>
-            <a href="/about" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+            <a href="/employees" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
               {t('nav.employees')}
             </a>
             <a href="/about" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
