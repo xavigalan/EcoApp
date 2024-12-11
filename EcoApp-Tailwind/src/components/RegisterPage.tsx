@@ -10,7 +10,7 @@ export default function RegisterPage() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("1");  // Aquí le asignas el valor por defecto "1"
+  const [roleId, setRoleId] = useState("1");  // Aquí le asignas el valor por defecto "1"
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,12 +22,12 @@ export default function RegisterPage() {
       phone,
       email,
       password,
-      role,
+      roleId,
   };
 
   try {
     // Enviar datos al backend
-    const response = await fetch("http://localhost:8080/users/", {
+    const response = await fetch("http://localhost:8080/users", {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
@@ -56,7 +56,7 @@ export default function RegisterPage() {
   setPhone("");
   setEmail("");
   setPassword("");
-  setRole("");
+  setRoleId("1");
 
 } catch (error) {
   console.error("Error during registration:", error);

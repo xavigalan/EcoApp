@@ -10,6 +10,8 @@ import Points from './components/Points';
 import ProfileModal from './components/ProfileModal';
 import Contact from './components/Contact';
 import Services from './components/Services';
+import ProtectedRoute from './components/ProtectedRoute';
+import { AuthProvider } from './components/AuthContext';
 
 
 function App() {

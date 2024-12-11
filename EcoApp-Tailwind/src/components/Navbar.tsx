@@ -95,12 +95,12 @@ const Navbar: React.FC = () => {
             >
               Notice
             </Link>
-            <a
-              href="/contact"
+            <Link
+              to="/contact"
               className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium"
             >
               Contact
-            </a>
+            </Link>
             <a
               href="/about"
               className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium"
@@ -209,13 +209,13 @@ const Navbar: React.FC = () => {
           >
             Services
           </Link>
-          <a
-            href="/about"
+          <Link
+            to ="/about"
             className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
             onClick={handleLinkClick}
           >
             Notice
-          </a>
+          </Link>
           <a
             href="/about"
             className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700"
