@@ -1,59 +1,67 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Role } from '../types/User';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Cookies from 'js-cookie';
 import { ArrowLeft, Save } from 'lucide-react';
+import { Role, UserFormData } from '../types/User';
+import { registerUser, fetchRoles } from '../utils/api';
+import FormInput from './forms/FormInput';
+import RoleSelect from './forms/RoleSelect';
+
+const initialFormData: UserFormData = {
+  firstName: '',
+  lastName: '',
+  dni: '',
+  phone: '',
+  email: '',
+  password: '',
+  roleId: '',
+};
 
 const AddEmployeeForm = () => {
   const navigate = useNavigate();
   const [roles, setRoles] = useState<Role[]>([]);
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    dni: '',
-    phone: '',
-    email: '',
-    password:'',
-    roleId: ''
-  });
+  const [formData, setFormData] = useState<UserFormData>(initialFormData);
 
   useEffect(() => {
-    const fetchRoles = async () => {
+    const loadRoles = async () => {
       try {
-        const response = await fetch('http://localhost:8080/roles');
-        const data = await response.json();
-        setRoles(data);
+        const rolesData = await fetchRoles();
+        setRoles(rolesData);
       } catch (error) {
-        console.error('Error fetching roles:', error);
+        toast.error('Failed to load roles. Please try again later.');
       }
     };
 
-    fetchRoles();
+    loadRoles();
   }, []);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8080/users', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await registerUser(formData);
+      
+      // Set cookies
+      Cookies.set('userToken', response.token, { expires: 7 });
+      Cookies.set('userId', response.userId, { expires: 7 });
+      Cookies.set('userSession', response.token, { expires: 7 });
 
-      if (response.ok) {
-        navigate('/');
-      }
+      toast.success('Employee registered successfully!');
+      setTimeout(() => navigate('/'), 2000);
     } catch (error) {
-      console.error('Error creating employee:', error);
+      toast.error('Failed to register employee. Please try again.');
+      console.error('Registration error:', error);
     }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
   };
 
   return (
@@ -70,96 +78,67 @@ const AddEmployeeForm = () => {
         </div>
 
         <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Add New Employee</h2>
-          
+          <div className="sm:mx-auto sm:w-full">
+            <h2 className="text-2xl font-bold text-gray-900 text-center mb-8">
+              Add New Employee
+            </h2>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">First Name</label>
-                <input
-                  type="text"
-                  name="firstName"
-                  required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Last Name</label>
-                <input
-                  type="text"
-                  name="lastName"
-                  required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">DNI</label>
-                <input
-                  type="text"
-                  name="dni"
-                  required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Phone</label>
-                <input
-                  type="tel"
-                  name="phone"
-                  required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                  onChange={handleChange}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700"></label>
-                <input
-                  type="email"
-                  name="email"
-                  required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                  onChange={handleChange}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Role</label>
-                <select
-                  name="roleId"
-                  required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                  onChange={handleChange}
-                >
-                  <option value="">Select a role</option>
-                  {roles.map((role) => (
-                    <option key={role.id} value={role.id}>
-                      {role.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <FormInput
+                label="First Name"
+                name="firstName"
+                type="text"
+                value={formData.firstName}
+                onChange={handleChange}
+              />
+              <FormInput
+                label="Last Name"
+                name="lastName"
+                type="text"
+                value={formData.lastName}
+                onChange={handleChange}
+              />
+              <FormInput
+                label="DNI"
+                name="dni"
+                type="text"
+                value={formData.dni}
+                onChange={handleChange}
+              />
+              <FormInput
+                label="Phone"
+                name="phone"
+                type="tel"
+                value={formData.phone}
+                onChange={handleChange}
+              />
+              <FormInput
+                label="Email"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+              />
+              <FormInput
+                label="Password"
+                name="password"
+                type="password"
+                value={formData.password}
+                onChange={handleChange}
+              />
+              <RoleSelect
+                roles={roles}
+                value={formData.roleId}
+                onChange={handleChange}
+              />
             </div>
 
             <div className="flex justify-end">
               <button
                 type="submit"
-                className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 shadow-sm"
+                className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors duration-200 shadow-sm"
               >
                 <Save className="w-5 h-5 mr-2" />
                 Save Employee
@@ -168,6 +147,7 @@ const AddEmployeeForm = () => {
           </form>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

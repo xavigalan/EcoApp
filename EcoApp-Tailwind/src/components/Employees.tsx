@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { UserWithRoleDTO } from '../types/User';
 import { Users, Mail, Phone, Calendar, BadgeCheck, Loader2 } from 'lucide-react';
-import AddEmployeeButton from './AddEmployeeButton.tsx';
+import AddEmployeeButton from './AddEmployeeButton';
 
 const Employees = () => {
   const [users, setUsers] = useState<UserWithRoleDTO[]>([]);
