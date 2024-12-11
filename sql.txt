@@ -4,7 +4,6 @@ DROP SCHEMA IF EXISTS `ecoapp`;
 -- Crear el esquema nuevo
 CREATE SCHEMA IF NOT EXISTS `ecoapp` DEFAULT CHARACTER SET utf8;
 USE `ecoapp`;
-
 -- --------------------------------------------------------
 -- CREACIÓN DE TABLAS
 -- Crear la tabla de Roles
@@ -17,10 +16,10 @@ CREATE TABLE IF NOT EXISTS `roles` (
 -- Crear la tabla de Usuarios
 CREATE TABLE IF NOT EXISTS `users` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `first_name` VARCHAR(100),
-    `last_name` VARCHAR(200),
-    `dni` VARCHAR(9),
-    `phone` VARCHAR(15),
+    `first_name` VARCHAR(100) NOT NULL,
+    `last_name` VARCHAR(200) NOT NULL,
+    `dni` VARCHAR(9) NOT NULL UNIQUE,
+    `phone` VARCHAR(15) NOT NULL UNIQUE,
     `email` VARCHAR(255) NOT NULL UNIQUE,
     `password` VARCHAR(255) NOT NULL,
     `role_id` INT NOT NULL,
@@ -35,80 +34,22 @@ CREATE TABLE IF NOT EXISTS `service_types` (
     `description` VARCHAR(255)
 ) ENGINE = InnoDB;
 
--- Crear la tabla de Estados de Servicio
-CREATE TABLE IF NOT EXISTS `service_status` (
+CREATE TABLE IF NOT EXISTS `services` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `status` VARCHAR(50) NOT NULL
-) ENGINE = InnoDB;
-
--- Crear la tabla de Solicitudes de Servicio (con manager_id directamente en la tabla)
-CREATE TABLE IF NOT EXISTS `service_requests` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `client_id` INT NOT NULL,  
+    `user_id` INT NOT NULL,
     `service_type_id` INT NOT NULL,  
     `location_latitude` DECIMAL(10, 8),  
     `location_longitude` DECIMAL(11, 8),  
-    `location_address` VARCHAR(255),  
-    `description` TEXT,              
-    `status_id` INT NOT NULL DEFAULT 1, 
-    `creation_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (`client_id`) REFERENCES `users`(`id`),
-    FOREIGN KEY (`service_type_id`) REFERENCES `service_types`(`id`),
-    FOREIGN KEY (`status_id`) REFERENCES `service_status`(`id`)
-) ENGINE = InnoDB;
-
-CREATE TABLE IF NOT EXISTS `service_request_managers` (
-    `service_request_id` INT NOT NULL, 
-    `manager_id` INT NOT NULL,
-    PRIMARY KEY (`service_request_id`, `manager_id`),
-    FOREIGN KEY (`service_request_id`) REFERENCES `service_requests`(`id`),
-    FOREIGN KEY (`manager_id`) REFERENCES `users`(`id`)
-) ENGINE = InnoDB;
-
-
-CREATE TABLE IF NOT EXISTS `services` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `service_request_id` INT NOT NULL, 
-    `employee_id` INT NOT NULL,
-    `status_id` INT NOT NULL DEFAULT 2, -- Estado inicial (2: accepted)
+    `location_address` VARCHAR(255),      
     `start_date` DATETIME,              
-    `end_date` DATETIME,                
-    `remarks` TEXT,
+    `end_date` DATETIME,
+    `description` VARCHAR(255),        
     `photo_before` LONGBLOB NULL, -- Foto antes de realizar el servicio
     `photo_after` LONGBLOB NULL,  -- Foto después de realizar el servicio
-    FOREIGN KEY (`service_request_id`) REFERENCES `service_requests`(`id`),
-    FOREIGN KEY (`employee_id`) REFERENCES `users`(`id`),
-    FOREIGN KEY (`status_id`) REFERENCES `service_status`(`id`)
+    FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`service_type_id`) REFERENCES `service_types`(`id`)
 ) ENGINE = InnoDB;
 
-
--- Crear la tabla de Historial de Servicios (con el usuario que hizo el cambio)
-CREATE TABLE IF NOT EXISTS `service_logs` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `service_id` INT NOT NULL,
-    `status_id` INT NOT NULL,  
-    `user_id` INT NOT NULL,  -- Usuario que cambió el estado
-    `date` DATETIME NOT NULL,
-    FOREIGN KEY (`service_id`) REFERENCES `services`(`id`),
-    FOREIGN KEY (`status_id`) REFERENCES `service_status`(`id`),
-    FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)  -- Relación con el usuario que hizo el cambio
-) ENGINE = InnoDB;
-
-CREATE TABLE IF NOT EXISTS `service_employees` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `service_id` INT NOT NULL,      -- Relación con `services`
-    `employee_id` INT NOT NULL,    -- Relación con `users`
-    FOREIGN KEY (`service_id`) REFERENCES `services`(`id`),
-    FOREIGN KEY (`employee_id`) REFERENCES `users`(`id`)
-) ENGINE = InnoDB;
-
-CREATE TABLE IF NOT EXISTS `service_managers` (
-    `service_id` INT NOT NULL,        -- Relación con el `service`
-    `manager_id` INT NOT NULL,        -- Relación con el `manager`
-    PRIMARY KEY (`service_id`, `manager_id`),
-    FOREIGN KEY (`service_id`) REFERENCES `services`(`id`),
-    FOREIGN KEY (`manager_id`) REFERENCES `users`(`id`)
-) ENGINE = InnoDB;
 
 
 -- Crear la tabla de Tipos de Puntos (Type Points)
@@ -122,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `map_points` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `name` VARCHAR(100) NOT NULL,
     `type_id` INT NOT NULL,  -- Relacionado con la tabla type_points
-    `description` TEXT,
+    `description` VARCHAR(255),
     `latitude` DECIMAL(10, 8) NOT NULL,  -- Latitud con precisión de 8 decimales
     `longitude` DECIMAL(11, 8) NOT NULL,  -- Longitud con precisión de 8 decimales
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -136,14 +77,10 @@ INSERT INTO `roles` (name, description) VALUES
 ('Customer', 'Role for users who are customers consuming services or products'),
 ('Manager', 'Role for users who are managers with administrative permissions');
 
--- Insertar Status de Servicios
-INSERT INTO `service_status` (`status`) VALUES 
-('pending'), ('accepted'), ('in progress'), ('completed');
-
 -- Insertar Usuarios
 INSERT INTO `users` (`first_name`, `last_name`, `dni`, `phone`, `email`, `password`, `role_id`) 
 VALUES 
-('Juan', 'Pérez Gómez', '12345678A', '612345678', 'juan.perez@email.com', 'password123', 
+('Juan', 'Pérez Gómez', '12345678A', '612343678', 'juan.perez@email.com', 'password123', 
 (SELECT `id` FROM `roles` WHERE `name` = 'Waste Collector')),
 
 ('Laura', 'González Pérez', '56789012E', '656789012', 'laura.gonzalez@email.com', 'password202', 
@@ -165,6 +102,32 @@ INSERT INTO `service_types` (`name`, `description`) VALUES
 ('Events', 'Services related to event organization'),
 ('Others', 'Any other type of service not classified previously');
 
+-- Inserción de un servicio de reciclaje
+INSERT INTO `services` (`user_id`, `service_type_id`, `location_latitude`, `location_longitude`, `location_address`, `start_date`, `end_date`, `description`, `photo_before`, `photo_after`)
+VALUES 
+(1, 1, 41.15612, 1.10687, 'Reciclaje central', '2024-12-01 10:00:00', '2024-12-01 14:00:00', 'Reciclaje de materiales plásticos', NULL, NULL);
+
+-- Inserción de un servicio de jardinería
+INSERT INTO `services` (`user_id`, `service_type_id`, `location_latitude`, `location_longitude`, `location_address`, `start_date`, `end_date`, `description`, `photo_before`, `photo_after`)
+VALUES 
+(2, 2, 41.15700, 1.10700, 'Parque Central de Tarragona', '2024-12-02 08:00:00', '2024-12-02 11:30:00', 'Mantenimiento de jardines', NULL, NULL);
+
+-- Inserción de un servicio de limpieza
+INSERT INTO `services` (`user_id`, `service_type_id`, `location_latitude`, `location_longitude`, `location_address`, `start_date`, `end_date`, `description`, `photo_before`, `photo_after`)
+VALUES 
+(3, 3, 41.15900, 1.10800, 'Zona industrial Reus', '2024-12-03 09:00:00', '2024-12-03 12:00:00', 'Limpieza de residuos industriales', NULL, NULL);
+
+-- Inserción de un servicio de reparación de calles
+INSERT INTO `services` (`user_id`, `service_type_id`, `location_latitude`, `location_longitude`, `location_address`, `start_date`, `end_date`, `description`, `photo_before`, `photo_after`)
+VALUES 
+(4, 4, 41.16000, 1.10900, 'Avenida de Cataluña', '2024-12-04 10:00:00', '2024-12-04 14:00:00', 'Reparación de baches en la carretera', NULL, NULL);
+
+-- Inserción de un servicio de reciclaje de textiles
+INSERT INTO `services` (`user_id`, `service_type_id`, `location_latitude`, `location_longitude`, `location_address`, `start_date`, `end_date`, `description`, `photo_before`, `photo_after`)
+VALUES 
+(5, 2, 41.16100, 1.11000, 'Centro de reciclaje de textiles', '2024-12-05 11:00:00', '2024-12-05 14:30:00', 'Reciclaje de ropa y textiles', NULL, NULL);
+
+
 -- Insertar Tipos de Puntos
 INSERT INTO `type_points` (`name`) VALUES
 ('Container'),
@@ -184,28 +147,5 @@ VALUES
 ('Other Recycling Point Tarragona', 4, 'Miscellaneous recycling point in Tarragona', 41.1200, 1.2400),
 ('Other Recycling Point Reus', 4, 'Miscellaneous recycling point in Reus', 41.1480, 1.1100);
 
--- Insertar Solicitudes de Servicio (Cliente hace la solicitud)
-INSERT INTO `service_requests` (`client_id`, `service_type_id`, `location_latitude`, `location_longitude`, `location_address`, `description`, `status_id`) 
-VALUES
-(2, 1, 40.712776, -74.005974, 'Main Street 123', 'Prune the tree in front of my house', 1);
 
--- Insertar la relación de Managers y Solicitudes
-INSERT INTO `service_request_managers` (`service_request_id`, `manager_id`)
-VALUES 
-(1, 4);
 
--- Insertar Servicios (Asignando al Empleado para ejecutar el servicio)
-INSERT INTO `services` (`service_request_id`, `employee_id`, `status_id`, `start_date`, `end_date`) 
-VALUES
-(1, 5, 2, NOW(), DATE_ADD(NOW(), INTERVAL 2 HOUR));
-
--- Insertar Logs de Servicios (Solo Manager y Employee pueden cambiar el estado)
--- Empleado cambia el estado del servicio a 'in progress'
-INSERT INTO `service_logs` (`service_id`, `status_id`, `user_id`, `date`) 
-VALUES 
-(1, 3, 5, NOW());
-
--- Manager cambia el estado del servicio a 'completed'
-INSERT INTO `service_logs` (`service_id`, `status_id`, `user_id`, `date`) 
-VALUES 
-(1, 4, 4, NOW());
