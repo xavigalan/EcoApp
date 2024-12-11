@@ -12,7 +12,7 @@ export default function RegisterPage() {
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [roleId, setRoleId] = useState("1");
+    const [roleId, setRoleId] = useState("3");
 
     const navigate = useNavigate();
 
@@ -66,7 +66,7 @@ export default function RegisterPage() {
             setPhone("");
             setEmail("");
             setPassword("");
-            setRoleId("1");
+            setRoleId("3");
 
         } catch (error) {
             console.error("Error during registration:", error);

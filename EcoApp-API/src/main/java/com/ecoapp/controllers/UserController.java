@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ecoapp.dtos.UserWithRoleDTO;
@@ -51,8 +52,8 @@ public class UserController {
 		Optional<User> user = userService.findUserById(id);
 		return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}
-	
-	// Obtener un usuarioDtoWithRole por ID
+
+	// PARA DEVOLVER UN USUARIO POR ID CON EL OBJETO ROLE ENTERO A TRAVÉS DE LA DTO
 	@GetMapping("/{id}/with-role")
     public ResponseEntity<UserWithRoleDTO> getUserWithRole(@PathVariable Long id) {
         logger.info("Request to get user with id " + id + " and its role");
@@ -60,7 +61,34 @@ public class UserController {
         Optional<UserWithRoleDTO> userWithRoleDTO = userService.findUserWithRoleById(id);
         return userWithRoleDTO.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
+	
+	// PARA DEVOLVER UNA LISTA DE USUARIOS CON ROL ESPECIFÍCO
+	@GetMapping("/role/{roleId}")
+	public ResponseEntity<List<UserWithRoleDTO>> getUsersByRole(@PathVariable("roleId") Long roleId) {
+	    logger.info("Request to get users with role id " + roleId);
 
+	    List<UserWithRoleDTO> usersWithRole = userService.findUsersByRole(roleId);
+	    if (usersWithRole.isEmpty()) {
+	        return ResponseEntity.notFound().build();
+	    }
+	    return ResponseEntity.ok(usersWithRole);
+	}
+	
+	
+	// PARA DEVOLVER UNA LISTA DE USUARIOS CON ROLES ESPECIFÍCOS
+	@GetMapping("/roles/{roleIds}")
+	public ResponseEntity<List<UserWithRoleDTO>> getUsersByRoles(
+	        @PathVariable List<Long> roleIds) {
+	    logger.info("Request to get users with roles: " + roleIds);
+
+	    List<UserWithRoleDTO> usersWithRoles = userService.findUsersByRoles(roleIds);
+	    if (usersWithRoles.isEmpty()) {
+	        return ResponseEntity.notFound().build();
+	    }
+	    return ResponseEntity.ok(usersWithRoles);
+	}
+
+	
 	// Crear un nuevo usuario
 	@PutMapping
 	public ResponseEntity<?> addUser(@RequestBody User user) {

@@ -102,7 +102,7 @@ const Navbar: React.FC = () => {
               Contact
             </Link>
             <a
-              href="/about"
+              href="/employees"
               className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium"
             >
               Employees
