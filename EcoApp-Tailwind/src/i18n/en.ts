@@ -21,6 +21,21 @@ export const enTranslations = {
       "logout": "Logout",
       "login": "Login",
       "register": "Register"
+    },
+    type: {
+      tree: "Pruning",
+      furniture: 'Furniture',
+      event: 'Events',
+      trash: 'Waste',
+      description: 'description',
+      image: 'Image (optional)',
+      enviar: 'Send report',
+      reporte: 'Report type',
+      location: 'Location mode',
+      actual: 'Your current location',
+      click: 'Click on the map',
+      buscar: 'Search for address',
     }
+    
   };
   

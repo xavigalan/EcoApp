@@ -1,3 +1,5 @@
+import { report } from "process";
+
 export const esTranslations = {
   nav: {
     services: 'Servicios',
@@ -38,6 +40,21 @@ export const esTranslations = {
       email: 'Correo electrónico',
       message: 'Mensaje',
       send: 'Enviar Mensaje'
-    }
+    },
+  },
+  type:{
+    tree:"Poda",
+    furniture:'Muebles',
+    event:'Eventos',
+    trash:'Residuos',
+    description:'descripción',
+    image:'Imagen (opcional)',
+    enviar:'Enviar reporte',
+    reporte:'Tipo de reporte',
+    location:'Modo de localización',
+    actual:'Tú ubicacion actual',
+    click:'Clica en el mapa',
+    buscar:'Busca la dirección',
+
   }
 };

@@ -21,6 +21,21 @@ export const caTranslations = {
       "logout": "Tancar sessió",
       "login": "Iniciar sessió",
       "register": "Registrar-se"
+    },
+    type: {
+      tree: "Poda",
+      furniture: 'Mobles',
+      event: 'Esdeveniments',
+      trash: 'Residus',
+      description: 'descripció',
+      image: 'Imatge (opcional)',
+      enviar: 'Enviar informe',
+      reporte: 'Tipus d\'informe',
+      location: 'Mode de localització',
+      actual: 'La teva ubicació actual',
+      click: 'Fes clic al mapa',
+      buscar: 'Cerca l\'adreça',
     }
+    
   };
   

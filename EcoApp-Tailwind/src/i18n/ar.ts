@@ -39,5 +39,20 @@ export const arTranslations = {
       message: 'الرسالة',
       send: 'إرسال الرسالة'
     }
+  },
+  type: {
+    tree: "تشذيب",
+    furniture: 'أثاث',
+    event: 'فعاليات',
+    trash: 'نفايات',
+    description: 'وصف',
+    image: 'صورة (اختياري)',
+    enviar: 'إرسال التقرير',
+    reporte: 'نوع التقرير',
+    location: 'وضع الموقع',
+    actual: 'موقعك الحالي',
+    click: 'انقر على الخريطة',
+    buscar: 'ابحث عن العنوان',
   }
+  
 };
