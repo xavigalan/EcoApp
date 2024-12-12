@@ -4,10 +4,10 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Cookies from 'js-cookie';
 import { ArrowLeft, Save } from 'lucide-react';
-import { Role, UserFormData } from '../types/User';
-import { registerUser, fetchRoles } from '../utils/api';
-import FormInput from './forms/FormInput';
-import RoleSelect from './forms/RoleSelect';
+import { Role, UserFormData } from '../../types/User';
+import { registerUser, fetchRoles } from '../../utils/api';
+import FormInput from '../forms/FormInput';
+import RoleSelect from '../forms/RoleSelect';
 
 const initialFormData: UserFormData = {
   firstName: '',

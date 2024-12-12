@@ -2,16 +2,29 @@ import React from 'react';
 import { MapPoint } from '../../types/MapPoints';
 import { MapPin, Navigation, Info, Map as MapIcon, Edit2, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface MapPointCardProps {
   point: MapPoint;
-  onDelete: (id: number) => void;
+  onDelete: (id: number) => Promise<void>;
 }
 
 const MapPointCard: React.FC<MapPointCardProps> = ({ point, onDelete }) => {
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete this location?')) {
-      onDelete(point.id);
+      try {
+        await onDelete(point.id);
+        toast.success('Location deleted successfully!', {
+          position: 'top-right',
+          autoClose: 3000,
+        });
+      } catch (error) {
+        toast.error('Failed to delete the location. Please try again.', {
+          position: 'top-right',
+          autoClose: 3000,
+        });
+      }
     }
   };
 
@@ -81,4 +94,5 @@ const MapPointCard: React.FC<MapPointCardProps> = ({ point, onDelete }) => {
     </div>
   );
 };
+
 export default MapPointCard;

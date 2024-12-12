@@ -10,10 +10,10 @@ import MapPointsList from './components/mappoints/MapPointsList';
 import ProfileModal from './components/ProfileModal';
 import Contact from './components/Contact';
 import Services from './components/Services';
-import Employees from './components/Employees';
+import Employees from './components/users/Employees';
 import ProtectedRoute from './components/ProtectedRoute';
-import { AuthProvider } from './components/AuthContext';
-import  AddEmployeeForm from './components/AddEmployeeForm';
+import { AuthProvider } from './components/users/AuthContext';
+import  AddEmployeeForm from './components/users/AddEmployeeForm';
 
 
 
