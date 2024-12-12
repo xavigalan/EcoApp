@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { UserWithRoleDTO } from '../types/User';
 import { Users, Mail, Phone, Calendar, BadgeCheck, Loader2 } from 'lucide-react';
+import AddEmployeeButton from './AddEmployeeButton';
 
 const Employees = () => {
   const [users, setUsers] = useState<UserWithRoleDTO[]>([]);
@@ -9,7 +10,7 @@ const Employees = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch('http://localhost:8080/users/roles/1,2,4');
+        const response = await fetch('http://localhost:8080/users/roles/1,2,3');
         const data: UserWithRoleDTO[] = await response.json();
         setUsers(data);
       } catch (error) {
@@ -31,14 +32,17 @@ const Employees = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8" style={{position:'fixed', width:'-webkit-fill-available', height:'-webkit-fill-available'}}>
+    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className="text-3xl font-bold text-gray-900">Our Team</h2>
             <p className="mt-2 text-gray-600">Meet our talented team members</p>
           </div>
-          <Users className="w-8 h-8 text-blue-500" />
+          <div className="flex items-center space-x-4">
+            <AddEmployeeButton />
+            <Users className="w-8 h-8 text-blue-500" />
+          </div>
         </div>
         
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">

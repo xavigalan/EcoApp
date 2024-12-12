@@ -11,15 +11,29 @@ import ProfileModal from './components/ProfileModal';
 import Contact from './components/Contact';
 import Services from './components/Services';
 import Employees from './components/Employees';
-import ProtectedRoute from './components/ProtectedRoute'; 
+import ProtectedRoute from './components/ProtectedRoute';
+import { AuthProvider } from './components/AuthContext';
+import  AddEmployeeForm from './components/AddEmployeeForm';
+
+
 
 function App() {
   return (
-    <div className="App">
-      <Navbar />
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+      <div className="App">
+        <Navbar />
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/notice" element={<Notice />} />
+          <Route path="/employees" element={<Employees />} />
+          <Route path="/add/employees" element={<AddEmployeeForm />} />
+
+          {/*
+          <Route path="/notice" element={<Notice />} />
+          <Route path="/points" element={<Points />} />
+          */}
+          <Route path="/contact" element={<Contact />} />
 
         {/* Rutas protegidas */}
         <Route
