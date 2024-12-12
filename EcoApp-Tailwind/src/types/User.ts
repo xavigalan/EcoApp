@@ -19,3 +19,13 @@ export interface ApiResponse {
   userId: string;
   message?: string;
 }
+
+export interface UserWithRoleDTO {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  creationDate: string; 
+  role: Role;
+}

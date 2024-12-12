@@ -11,8 +11,6 @@ const Map = () => {
   const [position, setPosition] = useState<[number, number] | null>(null);
   const [mapPoints, setMapPoints] = useState<any[]>([]); // Estado para almacenar los puntos del mapa
 
-
-
   // LLAMAR BACKEND
   useEffect(() => {
     fetch('http://localhost:8080/mappoints/types')

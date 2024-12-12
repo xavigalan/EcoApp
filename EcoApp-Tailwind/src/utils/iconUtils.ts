@@ -15,7 +15,7 @@ import events from '../assets/events.png';
 const ICON_SIZES = {
   DEFAULT: [32, 32] as [number, number],
   LARGE: [38, 40] as [number, number],
-  PERSON: [40, 40] as [number, number],
+  PERSON: [50, 50] as [number, number],
 };
 
 const ICON_ANCHORS = {
