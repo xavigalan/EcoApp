@@ -78,21 +78,21 @@ const Navbar: React.FC = () => {
 
           {/* Desktop Links */}
           <div className="hidden md:flex space-x-12">
-            <a href="/services" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+            <Link to="/services" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
               {t('nav.services')}
-            </a>
-            <a href="/about" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+            </Link>
+            <Link to="/notice" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
               {t('nav.notice')}
-            </a>
-            <a href="/contact" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+            </Link>
+            <Link to="/contact" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
               {t('nav.contact')}
-            </a>
-            <a href="/about" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+            </Link>
+            <Link to="/employees" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
               {t('nav.employees')}
-            </a>
-            <a href="/about" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+            </Link>
+            <Link to="/points" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
               {t('nav.points')}
-            </a>
+            </Link>
           </div>
 
           <div className="hidden md:flex items-center space-x-6">
@@ -159,18 +159,18 @@ const Navbar: React.FC = () => {
           <Link to="/services" className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700" onClick={handleLinkClick}>
             {t('nav.services')}
           </Link>
-          <a href="/about" className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700" onClick={handleLinkClick}>
+          <Link to="/notice" className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700" onClick={handleLinkClick}>
             {t('nav.notice')}
-          </a>
-          <a href="/contact" className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700" onClick={handleLinkClick}>
+          </Link>
+          <Link to="/contact" className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700" onClick={handleLinkClick}>
             {t('nav.contact')}
-          </a>
-          <a href="/about" className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700" onClick={handleLinkClick}>
+          </Link>
+          <Link to="/employees" className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700" onClick={handleLinkClick}>
             {t('nav.employees')}
-          </a>
-          <a href="/about" className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700" onClick={handleLinkClick}>
+          </Link>
+          <Link to="/points" className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700" onClick={handleLinkClick}>
             {t('nav.points')}
-          </a>
+          </Link>
         </div>
 
         <div className="border-t border-white mt-2"></div>
