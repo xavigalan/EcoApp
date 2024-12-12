@@ -6,34 +6,43 @@ import LanguageSelector from './LanguageSelector';
 import ProfileModal from "./ProfileModal";
 
 const Navbar: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); // Estado para el modal
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { t } = useTranslation();
   const [userProfile, setUserProfile] = useState({
-    name: "",
+    firstName: "",
     email: "",
     profilePicture: "",
   });
 
   useEffect(() => {
     const userSession = Cookies.get("userSession");
-
+  
     if (userSession) {
+      const parsedSession = JSON.parse(userSession); // Asegúrate de parsear la cookie
       setIsLoggedIn(true);
       
       const fetchUserData = async () => {
+        const userId = parsedSession.id;// Asegúrate de que el userId esté disponible
+  
+        if (!userId) {
+          console.error("El ID del usuario no está disponible.");
+          return;
+        }
+  
         try {
-          const response = await fetch("http://localhost:8080/user/profile", {
+          const response = await fetch(`http://localhost:8080/users/${userId}`, {
             method: "GET",
             headers: {
               "Authorization": `Bearer ${Cookies.get("userSession")}`,
               "Content-Type": "application/json",
             },
           });
+  
           if (!response.ok) {
             throw new Error("No se pudo obtener el perfil del usuario");
           }
-
+  
           const data = await response.json();
           setUserProfile({
             name: data.name,
@@ -44,7 +53,7 @@ const Navbar: React.FC = () => {
           console.error("Error al obtener los datos del usuario:", error);
         }
       };
-
+  
       fetchUserData();
     }
   }, []);
@@ -58,6 +67,7 @@ const Navbar: React.FC = () => {
       profilePicture: "",
     });
     setIsOpen(false);
+    window.location.href = "/";
   };
 
   const handleLinkClick = () => {
@@ -95,16 +105,19 @@ const Navbar: React.FC = () => {
             </Link>
           </div>
 
+          {/* User Profile and Authentication */}
           <div className="hidden md:flex items-center space-x-6">
             <LanguageSelector />
             {isLoggedIn ? (
               <div className="flex items-center space-x-4">
+                {/* User Profile Picture */}
                 <img
                   src={userProfile.profilePicture}
                   alt="User Profile"
                   className="h-10 w-10 rounded-full border-2 border-white cursor-pointer"
-                  onClick={() => setIsOpen(true)} // Abre el modal al hacer click
+                  onClick={() => setIsOpen(true)} // Abre el modal al hacer clic
                 />
+                {/* Logout Button */}
                 <button
                   onClick={handleLogout}
                   className="text-white hover:bg-red-700 p-2 rounded-md text-sm font-medium"
@@ -146,14 +159,10 @@ const Navbar: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile Links with Animation */}
+      {/* Mobile Links */}
       <div
         className={`${isOpen ? "max-h-screen opacity-100 visibility-visible" : "max-h-0 opacity-0 visibility-hidden pointer-events-none"} transition-all ease-in-out duration-300 md:hidden bg-green-800`}
-        style={{
-          position: "fixed",
-          zIndex: 10,
-          width: "100%",
-        }}
+        style={{ position: "fixed", zIndex: 10, width: "100%" }}
       >
         <div className="space-y-1 px-2 pb-3 pt-2">
           <Link to="/services" className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700" onClick={handleLinkClick}>
@@ -165,42 +174,15 @@ const Navbar: React.FC = () => {
           <Link to="/contact" className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700" onClick={handleLinkClick}>
             {t('nav.contact')}
           </Link>
-          <Link to="/employees" className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700" onClick={handleLinkClick}>
-            {t('nav.employees')}
-          </Link>
-          <Link to="/points" className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700" onClick={handleLinkClick}>
-            {t('nav.points')}
-          </Link>
         </div>
-
-        <div className="border-t border-white mt-2"></div>
-        {isLoggedIn ? (
-          <div className="flex flex-col items-center justify-center px-3 py-2">
-            <img
-              src={userProfile.profilePicture}
-              alt="User Profile"
-              className="h-10 w-10 rounded-full border-2 border-white cursor-pointer"
-              onClick={() => setIsOpen(true)}
-            />
-            <button
-              onClick={handleLogout}
-              className="block text-center text-white mt-2 p-2 rounded-md text-sm font-medium justify-center items-center hover:bg-red-700"
-            >
-              {t('nav.logout')}
-            </button>
-          </div>
-        ) : (
-          <>
-            <Link to="/login" className="block text-white px-3 py-2 rounded-md text-base font-medium hover:bg-green-700" onClick={handleLinkClick}>
-              {t('nav.login')}
-            </Link>
-            <Link to="/register" className="block text-white px-3 py-2 rounded-md text-base font-medium hover:bg-green-700" onClick={handleLinkClick}>
-              {t('nav.register')}
-            </Link>
-          </>
-        )}
       </div>
-      <ProfileModal isOpen={isOpen} onClose={() => setIsOpen(false)} user={userProfile} />
+
+      {/* Profile Modal */}
+      <ProfileModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        user={userProfile} // Pasa los datos del usuario
+      />
     </nav>
   );
 };
