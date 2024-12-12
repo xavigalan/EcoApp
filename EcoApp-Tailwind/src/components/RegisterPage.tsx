@@ -43,9 +43,8 @@ export default function RegisterPage() {
                 throw new Error(`Error: ${response.statusText}`);
             }
             const data = await response.json();
-            Cookies.set("userToken", data.token, { expires: 7 });
-            Cookies.set("userId", data.userId, { expires: 7 });
-            Cookies.set("userSession", data.token, { expires: 7 });
+
+            Cookies.set("userSession", email, { expires: 7 });
 
             toast.success("Registration successful!", {
                 position: "top-right",
@@ -58,7 +57,7 @@ export default function RegisterPage() {
                 theme: "light",
             });
 
-            navigate("/");
+            window.location.href = "/";
 
             setFirstName("");
             setLastName("");

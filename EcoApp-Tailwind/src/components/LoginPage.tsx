@@ -7,12 +7,11 @@ import { EyeIcon, EyeSlashIcon } from '@heroicons/react/20/solid';
 import { useTranslation } from 'react-i18next';
 
 const LoginPage: React.FC = () => {
-    const { t } = useTranslation();
+    const { t } = useTranslation(); // Use the translation function
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isLoggedIn, setIsLoggedIn] = useState(!!Cookies.get("userSession"));
     const [showPassword, setShowPassword] = useState(false);
-    
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -35,7 +34,7 @@ const LoginPage: React.FC = () => {
 
             if (user) {
                 setIsLoggedIn(true);
-                toast.success('🦄 Welcome!', {
+                toast.success('🦄 ¡Bienvenido!', {
                     position: "top-right",
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -46,15 +45,18 @@ const LoginPage: React.FC = () => {
                     theme: "light"
                 });
 
-                Cookies.set("userSession", email, { expires: 7 });
+                const userSession = { email, roleId: user.roleId };
+                console.log("Guardando en cookie:", userSession);  // Verificar el objeto antes de guardarlo
+                Cookies.set("userSession", JSON.stringify(userSession), { expires: 7 });
+                
                 // Forzar la recarga
                 window.location.href = "/";
             } else {
-                toast.error("Invalid email or password.");  // Notificación de error
+                toast.error("Correo electrónico o contraseña incorrectos.");  // Notificación de error
             }
         } catch (error) {
-            console.error("Error during login:", error);
-            toast.error("An error occurred during login.");
+            console.error("Error durante el inicio de sesión:", error);
+            toast.error("Ocurrió un error durante el inicio de sesión.");
         }
     };
 
@@ -67,14 +69,14 @@ const LoginPage: React.FC = () => {
         <div className="flex flex-col justify-center items-center" style={{ height: "100vh", width: "100vw", position: "fixed", zIndex: 2 }}>
             <div className="sm:mx-auto sm:w-full">
                 <img alt="EcoApp" src="/images/LogoSolo.png" className="mx-auto h-20" />
-                <h2 className="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900">Sign in to your account</h2>
+                <h2 className="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900">{t('login.sign_in')}</h2> {/* Using translation for 'Sign in to your account' */}
             </div>
 
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                    <label htmlFor="email" className="block text-left text-sm font-medium text-gray-900">{t('email_address')}</label>
-                    <div className="mt-2">
+                        <label htmlFor="email" className="block text-left text-sm font-medium text-gray-900">{t('login.email_address')}</label> {/* Using translation for 'Email Address' */}
+                        <div className="mt-2">
                             <input
                                 id="email"
                                 name="email"
@@ -90,7 +92,7 @@ const LoginPage: React.FC = () => {
 
                     <div>
                         <div className="flex items-center justify-between">
-                            <label htmlFor="password" className="block text-sm font-medium text-gray-900">Password</label>
+                            <label htmlFor="password" className="block text-sm font-medium text-gray-900">{t('login.password')}</label> {/* Using translation for 'Password' */}
                         </div>
                         <div className="mt-2 relative">
                             <input
@@ -122,10 +124,10 @@ const LoginPage: React.FC = () => {
                             type="submit"
                             className="flex w-full justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
                         >
-                            Sign in
+                            {t('login')} {/* Using translation for 'Sign in' */}
                         </button>
                         <div className="text-sm mt-4 me-4 text-right">
-                            <a href="#" className="font-semibold text-green-600 hover:text-green-500">Forgot password?</a>
+                            <a href="#" className="font-semibold text-green-600 hover:text-green-500">{t('login.forgot_password')}</a> {/* Using translation for 'Forgot password?' */}
                         </div>
                     </div>
                 </form>

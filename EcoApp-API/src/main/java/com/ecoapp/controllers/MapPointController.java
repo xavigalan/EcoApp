@@ -90,7 +90,7 @@ public class MapPointController {
 	}
 
 	// Eliminar un MapPoint por ID
-	@DeleteMapping("/mappoints/{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteMapPoint(@PathVariable Long id) {
 		Optional<MapPoint> existingMapPoint = mapPointService.findMapPointById(id);
 

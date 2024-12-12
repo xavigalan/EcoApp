@@ -2,12 +2,15 @@ import { useState } from 'react';
 import { TreePine, Sofa, CalendarDays, Trash2 } from 'lucide-react';
 import { ReportType, LocationMode } from '../types';
 import { LocationPicker } from './LocationPicker';
+import { useTranslation } from 'react-i18next';
+import LanguageSelector from './LanguageSelector';
 
 type ReportFormProps = {
   onLocationModeChange: (mode: LocationMode) => void;
   onLocationSelect: (lat: number, lng: number) => void;
   onSubmit: (data: { type: ReportType; description: string; image?: File }) => void;
   onReportTypeChange: (type: ReportType) => void;
+
 };
 
 export function ReportForm({ onLocationModeChange, onLocationSelect, onSubmit, onReportTypeChange }: ReportFormProps) {
@@ -34,53 +37,52 @@ export function ReportForm({ onLocationModeChange, onLocationSelect, onSubmit, o
     setLocationMode(mode);
     onLocationModeChange(mode);
   };
+  const { t } = useTranslation();
+
+  {t('nav.services')}
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow-md">
       <div>
-        <label className="block text-sm font-medium text-gray-700">Report Type</label>
+        <label className="block text-sm font-medium text-gray-700">{t('type.reporte')}  </label>
         <div className="mt-2 grid grid-cols-2 gap-3">
           <button
             type="button"
             onClick={() => handleReportTypeChange('tree')}
-            className={`flex items-center justify-center p-3 border rounded-md ${
-              reportType === 'tree' ? 'border-green-500 bg-green-50' : 'border-gray-300'
-            }`}
+            className={`flex items-center justify-center p-3 border rounded-md ${reportType === 'tree' ? 'border-green-500 bg-green-50' : 'border-gray-300'
+              }`}
+
           >
-            <TreePine className="mr-2" /> Tree
-          </button>
+            <TreePine className="mr-2" />{t('type.tree')}    </button>
           <button
             type="button"
             onClick={() => handleReportTypeChange('furniture')}
-            className={`flex items-center justify-center p-3 border rounded-md ${
-              reportType === 'furniture' ? 'border-blue-500 bg-blue-50' : 'border-gray-300'
-            }`}
+            className={`flex items-center justify-center p-3 border rounded-md ${reportType === 'furniture' ? 'border-blue-500 bg-blue-50' : 'border-gray-300'
+              }`}
           >
-            <Sofa className="mr-2" /> Furniture
+            <Sofa className="mr-2" /> {t('type.furniture')}
           </button>
           <button
             type="button"
             onClick={() => handleReportTypeChange('event')}
-            className={`flex items-center justify-center p-3 border rounded-md ${
-              reportType === 'event' ? 'border-purple-500 bg-purple-50' : 'border-gray-300'
-            }`}
+            className={`flex items-center justify-center p-3 border rounded-md ${reportType === 'event' ? 'border-purple-500 bg-purple-50' : 'border-gray-300'
+              }`}
           >
-            <CalendarDays className="mr-2" /> Event
+            <CalendarDays className="mr-2" /> {t('type.event')}
           </button>
           <button
             type="button"
             onClick={() => handleReportTypeChange('trash')}
-            className={`flex items-center justify-center p-3 border rounded-md ${
-              reportType === 'trash' ? 'border-yellow-500 bg-yellow-50' : 'border-gray-300'
-            }`}
+            className={`flex items-center justify-center p-3 border rounded-md ${reportType === 'trash' ? 'border-yellow-500 bg-yellow-50' : 'border-gray-300'
+              }`}
           >
-            <Trash2 className="mr-2" /> Trash Bin
+            <Trash2 className="mr-2" /> {t('type.trash')}
           </button>
         </div>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">Description</label>
+        <label className="block text-sm font-medium text-gray-700"> {t('type.description')}</label>
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
@@ -90,7 +92,7 @@ export function ReportForm({ onLocationModeChange, onLocationSelect, onSubmit, o
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">Image (optional)</label>
+        <label className="block text-sm font-medium text-gray-700">{t('type.image')}</label>
         <input
           type="file"
           accept="image/*"
@@ -109,7 +111,7 @@ export function ReportForm({ onLocationModeChange, onLocationSelect, onSubmit, o
         type="submit"
         className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
       >
-        Submit Report
+        {t('type.enviar')}
       </button>
     </form>
   );

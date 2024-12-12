@@ -1,15 +1,16 @@
 import Navbar from './components/Navbar';
 import Map from './components/Map';
+import './App.css';
 import './i18n/Config';
 import { Route, Routes } from 'react-router-dom';
 import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 import Notice from './components/Notice';
-import Points from './components/Points';
+import MapPointsList from './components/mappoints/MapPointsList';
 import ProfileModal from './components/ProfileModal';
 import Contact from './components/Contact';
-import Employees from './components/Employees';
 import Services from './components/Services';
+import Employees from './components/Employees';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './components/AuthContext';
 import  AddEmployeeForm from './components/AddEmployeeForm';
@@ -27,6 +28,7 @@ function App() {
           <Route path="/notice" element={<Notice />} />
           <Route path="/employees" element={<Employees />} />
           <Route path="/add/employees" element={<AddEmployeeForm />} />
+          <Route path="/points" element={<MapPointsList />} />
 
           {/*
           <Route path="/notice" element={<Notice />} />
@@ -34,10 +36,31 @@ function App() {
           */}
           <Route path="/contact" element={<Contact />} />
 
-          <Route path="/" element={<Map />} />
-        </Routes>
-        {/* <Map /> */}
-      </div>
+        {/* Rutas protegidas */}
+        <Route
+          path="/notice"
+          element={
+            <ProtectedRoute element={<Notice />} requiredRoleId={1} />
+          }
+        />
+        <Route
+          path="/services"
+          element={
+            <ProtectedRoute element={<Services />} requiredRoleId={1} /> 
+          }
+        />
+        <Route
+          path="/employees"
+          element={
+            <ProtectedRoute element={<Employees />} requiredRoleId={4} />
+          }
+        />
+
+        {/* Rutas públicas */}
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/" element={<Map />} />
+      </Routes>
+    </div>
   );
 }
 
