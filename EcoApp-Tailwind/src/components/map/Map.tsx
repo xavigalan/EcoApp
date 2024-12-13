@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup, Polygon } from 'react-leaflet';
 import L, { LatLngTuple } from 'leaflet';
-import { getIconByType } from '../utils/iconUtils';
-import { DEFAULT_POSITION, REUS_PERIMETER } from '../constants/map';
+import { getIconByType } from '../../utils/iconUtils';
+import { DEFAULT_POSITION, REUS_PERIMETER } from '../../constants/map';
 
 
 

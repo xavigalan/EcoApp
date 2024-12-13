@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, MapPin } from 'lucide-react';
-import { TypePoint } from '../../types/MapPoint';
+import { toast } from 'react-toastify';
+import { TypePoint } from '../../types/MapPoints';
 import FormInput from '../forms/FormInput';
 import TypePointSelect from './TypePointSelect';
+import { createMapPoint } from '../../api/mappoints';
+import { fetchTypePoints } from '../../api/TypePoints';
 
 const AddMapPointForm = () => {
   const navigate = useNavigate();
@@ -17,40 +20,28 @@ const AddMapPointForm = () => {
   });
 
   useEffect(() => {
-    const fetchTypePoints = async () => {
+    const loadTypePoints = async () => {
       try {
-        const response = await fetch('http://localhost:8080/typepoints');
-        const data = await response.json();
+        const data = await fetchTypePoints();
         setTypePoints(data);
       } catch (error) {
         console.error('Error fetching type points:', error);
+        toast.error('Failed to load location types');
       }
     };
 
-    fetchTypePoints();
+    loadTypePoints();
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8080/mappoints', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          latitude: parseFloat(formData.latitude),
-          longitude: parseFloat(formData.longitude),
-          typePoint: { id: parseInt(formData.typePointId) }
-        }),
-      });
-
-      if (response.ok) {
-        navigate('/mappoints');
-      }
+      await createMapPoint(formData);
+      toast.success('Location created successfully!');
+      navigate('/mappoints');
     } catch (error) {
-      console.error('Error creating map point:', error);
+      console.error('Error creating location:', error);
+      toast.error('Failed to create location');
     }
   };
 

@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { TreePine, Sofa, CalendarDays, Trash2 } from 'lucide-react';
-import { ReportType, LocationMode } from '../types';
-import { LocationPicker } from './LocationPicker';
+import { ReportType, LocationMode } from '../../types';
+import { LocationPicker } from '../map/LocationPicker';
 import { useTranslation } from 'react-i18next';
-import LanguageSelector from './LanguageSelector';
+import LanguageSelector from '../LanguageSelector';
 
 type ReportFormProps = {
   onLocationModeChange: (mode: LocationMode) => void;

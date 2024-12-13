@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Cookies from 'js-cookie';
 import { ArrowLeft, Save } from 'lucide-react';
 import { Role, UserFormData } from '../../types/User';
-import { registerUser, fetchRoles } from '../../utils/api';
+import { registerUser, fetchRoles } from '../../api/users';
 import FormInput from '../forms/FormInput';
 import RoleSelect from '../forms/RoleSelect';
 

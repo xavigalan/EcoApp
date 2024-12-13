@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { UserWithRoleDTO } from '../../types/User';
 import { Mail, Phone, Calendar, BadgeCheck, Edit2, Trash2, X, Check } from 'lucide-react';
 import { toast } from 'react-toastify';
-import { updateUser, deleteUser } from '../../utils/api';
+import { updateUser, deleteUser } from '../../api/users';
 
 interface EmployeeCardProps {
   user: UserWithRoleDTO;

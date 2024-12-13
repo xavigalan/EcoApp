@@ -29,7 +29,7 @@ public class TypeController {
 	@Autowired
 	TypePointService typepointService;
 
-	@GetMapping("/typepoints")
+	@GetMapping
 	public List<TypePoint> getTypePoints() {
 		logger.info("Request to /typepoints endpoint (GET)");
 		return typepointService.findAllTypePoints();

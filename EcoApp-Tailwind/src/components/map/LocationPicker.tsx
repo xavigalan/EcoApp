@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { LocationMode } from '../types';
-import { searchAddress } from '../services/geocoding';
+import { LocationMode } from '../../types';
+import { searchAddress } from '../../services/geocoding';
 import { Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import LanguageSelector from './LanguageSelector';
 
 type LocationPickerProps = {
   mode: LocationMode;

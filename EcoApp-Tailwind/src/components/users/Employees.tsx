@@ -6,7 +6,7 @@ import AddEmployeeButton from './AddEmployeeButton';
 import RoleFilter from '../filters/RoleFilter';
 import SearchBar  from '../filters/SearchBar';
 import EmployeeCard from './EmployeeCard';
-import { fetchUsers } from '../../utils/api';
+import { fetchUsers } from '../../api/users';
 
 const Employees = () => {
   const [users, setUsers] = useState<UserWithRoleDTO[]>([]);

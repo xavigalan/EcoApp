@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { TypePoint } from '../../types/MapPoints';
 import FormInput from '../forms/FormInput';
 import TypePointSelect from './TypePointSelect';
-import { fetchMapPointById, updateMapPoint } from '../../utils/api';
+import { fetchMapPointById, updateMapPoint } from '../../api/users';
 
 const EditMapPointForm = () => {
   const navigate = useNavigate();

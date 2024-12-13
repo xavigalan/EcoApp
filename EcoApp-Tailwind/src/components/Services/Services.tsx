@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { MapServices } from '../components/MapServices';
+import { MapServices } from '../map/MapServices';
 import { ReportForm } from './ReportForm';
-import { LocationMode, Report, ReportType } from '../types';
+import { LocationMode, Report, ReportType } from '../../types';
 import { useTranslation } from 'react-i18next';
 
 const defaultPosition: [number, number] = [41.1561, 1.1069];

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Polygon, useMapEvents } from 'react-leaflet';
-import { LocationMode, ReportType } from '../types';
-import { getIconByType } from '../utils/iconUtils';
+import { LocationMode, ReportType } from '../../types';
+import { getIconByType } from '../../utils/iconUtils';
 import 'leaflet/dist/leaflet.css';
-import { MapMarker } from './map/MapMarker';
-import { DEFAULT_POSITION, MAP_CONFIG, REUS_PERIMETER } from '../constants/map';
+import { MapMarker } from './MapMarker';
+import { DEFAULT_POSITION, MAP_CONFIG, REUS_PERIMETER } from '../../constants/map';
 
 type MapProps = {
   position: [number, number];

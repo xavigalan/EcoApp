@@ -4,7 +4,7 @@ import { Loader2, Map as MapIcon } from 'lucide-react';
 import { toast } from 'react-toastify';
 import AddMapPointButton from './AddMapPointButton';
 import MapPointCard from './MapPointCard';
-import { fetchMapPoints, deleteMapPoint } from '../../utils/api';
+import { fetchMapPoints, deleteMapPoint } from '../../api/mappoints';
 
 const MapPointsList = () => {
   const [mapPoints, setMapPoints] = useState<MapPoint[]>([]);
