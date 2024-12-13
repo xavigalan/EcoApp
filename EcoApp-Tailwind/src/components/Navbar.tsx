@@ -4,15 +4,22 @@ import Cookies from "js-cookie";
 import { useTranslation } from 'react-i18next';
 import LanguageSelector from './LanguageSelector';
 import ProfileModal from "./ProfileModal";
+import { UserWithRoleDTO } from "../types/User";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false); // Estado para el modal
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { t } = useTranslation();
-  const [userProfile, setUserProfile] = useState({
+  const [userProfile, setUserProfile] = useState<UserWithRoleDTO>({
+    id: "",
     firstName: "",
+    lastName: "",
     email: "",
+    phone: "",
+    dni: "",
+    role: 0, 
     profilePicture: "",
+    creationDate: ""
   });
 
   useEffect(() => {
@@ -44,15 +51,21 @@ const Navbar: React.FC = () => {
           }
   
           const data = await response.json();
-          setUserProfile({
-            name: data.name,
-            email: data.email,
-            profilePicture: data.profilePicture || "/images/default-avatar.png",
-          });
-        } catch (error) {
-          console.error("Error al obtener los datos del usuario:", error);
-        }
-      };
+    setUserProfile({
+      id: data.id,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      phone: data.phone || "",
+      dni: data.dni,
+      role: data.role,
+      profilePicture: data.profilePicture || "/images/default-avatar.png",
+      creationDate: data.creationDate
+    });
+  } catch (error) {
+    console.error("Error al obtener los datos del usuario:", error);
+  }
+};
   
       fetchUserData();
     }
@@ -62,9 +75,15 @@ const Navbar: React.FC = () => {
     Cookies.remove("userSession");
     setIsLoggedIn(false);
     setUserProfile({
-      name: "",
+      id: "",
+      firstName: "",
+      lastName: "",
       email: "",
+      phone: "",
+      dni: "",
+      role: 0, 
       profilePicture: "",
+      creationDate: ""
     });
     setIsOpen(false);
     window.location.href = "/";

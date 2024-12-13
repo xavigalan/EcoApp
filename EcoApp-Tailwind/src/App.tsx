@@ -12,10 +12,12 @@ import Contact from './components/Contact';
 import Services from './components/Services';
 import Employees from './components/Employees';
 import ProtectedRoute from './components/ProtectedRoute'; 
+import AppBar from './components/AppBar';
 
 function App() {
   return (
     <div className="App">
+      <AppBar/>
       <Navbar />
       <Routes>
         <Route path="/login" element={<LoginPage />} />
