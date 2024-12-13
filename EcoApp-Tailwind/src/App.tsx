@@ -6,18 +6,14 @@ import { Route, Routes } from 'react-router-dom';
 import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 import Notice from './components/Notice';
-import Points from './components/Points';
-import ProfileModal from './components/ProfileModal';
 import Contact from './components/Contact';
 import Services from './components/Services';
 import Employees from './components/Employees';
 import ProtectedRoute from './components/ProtectedRoute'; 
-import AppBar from './components/AppBar';
 
 function App() {
   return (
     <div className="App">
-      <AppBar/>
       <Navbar />
       <Routes>
         <Route path="/login" element={<LoginPage />} />
