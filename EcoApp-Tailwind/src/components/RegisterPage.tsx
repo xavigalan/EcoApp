@@ -14,10 +14,38 @@ export default function RegisterPage() {
     const [password, setPassword] = useState("");
     const [roleId, setRoleId] = useState("3");
 
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
+
+    const [errors, setErrors] = useState({
+        firstName: "",
+        lastName: "",
+        dni: "",
+        phone: "",
+        email: "",
+        password: ""
+    });
+
+    const validateFields = () => {
+        const newErrors = {
+            firstName: firstName.length > 50 ? "First name is too long (max 50 characters)." : "",
+            lastName: lastName.length > 50 ? "Last name is too long (max 50 characters)." : "",
+            dni: !/^\d{8}$/.test(dni) ? "DNI must be exactly 8 digits." : "",
+            phone: !/^\d{9}$/.test(phone) ? "Phone number must be exactly 9 digits." : "",
+            email: !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? "Invalid email format." : "",
+            password: password.length < 8 ? "Password must be at least 8 characters long." : "",
+        };
+        setErrors(newErrors);
+        // Verifica si todos los campos son válidos
+        return Object.values(newErrors).every((error) => error === "");
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (!validateFields()) {
+            toast.error("Please fix the errors before submitting.");
+            return; // No enviamos si los datos no son válidos
+        }
 
         const user = {
             firstName,
@@ -40,11 +68,17 @@ export default function RegisterPage() {
             });
 
             if (!response.ok) {
-                throw new Error(`Error: ${response.statusText}`);
+                const errorData = await response.json();
+                toast.error(errorData.message || "Registration failed.");
+                return;
             }
             const data = await response.json();
 
-            Cookies.set("userSession", email, { expires: 7 });
+            Cookies.set(
+                "userSession",
+                JSON.stringify({ id: data.id, email: data.email, roleId: data.roleId }),
+                { expires: 7 }
+            );
 
             toast.success("Registration successful!", {
                 position: "top-right",
@@ -57,15 +91,7 @@ export default function RegisterPage() {
                 theme: "light",
             });
 
-            window.location.href = "/";
-
-            setFirstName("");
-            setLastName("");
-            setDni("");
-            setPhone("");
-            setEmail("");
-            setPassword("");
-            setRoleId("3");
+            window.location.href = "/"; 
 
         } catch (error) {
             console.error("Error during registration:", error);
@@ -111,6 +137,9 @@ export default function RegisterPage() {
                                     required
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm"
                                 />
+                                {errors.firstName && (
+                                <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>
+                            )}
                             </div>
                             <div className="flex-1">
                                 <label htmlFor="last-name" className="block text-sm font-medium text-gray-900">
@@ -125,6 +154,9 @@ export default function RegisterPage() {
                                     required
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm"
                                 />
+                                 {errors.lastName&& (
+                                <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>
+                            )}
                             </div>
                         </div>
 
@@ -143,6 +175,9 @@ export default function RegisterPage() {
                                     required
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm"
                                 />
+                                 {errors.dni && (
+                                <p className="text-red-500 text-sm mt-1">{errors.dni}</p>
+                            )}
                             </div>
                             <div className="flex-1">
                                 <label htmlFor="phone" className="block text-sm font-medium text-gray-900">
@@ -157,6 +192,9 @@ export default function RegisterPage() {
                                     required
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm"
                                 />
+                                 {errors.phone && (
+                                <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+                            )}
                             </div>
                         </div>
 
@@ -174,6 +212,9 @@ export default function RegisterPage() {
                                 required
                                 className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
                             />
+                             {errors.email && (
+                                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                            )}
                         </div>
 
                         {/* Password */}
@@ -190,6 +231,9 @@ export default function RegisterPage() {
                                 required
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm"
                             />
+                             {errors.password && (
+                                <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+                            )}
                         </div>
 
                         {/* Submit Button */}

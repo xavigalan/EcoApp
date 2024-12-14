@@ -46,7 +46,11 @@ const LoginPage: React.FC = () => {
                     theme: "light"
                 });
 
-                Cookies.set("userSession", JSON.stringify({ id: user.id, email: user.email, roleId: user.roleId }), { expires: 7 });
+                Cookies.set(
+                    "userSession",
+                    JSON.stringify({ id: user.id, email: user.email, roleId: user.roleId }),
+                    { expires: 7 }
+                );
                 
                 // Forzar la recarga
                 window.location.href = "/";
