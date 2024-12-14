@@ -116,6 +116,39 @@ const Navbar: React.FC = () => {
     window.location.href = "/";
   };
 
+  const openProfileModal = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/users/${userProfile.id}/with-role`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${Cookies.get("userSession")}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch user data.");
+      }
+
+      const data = await response.json();
+      setUserProfile({
+        id: data.id,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        phone: data.phone || "",
+        dni: data.dni,
+        role: data.role,
+        profilePicture: data.profilePicture || "/images/default-avatar.png",
+        creationDate: data.creationDate,
+      });
+
+      setIsProfileModalOpen(true); // Abre el modal después de cargar los datos
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+    }
+  };
+
   const handleLinkClick = () => {
     setIsMobileMenuOpen(false);
   };
@@ -183,12 +216,14 @@ const Navbar: React.FC = () => {
                       key={setting}
                       onClick={() => {
                         handleCloseUserMenu();
-                        if (setting === 'Logout') {
-                          handleLogout();
+                        if (setting === "Profile") {
+                          openProfileModal(); // Llama a la función para cargar datos y abrir el modal
+                        } else if (setting === "Logout") {
+                          handleLogout(); // Maneja el logout
                         }
                       }}
                     >
-                      <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
+                      <Typography sx={{ textAlign: "center" }}>{setting}</Typography>
                     </MenuItem>
                   ))}
                 </Menu>
