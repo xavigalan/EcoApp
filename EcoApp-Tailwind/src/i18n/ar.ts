@@ -1,4 +1,5 @@
 export const arTranslations = {
+  "Services": "خدمات",
   nav: {
     services: 'خدمات',
     notice: 'إشعارات',

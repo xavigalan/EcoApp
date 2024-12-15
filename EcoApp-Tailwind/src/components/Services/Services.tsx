@@ -58,7 +58,7 @@ function Services() {
   return (
       <div className="min-h-screen bg-gray-100 py-8 px-4" style={{ position: 'fixed', width: '-webkit-fill-available', height: '-webkit-fill-available' }}>
           <div className="w-full mx-auto space-y-8">
-              <h1 className="text-3xl font-bold text-center text-gray-900">{t('services')}</h1>
+              <h1 className="text-3xl font-bold text-center text-gray-900">{t('Services')}</h1>
 
               {error && (
                   <div className="bg-red-50 border-l-4 border-red-400 p-4">

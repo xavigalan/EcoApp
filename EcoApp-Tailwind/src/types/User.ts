@@ -21,11 +21,12 @@ export interface ApiResponse {
 }
 
 export interface UserWithRoleDTO {
-  id: number;
+  id: string;
   firstName: string;
   lastName: string;
-  email: string;
+  dni: string;
   phone: string;
-  creationDate: string; 
+  email: string;
+  creationDate: string;
   role: Role;
 }

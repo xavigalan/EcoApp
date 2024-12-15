@@ -11,6 +11,7 @@ import { fetchTypePoints } from '../../api/TypePoints';
 const AddMapPointForm = () => {
   const navigate = useNavigate();
   const [typePoints, setTypePoints] = useState<TypePoint[]>([]);
+  
   const [formData, setFormData] = useState({
     name: '',
     latitude: '',

@@ -23,7 +23,7 @@ const Navbar: React.FC = () => {
       
       const fetchUserData = async () => {
         try {
-          const response = await fetch("http://localhost:8080/users", {
+          const response = await fetch("http://localhost:8080/user/profile", {
             method: "GET",
             headers: {
               "Authorization": `Bearer ${Cookies.get("userSession")}`,

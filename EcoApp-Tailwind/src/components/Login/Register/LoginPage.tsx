@@ -45,9 +45,11 @@ const LoginPage: React.FC = () => {
                     theme: "light"
                 });
 
-                const userSession = { email, roleId: user.roleId };
-                console.log("Guardando en cookie:", userSession);  // Verificar el objeto antes de guardarlo
-                Cookies.set("userSession", JSON.stringify(userSession), { expires: 7 });
+                Cookies.set(
+                    "userSession",
+                    JSON.stringify({ id: user.id, email: user.email, roleId: user.roleId }),
+                    { expires: 7 }
+                );
                 
                 // Forzar la recarga
                 window.location.href = "/";

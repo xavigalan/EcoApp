@@ -25,11 +25,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element, requiredRoleId
   // Verificar si el usuario está autenticado
   if (isAuthenticated) {
     // Verificar si el rol del usuario es suficiente para acceder a la ruta
-    if (isAuthenticated.roleId === requiredRoleId || requiredRoleId === 4) { // Ejemplo: 4 es para administrador
+    if (isAuthenticated.roleId === requiredRoleId) { // Ejemplo: 4 es para administrador
       return element; // Permitir acceso
     } else {
       // Si no tiene el rol adecuado, redirigir a una página de acceso denegado
-      return <Navigate to="/access-denied" />;
+      return <Navigate to="/" />;
     }
   }
 

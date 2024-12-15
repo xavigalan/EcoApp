@@ -1,6 +1,10 @@
 import { report } from "process";
+import Services from "../components/Services/Services";
 
 export const esTranslations = {
+  "Services": "Servicios",
+  "Fecha ": "Fecha ",
+
   nav: {
     services: 'Servicios',
     notice: 'Avisos',
@@ -56,5 +60,5 @@ export const esTranslations = {
     click:'Clica en el mapa',
     buscar:'Busca la dirección',
 
-  }
+  },
 };
