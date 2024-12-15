@@ -98,7 +98,7 @@ const AddMapPointForm = () => {
                 label="Latitude"
                 name="latitude"
                 type="number"
-                value={formData.latitude}  // Deja el valor como número
+                value={formData.latitude}
                 onChange={handleChange}
               />
 
