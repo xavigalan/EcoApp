@@ -21,10 +21,6 @@ export interface MapPointFormData {
   typePoint: TypePoint;
 }
 
-
-
-
-
 export interface PointFormData {
   name: string;
   typePointId: string;

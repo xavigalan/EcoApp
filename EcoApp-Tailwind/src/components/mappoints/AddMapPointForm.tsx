@@ -50,11 +50,14 @@ const AddMapPointForm = () => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: name === 'latitude' || name === 'longitude' ? parseFloat(value) : value,  // Convierte a número solo en los campos de latitude y longitude
     });
   };
+
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
@@ -95,7 +98,7 @@ const AddMapPointForm = () => {
                 label="Latitude"
                 name="latitude"
                 type="number"
-                value={formData.latitude}
+                value={formData.latitude}  // Deja el valor como número
                 onChange={handleChange}
               />
 
@@ -103,9 +106,10 @@ const AddMapPointForm = () => {
                 label="Longitude"
                 name="longitude"
                 type="number"
-                value={formData.longitude}
+                value={formData.longitude}  // Deja el valor como número
                 onChange={handleChange}
               />
+
 
               <div className="sm:col-span-2">
                 <label className="block text-sm font-medium text-gray-700">Description</label>

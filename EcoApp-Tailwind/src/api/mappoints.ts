@@ -1,5 +1,5 @@
 
-import { MapPoint, MapPointFormData } from '../types/MapPoints';
+import { MapPoint, PointFormData } from '../types/MapPoints';
 
 const API_BASE_URL = 'http://localhost:8080';
 
@@ -15,7 +15,7 @@ export async function fetchMapPoints(): Promise<MapPoint[]> {
     return response.json();
   }
   
-  export async function createMapPoint(data: MapPointFormData): Promise<MapPoint> {
+  export async function createMapPoint(data: PointFormData): Promise<MapPoint> {
     const response = await fetch(`${API_BASE_URL}/mappoints`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -30,7 +30,7 @@ export async function fetchMapPoints(): Promise<MapPoint[]> {
     return response.json();
   }
   
-  export async function updateMapPoint(id: number, data: MapPointFormData): Promise<MapPoint> {
+  export async function updateMapPoint(id: number, data: PointFormData): Promise<MapPoint> {
     const response = await fetch(`${API_BASE_URL}/mappoints/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
