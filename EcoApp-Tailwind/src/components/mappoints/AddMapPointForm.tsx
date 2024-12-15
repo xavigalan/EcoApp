@@ -8,17 +8,20 @@ import TypePointSelect from './TypePointSelect';
 import { createMapPoint } from '../../api/mappoints';
 import { fetchTypePoints } from '../../api/TypePoints';
 
+import { PointFormData } from '../../types/MapPoints';
+
+const initialFormData: PointFormData = {
+  name: '',
+  typePointId: '',
+  latitude: 0,
+  longitude: 0,
+  description: '',
+};
+
 const AddMapPointForm = () => {
   const navigate = useNavigate();
   const [typePoints, setTypePoints] = useState<TypePoint[]>([]);
-  
-  const [formData, setFormData] = useState({
-    name: '',
-    latitude: '',
-    longitude: '',
-    description: '',
-    typePointId: ''
-  });
+  const [formData, setFormData] = useState<PointFormData>(initialFormData);
 
   useEffect(() => {
     const loadTypePoints = async () => {
@@ -71,7 +74,7 @@ const AddMapPointForm = () => {
             <h2 className="text-2xl font-bold text-gray-900">Add New Location</h2>
             <MapPin className="w-8 h-8 text-green-500" />
           </div>
-          
+
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               <FormInput

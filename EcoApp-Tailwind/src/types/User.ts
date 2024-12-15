@@ -4,16 +4,6 @@ export interface Role {
   description: string;
 }
 
-export interface UserFormData {
-  firstName: string;
-  lastName: string;
-  dni: string;
-  phone: string;
-  email: string;
-  password: string;
-  roleId: string;
-}
-
 export interface ApiResponse {
   token: string;
   userId: string;
@@ -30,3 +20,19 @@ export interface UserWithRoleDTO {
   creationDate: string;
   role: Role;
 }
+
+
+
+
+
+
+export interface UserFormData {
+  firstName: string;
+  lastName: string;
+  dni: string;
+  phone: string;
+  email: string;
+  password: string;
+  roleId: string;
+}
+

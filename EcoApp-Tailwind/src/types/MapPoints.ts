@@ -20,3 +20,15 @@ export interface MapPointFormData {
   description: string;
   typePoint: TypePoint;
 }
+
+
+
+
+
+export interface PointFormData {
+  name: string;
+  typePointId: string;
+  latitude: number;
+  longitude: number;
+  description: string;
+}
