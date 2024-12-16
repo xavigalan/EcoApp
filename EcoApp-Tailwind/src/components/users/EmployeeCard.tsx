@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { UserWithRoleDTO } from '../../types/User';
+import React, { useState, useEffect } from 'react';
+import { UserWithRoleDTO, Role } from '../../types/User';
 import { Mail, Phone, Calendar, BadgeCheck, Edit2, Trash2, X, Check } from 'lucide-react';
 import { toast } from 'react-toastify';
-import { updateUser, deleteUser } from '../../api/users';
+import { updateUser, deleteUser, fetchRoles } from '../../api/users';
 
 interface EmployeeCardProps {
   user: UserWithRoleDTO;
@@ -17,7 +17,22 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({ user, index, onDelete }) =>
     lastName: user.lastName,
     email: user.email,
     phone: user.phone,
+    roleId: user.role.id,
   });
+  const [roles, setRoles] = useState<Role[]>([]);
+
+  useEffect(() => {
+    // Fetch roles when component mounts
+    const loadRoles = async () => {
+      try {
+        const fetchedRoles = await fetchRoles();
+        setRoles(fetchedRoles);
+      } catch (error) {
+        toast.error('Failed to load roles');
+      }
+    };
+    loadRoles();
+  }, []);
 
   const handleEdit = async () => {
     if (isEditing) {
@@ -45,10 +60,10 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({ user, index, onDelete }) =>
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setEditData({
       ...editData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -92,7 +107,7 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({ user, index, onDelete }) =>
             {user.role.name}
           </span>
         </div>
-        
+
         <div className="space-y-3">
           <div className="flex items-center text-gray-600">
             <Mail className="w-4 h-4 mr-2" />
@@ -109,7 +124,7 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({ user, index, onDelete }) =>
               <span className="text-sm">{user.email}</span>
             )}
           </div>
-          
+
           <div className="flex items-center text-gray-600">
             <Phone className="w-4 h-4 mr-2" />
             {isEditing ? (
@@ -125,23 +140,44 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({ user, index, onDelete }) =>
               <span className="text-sm">{user.phone}</span>
             )}
           </div>
-          
+
           <div className="flex items-center text-gray-600">
             <Calendar className="w-4 h-4 mr-2" />
             <span className="text-sm">
               {new Date(user.creationDate).toLocaleDateString('es-ES', {
                 year: 'numeric',
                 month: 'long',
-                day: 'numeric'
+                day: 'numeric',
               })}
             </span>
           </div>
+
+          {isEditing && (
+            <div className="flex items-center text-gray-600">
+              <label htmlFor="role" className="mr-2 text-sm font-medium text-gray-700">
+                Role:
+              </label>
+              <select
+                id="role"
+                name="roleId"
+                value={editData.roleId}
+                onChange={handleChange}
+                className="flex-1 px-2 py-1 border rounded"
+              >
+                {roles.map((role) => (
+                  <option key={role.id} value={role.id}>
+                    {role.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
 
           <div className="flex justify-end space-x-2 pt-4 border-t">
             <button
               onClick={handleEdit}
               className={`p-2 rounded-full ${
-                isEditing 
+                isEditing
                   ? 'text-green-600 hover:text-green-700 bg-green-50 hover:bg-green-100'
                   : 'text-yellow-600 hover:text-yellow-700 bg-yellow-50 hover:bg-yellow-100'
               }`}
@@ -158,6 +194,7 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({ user, index, onDelete }) =>
                     lastName: user.lastName,
                     email: user.email,
                     phone: user.phone,
+                    roleId: user.role.id,
                   });
                 }}
                 className="p-2 text-gray-600 hover:text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-full"
@@ -180,4 +217,5 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({ user, index, onDelete }) =>
     </div>
   );
 };
+
 export default EmployeeCard;

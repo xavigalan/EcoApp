@@ -11,7 +11,7 @@ export interface ApiResponse {
 }
 
 export interface UserWithRoleDTO {
-  id: string;
+  id: number;
   firstName: string;
   lastName: string;
   dni: string;
