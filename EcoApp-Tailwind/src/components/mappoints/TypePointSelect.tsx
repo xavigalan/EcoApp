@@ -15,8 +15,8 @@ const TypePointSelect: React.FC<TypePointSelectProps> = ({ typePoints, value, on
       </label>
       <select
         id="typePointId"
-        name="typePointId"
-        value={value}
+        name="typeId"  // Asegúrate de que el 'name' coincide con el que usas en el estado
+        value={value}  // Usamos 'value' tal como está, sin conversión
         onChange={onChange}
         required
         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm"

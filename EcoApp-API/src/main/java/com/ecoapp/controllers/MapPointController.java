@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ecoapp.dtos.MapPointWithTypePointDTO;
 import com.ecoapp.entities.MapPoint;
+import com.ecoapp.entities.User;
 import com.ecoapp.services.MapPointService;
 
 @CrossOrigin("*")
@@ -52,18 +54,10 @@ public class MapPointController {
 	        MapPointWithTypePointDTO mapPoint = mapPointService.getMapPointWithTypePointById(id);
 	        return ResponseEntity.ok(mapPoint);
 	    }
-//	public ResponseEntity<List<MapPointWithTypeDTO>> getMapPointsByTypeId() {
-//        List<MapPointWithTypeDTO> mapPoints = mapPointService.findMapPointsByTypeId();
-//        if (!mapPoints.isEmpty()) {
-//            return ResponseEntity.ok(mapPoints);
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
 
 	// Crear un nuevo MapPoint
 	@PutMapping
-	public ResponseEntity<MapPoint> createMapPoint(@RequestBody MapPoint mapPoint) {
+	public ResponseEntity<?> createMapPoint(@RequestBody MapPoint mapPoint) {
 		try {
 			MapPoint createdMapPoint = mapPointService.addMapPoint(mapPoint);
 			return ResponseEntity.ok(createdMapPoint);
@@ -72,6 +66,10 @@ public class MapPointController {
 		}
 	}
 
+
+	
+	
+	
 	// Actualizar un MapPoint por ID
 	@PatchMapping("/{id}")
 	public ResponseEntity<MapPoint> updateMapPoint(@PathVariable Long id, @RequestBody MapPoint mapPointDetails) {

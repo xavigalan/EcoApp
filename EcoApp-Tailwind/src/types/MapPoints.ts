@@ -23,7 +23,7 @@ export interface MapPointFormData {
 
 export interface PointFormData {
   name: string;
-  typePointId: string;
+  typeId: string;
   latitude: number;
   longitude: number;
   description: string;

@@ -4,7 +4,7 @@ interface FormInputProps {
   label: string;
   name: string;
   type: string;
-  value: string;
+  value: number | string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   required?: boolean;
 }

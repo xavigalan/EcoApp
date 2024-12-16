@@ -30,9 +30,9 @@ public class TypeController {
 	TypePointService typepointService;
 
 	@GetMapping
-	public List<TypePoint> getTypePoints() {
-		logger.info("Request to /typepoints endpoint (GET)");
-		return typepointService.findAllTypePoints();
+	public ResponseEntity<List<TypePoint>> getTypePoints() {
+		List<TypePoint> typePoints = typepointService.findAllTypePoints();
+		return ResponseEntity.ok(typePoints);
 	}
 
 	@GetMapping("/{id}")

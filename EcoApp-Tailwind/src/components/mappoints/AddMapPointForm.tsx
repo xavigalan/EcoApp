@@ -5,14 +5,13 @@ import { toast } from 'react-toastify';
 import { TypePoint } from '../../types/MapPoints';
 import FormInput from '../forms/FormInput';
 import TypePointSelect from './TypePointSelect';
-import { createMapPoint } from '../../api/mappoints';
 import { fetchTypePoints } from '../../api/TypePoints';
 
 import { PointFormData } from '../../types/MapPoints';
 
 const initialFormData: PointFormData = {
   name: '',
-  typePointId: '',
+  typeId: '', // Cambiado de typePointId a typeId
   latitude: 0,
   longitude: 0,
   description: '',
@@ -39,8 +38,47 @@ const AddMapPointForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+  
+    const { latitude, longitude, name, typeId, description } = formData;
+  
+    // Validar campos requeridos
+    if (!name || !description || !typeId) {
+      toast.error('Please fill out all required fields.');
+      return;
+    }
+  
+    // Validar latitud y longitud
+    if (latitude === null || longitude === null || isNaN(latitude) || isNaN(longitude)) {
+      toast.error('Latitude and Longitude must be valid numbers.');
+      return;
+    }
+  
+    if (latitude < -90 || latitude > 90) {
+      toast.error('Latitude must be between -90 and 90.');
+      return;
+    }
+  
+    if (longitude < -180 || longitude > 180) {
+      toast.error('Longitude must be between -180 and 180.');
+      return;
+    }
+  
     try {
-      await createMapPoint(formData);
+      const myHeaders = new Headers();
+      myHeaders.append('Content-Type', 'application/json');
+  
+      const requestOptions = {
+        method: 'PUT', // Cambiado de 'PUT' a 'POST' para crear un nuevo mapa
+        headers: myHeaders,
+        body: JSON.stringify(formData),
+      };
+  
+      const response = await fetch('http://localhost:8080/mappoints', requestOptions); // Asegúrate de que esta URL sea la correcta
+  
+      if (!response.ok) {
+        throw new Error(`Failed to create location. Status: ${response.status}`);
+      }
+  
       toast.success('Location created successfully!');
       navigate('/mappoints');
     } catch (error) {
@@ -52,12 +90,11 @@ const AddMapPointForm = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
 
-    setFormData({
-      ...formData,
-      [name]: name === 'latitude' || name === 'longitude' ? parseFloat(value) : value,  // Convierte a número solo en los campos de latitude y longitude
-    });
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: name === 'latitude' || name === 'longitude' ? parseFloat(value) || null : value,
+    }));
   };
-
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
@@ -74,7 +111,7 @@ const AddMapPointForm = () => {
 
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">Add New Location</h2>
+            <h2 className="text-2xl font-bold text-gray-900">Create Location</h2>
             <MapPin className="w-8 h-8 text-green-500" />
           </div>
 
@@ -90,7 +127,7 @@ const AddMapPointForm = () => {
 
               <TypePointSelect
                 typePoints={typePoints}
-                value={formData.typePointId}
+                value={String(formData.typeId)} // Aseguramos que el valor sea un string
                 onChange={handleChange}
               />
 
@@ -98,7 +135,7 @@ const AddMapPointForm = () => {
                 label="Latitude"
                 name="latitude"
                 type="number"
-                value={formData.latitude}
+                value={formData.latitude || ''} // Manejar null
                 onChange={handleChange}
               />
 
@@ -106,10 +143,9 @@ const AddMapPointForm = () => {
                 label="Longitude"
                 name="longitude"
                 type="number"
-                value={formData.longitude}  // Deja el valor como número
+                value={formData.longitude || ''} // Manejar null
                 onChange={handleChange}
               />
-
 
               <div className="sm:col-span-2">
                 <label className="block text-sm font-medium text-gray-700">Description</label>

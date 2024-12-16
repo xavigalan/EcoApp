@@ -13,55 +13,34 @@ import Services from './components/Services/Services';
 import Employees from './components/users/Employees';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './components/users/AuthContext';
-import  AddEmployeeForm from './components/users/AddEmployeeForm';
+import AddEmployeeForm from './components/users/AddEmployeeForm';
 import AddMapPointForm from './components/mappoints/AddMapPointForm';
 
 
 
 function App() {
   return (
-      <div className="App">
-        <Navbar />
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/notice" element={<Notice />} />
-          <Route path="/employees" element={<Employees />} />
-          <Route path="/add/employees" element={<AddEmployeeForm />} />
-
-          <Route path="/points" element={<MapPointsList />} />
-          <Route path="/add/mappoint" element={<AddMapPointForm />} />
-
-          {/*
-          <Route path="/notice" element={<Notice />} />
-          <Route path="/points" element={<Points />} />
-          */}
-          <Route path="/contact" element={<Contact />} />
-
-        {/* Rutas protegidas */}
-        <Route
-          path="/notice"
-          element={
-            <ProtectedRoute element={<Notice />} requiredRoleId={1} />
-          }
-        />
-        <Route
-          path="/services"
-          element={
-            <ProtectedRoute element={<Services />} requiredRoleId={1} /> 
-          }
-        />
-        <Route
-          path="/employees"
-          element={
-            <ProtectedRoute element={<Employees />} requiredRoleId={4} />
-          }
-        />
-
+    <div className="App">
+      <Navbar />
+      <Routes>
         {/* Rutas públicas */}
         <Route path="/contact" element={<Contact />} />
         <Route path="/" element={<Map />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+
+        {/* Rutas protegidas */}
+        <Route path="/notice" element={<ProtectedRoute element={<Notice />} requiredRoleIds={[1,2,3,4]} />} />
+        
+        <Route path="/services" element={<ProtectedRoute element={<Services />} requiredRoleIds={[1,2,3,4]} />} />
+        
+        <Route path="/employees" element={<ProtectedRoute element={<Employees />} requiredRoleIds={[4]} />} />
+        <Route path="/add/employees" element={<ProtectedRoute element={<AddEmployeeForm />} requiredRoleIds={[4]} />} />
+
+        <Route path="/points" element={<ProtectedRoute element={<MapPointsList />} requiredRoleIds={[4]} />} />
+        <Route path="/add/mappoint" element={<ProtectedRoute element={<AddMapPointForm />} requiredRoleIds={[4]} />} />
+
+
       </Routes>
     </div>
   );
