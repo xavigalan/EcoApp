@@ -23,8 +23,17 @@ export interface MapPointFormData {
 
 export interface PointFormData {
   name: string;
-  typeId: string;
+  typeId: number;  // Cambiado de string a number
   latitude: number;
   longitude: number;
   description: string;
+}
+
+
+export interface MapPointUpdateDTO {
+  name: string;
+  latitude: number;
+  longitude: number;
+  description: string;
+  typeId: number;
 }

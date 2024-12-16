@@ -7,7 +7,7 @@ interface TypePointSelectProps {
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
-const TypePointSelect: React.FC<TypePointSelectProps> = ({ typePoints, value, onChange }) => {
+const TypePointSelect: React.FC<TypePointSelectProps> = ({ typePoints = [], value, onChange }) => {
   return (
     <div>
       <label htmlFor="typePointId" className="block text-sm font-medium text-gray-900">

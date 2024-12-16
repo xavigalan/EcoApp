@@ -18,7 +18,17 @@ export interface UserWithRoleDTO {
   phone: string;
   email: string;
   creationDate: string;
-  roleId: number;
-  profilePicture: string | File;
+  role: Role;
+}
+
+
+export interface UserFormData {
+  firstName: string;
+  lastName: string;
+  dni: string;
+  phone: string;
+  email: string;
+  password: string;
+  roleId: string;
 }
 
