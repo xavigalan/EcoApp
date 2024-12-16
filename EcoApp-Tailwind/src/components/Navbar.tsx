@@ -5,13 +5,9 @@ import { useTranslation } from 'react-i18next';
 import LanguageSelector from './LanguageSelector';
 import ProfileModal from "./ProfileModal";
 import { UserWithRoleDTO } from "../types/User";
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
-import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
@@ -316,7 +312,6 @@ const Navbar: React.FC = () => {
           <Link to="/contact" className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700" onClick={handleLinkClick}>
             {t('nav.contact')}
           </Link>
-<<<<<<< HEAD
           {userProfile.roleId == 4 && (
               <>
                 <Link to="/employees" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
@@ -327,14 +322,6 @@ const Navbar: React.FC = () => {
                 </Link>
               </>
             )}
-=======
-          <Link to="/employees" className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700">
-            {t('nav.employees')}
-          </Link>
-          <Link to="/points" className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700" >
-            {t('nav.points')}
-          </Link>
->>>>>>> cbe57c1c6aee6cfa7b812827196fdb98638641a8
         </div>
       </div>
 
