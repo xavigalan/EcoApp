@@ -100,11 +100,17 @@ export const caTranslations = {
     cancelVolunteer: 'Cancel·la el voluntariat',
   },
   events: {
+    eventList: "Llista d'Esdeveniments",
     concert: 'Concert benèfic',
     concertDescription: 'Ajuda a netejar el lloc després del concert.',
     beachCleanUp: 'Recollida de brossa a la platja',
     beachCleanUpDescription: 'Uneix-te a netejar les nostres platges i cuidar l’entorn.',
     carnivalCleanUp: 'Recollida de brossa del Carnaval',
     carnivalCleanUpDescription: 'Uneix-te a netejar els carrers després de l’esdeveniment.',
+    buttons: {
+      volunteer: "Apunta’t com a voluntari",
+      cancelVolunteer: "Cancel·la el voluntariat"
+    }
   },
+ 
 };

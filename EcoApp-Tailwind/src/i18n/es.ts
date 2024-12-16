@@ -95,16 +95,18 @@ export const esTranslations = {
     success: '¡Registro exitoso!',
     error: 'Ocurrió un error durante el registro.',
   },
-  buttons: {
-    volunteer: 'Apúntate como Voluntario',
-    cancelVolunteer: 'Cancelar Voluntariado',
-  },
+  
   events: {
-    concert: 'Concierto benéfico',
-    concertDescription: 'Ayuda a limpiar el lugar tras el concierto.',
-    beachCleanUp: 'Recogida de Basura en la Playa',
-    beachCleanUpDescription: 'Únete para limpiar nuestras playas y cuidar el medio ambiente.',
-    carnivalCleanUp: 'Recogida de basura Carnaval',
-    carnivalCleanUpDescription: 'Únete para limpiar las calles tras el evento.',
+    eventList: "Lista de Eventos",
+    concert: "Concierto benéfico",
+    concertDescription: "Ayuda a limpiar el lugar después del concierto.",
+    beachCleanUp: "Recogida de basura en la playa",
+    beachCleanUpDescription: "Únete para limpiar nuestras playas y cuidar el entorno.",
+    carnivalCleanUp: "Recogida de basura del Carnaval",
+    carnivalCleanUpDescription: "Únete a limpiar las calles después del evento.",
+    buttons: {
+      volunteer: "Apuntate como voluntario",
+      cancelVolunteer: "Cancela el voluntariado"
+    }
   },
-};
+  };
