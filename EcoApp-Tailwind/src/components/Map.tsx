@@ -18,7 +18,7 @@ const Map = () => {
     fetch('http://localhost:8080/mappoints/types')
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         setMapPoints(data);
       })
       .catch((error) => console.error('Error al obtener los puntos del mapa:', error));

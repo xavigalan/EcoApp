@@ -33,6 +33,34 @@ public class UserService {
 	public User addUser(User user) {
 		return userRepository.save(user);
 	}
+	
+	public User updateUser(Long id, User userDetails) {
+	    // Buscar el usuario actual
+	    Optional<User> existingUser = userRepository.findById(id);
+	    if (existingUser.isPresent()) {
+	        User userToUpdate = existingUser.get();
+	        
+	        // Si el correo electrónico ha cambiado, verificamos si ya está en uso
+	        if (!userToUpdate.getEmail().equals(userDetails.getEmail())) {
+	            // Verificar si el correo electrónico ya está registrado en otro usuario (excepto el usuario actual)
+	            Optional<User> existingUserByEmail = userRepository.findByEmail(userDetails.getEmail());
+	            if (existingUserByEmail.isPresent()) {
+	                throw new RuntimeException("El correo electrónico ya está registrado en otro usuario.");
+	            }
+	        }
+
+	        // Actualiza los campos del usuario
+	        userToUpdate.setFirstName(userDetails.getFirstName());
+	        userToUpdate.setLastName(userDetails.getLastName());
+	        userToUpdate.setEmail(userDetails.getEmail()); // Actualizar el correo electrónico solo si es válido
+
+	        // Guardar el usuario actualizado
+	        return userRepository.save(userToUpdate);
+	    } else {
+	        throw new RuntimeException("Usuario no encontrado con el id: " + id);
+	    }
+	}
+
 
 	public void deleteUser(Long id) {
 		if (userRepository.existsById(id)) {

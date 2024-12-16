@@ -42,13 +42,14 @@ const Navbar: React.FC = () => {
     email: "",
     phone: "",
     dni: "",
-    role: 0,
+    roleId: 0,
     profilePicture: "",
     creationDate: ""
   });
 
   useEffect(() => {
     const userSession = Cookies.get("userSession");
+    console.log("User Session:", userSession);
 
 
 
@@ -78,6 +79,7 @@ const Navbar: React.FC = () => {
           }
 
           const data = await response.json();
+
           setUserProfile({
             id: data.id,
             firstName: data.firstName,
@@ -85,7 +87,7 @@ const Navbar: React.FC = () => {
             email: data.email,
             phone: data.phone || "",
             dni: data.dni,
-            role: data.role,
+            roleId: data.roleId,
             profilePicture: data.profilePicture || "/images/default-avatar.png",
             creationDate: data.creationDate
           });
@@ -140,7 +142,7 @@ const Navbar: React.FC = () => {
         email: data.email,
         phone: data.phone || "",
         dni: data.dni,
-        role: data.role,
+        roleId: data.roleId,
         profilePicture: data.profilePicture || "/images/default-avatar.png",
         creationDate: data.creationDate,
       });
@@ -156,15 +158,15 @@ const Navbar: React.FC = () => {
 
     Object.entries(updatedUser).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
-        formData.append(key, value.toString()); 
+        formData.append(key, value.toString());
       }
     });
 
     try {
       const response = await fetch(`http://localhost:8080/users/${userProfile.id}`, {
-        method: "PUT",
+        method: "PATCH",
         headers: {
-          Authorization: `Bearer ${Cookies.get("userSession")}`,
+          "Authorization": `Bearer ${Cookies.get("userSession")}`,
         },
         body: formData,
       });
@@ -174,6 +176,8 @@ const Navbar: React.FC = () => {
       }
 
       const data = await response.json();
+      console.log(data);
+      
       setUserProfile(data); // Actualiza el estado con los datos del servidor
     } catch (error) {
       console.error("Error updating user profile:", error);
@@ -207,12 +211,16 @@ const Navbar: React.FC = () => {
             <Link to="/contact" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
               {t('nav.contact')}
             </Link>
-            <Link to="/employees" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
-              {t('nav.employees')}
-            </Link>
-            <Link to="/points" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
-              {t('nav.points')}
-            </Link>
+            {userProfile.roleId == 4 && (
+              <>
+                <Link to="/employees" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+                  {t('nav.employees')}
+                </Link>
+                <Link to="/points" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+                  {t('nav.points')}
+                </Link>
+              </>
+            )}
           </div>
 
           {/* User Profile and Authentication */}
@@ -308,6 +316,16 @@ const Navbar: React.FC = () => {
           <Link to="/contact" className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700" onClick={handleLinkClick}>
             {t('nav.contact')}
           </Link>
+          {userProfile.roleId == 4 && (
+              <>
+                <Link to="/employees" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+                  {t('nav.employees')}
+                </Link>
+                <Link to="/points" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+                  {t('nav.points')}
+                </Link>
+              </>
+            )}
         </div>
       </div>
 

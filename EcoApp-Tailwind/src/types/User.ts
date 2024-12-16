@@ -12,7 +12,7 @@ export interface UserWithRoleDTO {
   phone: string;
   email: string;
   creationDate: string;
-  role: number;
+  roleId: number;
   profilePicture: string | File;
 }
 

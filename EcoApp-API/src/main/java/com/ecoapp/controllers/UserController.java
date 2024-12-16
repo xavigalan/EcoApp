@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ecoapp.dtos.UserWithRoleDTO;
@@ -55,40 +54,37 @@ public class UserController {
 
 	// PARA DEVOLVER UN USUARIO POR ID CON EL OBJETO ROLE ENTERO A TRAVÉS DE LA DTO
 	@GetMapping("/{id}/with-role")
-    public ResponseEntity<UserWithRoleDTO> getUserWithRole(@PathVariable Long id) {
-        logger.info("Request to get user with id " + id + " and its role");
+	public ResponseEntity<UserWithRoleDTO> getUserWithRole(@PathVariable Long id) {
+		logger.info("Request to get user with id " + id + " and its role");
 
-        Optional<UserWithRoleDTO> userWithRoleDTO = userService.findUserWithRoleById(id);
-        return userWithRoleDTO.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
-	
+		Optional<UserWithRoleDTO> userWithRoleDTO = userService.findUserWithRoleById(id);
+		return userWithRoleDTO.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+	}
+
 	// PARA DEVOLVER UNA LISTA DE USUARIOS CON ROL ESPECIFÍCO
 	@GetMapping("/role/{roleId}")
 	public ResponseEntity<List<UserWithRoleDTO>> getUsersByRole(@PathVariable("roleId") Long roleId) {
-	    logger.info("Request to get users with role id " + roleId);
+		logger.info("Request to get users with role id " + roleId);
 
-	    List<UserWithRoleDTO> usersWithRole = userService.findUsersByRole(roleId);
-	    if (usersWithRole.isEmpty()) {
-	        return ResponseEntity.notFound().build();
-	    }
-	    return ResponseEntity.ok(usersWithRole);
+		List<UserWithRoleDTO> usersWithRole = userService.findUsersByRole(roleId);
+		if (usersWithRole.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(usersWithRole);
 	}
-	
-	
+
 	// PARA DEVOLVER UNA LISTA DE USUARIOS CON ROLES ESPECIFÍCOS
 	@GetMapping("/roles/{roleIds}")
-	public ResponseEntity<List<UserWithRoleDTO>> getUsersByRoles(
-	        @PathVariable List<Long> roleIds) {
-	    logger.info("Request to get users with roles: " + roleIds);
+	public ResponseEntity<List<UserWithRoleDTO>> getUsersByRoles(@PathVariable List<Long> roleIds) {
+		logger.info("Request to get users with roles: " + roleIds);
 
-	    List<UserWithRoleDTO> usersWithRoles = userService.findUsersByRoles(roleIds);
-	    if (usersWithRoles.isEmpty()) {
-	        return ResponseEntity.notFound().build();
-	    }
-	    return ResponseEntity.ok(usersWithRoles);
+		List<UserWithRoleDTO> usersWithRoles = userService.findUsersByRoles(roleIds);
+		if (usersWithRoles.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(usersWithRoles);
 	}
 
-	
 	// Crear un nuevo usuario
 	@PutMapping
 	public ResponseEntity<?> addUser(@RequestBody User user) {
@@ -104,23 +100,12 @@ public class UserController {
 
 	// Editar un usuario por ID
 	@PatchMapping("/{id}")
-	public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
-		logger.info("Request to update user with id " + id);
-
-		Optional<User> existingUser = userService.findUserById(id);
-		if (existingUser.isPresent()) {
-			User userToUpdate = existingUser.get();
-			userToUpdate.setFirstName(userDetails.getFirstName());
-			userToUpdate.setLastName(userDetails.getLastName());
-			userToUpdate.setEmail(userDetails.getEmail());
-//            userToUpdate.setRole(userDetails.getRole());
-			// Actualiza otros campos si es necesario
-
-			userService.addUser(userToUpdate); // Puede ser el mismo método de agregar si el usuario se actualiza en la
-												// base de datos
-			return ResponseEntity.ok(userToUpdate);
-		} else {
-			return ResponseEntity.notFound().build();
+	public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
+		try {
+			User updatedUser = userService.updateUser(id, userDetails);
+			return ResponseEntity.ok(updatedUser);
+		} catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El email " +  userDetails.getEmail() + " ya existe"); // Devuelve un error adecuado
 		}
 	}
 

@@ -22,5 +22,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	    List<User> findByRoleId(Long roleId);  // Método para obtener usuarios por ID de rol
 	    
 	    public List<User> findByRoleIdIn(List<Long> roleIds);
+	    
+	    // Método para buscar un usuario por su correo electrónico
+	    Optional<User> findByEmail(String email);
 
 }
