@@ -13,7 +13,7 @@ export interface UserWithRoleDTO {
   email: string;
   creationDate: string;
   role: number;
-  profilePicture: string;
+  profilePicture: string | File;
 }
 
 export type User = UserWithRoleDTO;

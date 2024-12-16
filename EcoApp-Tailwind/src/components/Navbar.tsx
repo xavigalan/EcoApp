@@ -98,6 +98,8 @@ const Navbar: React.FC = () => {
     }
   }, []);
 
+
+
   const handleLogout = () => {
     Cookies.remove("userSession");
     setIsLoggedIn(false);
@@ -146,6 +148,35 @@ const Navbar: React.FC = () => {
       setIsProfileModalOpen(true); // Abre el modal después de cargar los datos
     } catch (error) {
       console.error("Error fetching user profile:", error);
+    }
+  };
+
+  const handleUpdateUser = async (updatedUser: Partial<UserWithRoleDTO>) => {
+    const formData = new FormData();
+
+    Object.entries(updatedUser).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        formData.append(key, value.toString()); 
+      }
+    });
+
+    try {
+      const response = await fetch(`http://localhost:8080/users/${userProfile.id}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${Cookies.get("userSession")}`,
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update user.");
+      }
+
+      const data = await response.json();
+      setUserProfile(data); // Actualiza el estado con los datos del servidor
+    } catch (error) {
+      console.error("Error updating user profile:", error);
     }
   };
 
@@ -285,6 +316,7 @@ const Navbar: React.FC = () => {
         isOpen={isProfileModalOpen}
         onClose={() => setIsProfileModalOpen(false)}
         user={userProfile} // Pasa los datos del usuario
+        onUpdate={handleUpdateUser} // Pasa la función aquí
       />
     </nav>
   );
