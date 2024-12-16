@@ -66,8 +66,6 @@ public class MapPointController {
 		}
 	}
 
-
-	
 	
 	
 	// Actualizar un MapPoint por ID

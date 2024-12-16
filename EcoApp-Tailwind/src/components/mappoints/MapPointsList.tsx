@@ -1,19 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import { MapPoint } from '../../types/MapPoints';
+import { MapPoint, TypePoint } from '../../types/MapPoints';
 import { Loader2, Map as MapIcon } from 'lucide-react';
 import { toast } from 'react-toastify';
 import AddMapPointButton from './AddMapPointButton';
 import MapPointCard from './MapPointCard';
+import MapPointSearchBar from '../filters/MapPointSearchBar';
+import TypePointFilter from '../filters/TyePointFilter';
 import { fetchMapPoints, deleteMapPoint } from '../../api/mappoints';
 
 const MapPointsList = () => {
   const [mapPoints, setMapPoints] = useState<MapPoint[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [selectedTypes, setSelectedTypes] = useState<number[]>([]);
+  const [types, setTypes] = useState<TypePoint[]>([]);
 
   const loadMapPoints = async () => {
     try {
       const data = await fetchMapPoints();
       setMapPoints(data);
+      
+      // Extract unique types from map points
+      const uniqueTypes = Array.from(
+        new Set(data.map(point => JSON.stringify(point.typePoint)))
+      ).map(type => JSON.parse(type));
+      
+      setTypes(uniqueTypes);
+      setSelectedTypes(uniqueTypes.map(type => type.id));
     } catch (error) {
       console.error("Error fetching map points:", error);
       toast.error('Failed to load locations');
@@ -30,12 +43,32 @@ const MapPointsList = () => {
     try {
       await deleteMapPoint(id);
       toast.success('Location deleted successfully');
-      loadMapPoints(); // Reload the list
+      loadMapPoints();
     } catch (error) {
       console.error('Error deleting location:', error);
       toast.error('Failed to delete location');
     }
   };
+
+  const handleTypeToggle = (typeId: number) => {
+    setSelectedTypes(prev => {
+      if (prev.includes(typeId)) {
+        if (prev.length === 1) return prev;
+        return prev.filter(id => id !== typeId);
+      }
+      return [...prev, typeId];
+    });
+  };
+
+  const filteredMapPoints = mapPoints.filter(point => {
+    const matchesSearch = (
+      point.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      point.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      point.typePoint.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    const matchesType = selectedTypes.includes(point.typePoint.id);
+    return matchesSearch && matchesType;
+  });
 
   if (loading) {
     return (
@@ -58,15 +91,37 @@ const MapPointsList = () => {
             <MapIcon className="w-8 h-8 text-blue-500" />
           </div>
         </div>
+
+        <div className="mb-8">
+          <TypePointFilter
+            selectedTypes={selectedTypes}
+            onTypeToggle={handleTypeToggle}
+            types={types}
+          />
+          <MapPointSearchBar
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+          />
+        </div>
         
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {mapPoints.map((point) => (
-            <MapPointCard
-              key={point.id}
-              point={point}
-              onDelete={handleDelete}
-            />
-          ))}
+          {filteredMapPoints.length === 0 ? (
+            <div className="col-span-full text-center py-12">
+              <MapIcon className="mx-auto h-12 w-12 text-gray-400" />
+              <h3 className="mt-2 text-sm font-medium text-gray-900">No locations found</h3>
+              <p className="mt-1 text-sm text-gray-500">
+                Try adjusting your search or filter criteria
+              </p>
+            </div>
+          ) : (
+            filteredMapPoints.map((point) => (
+              <MapPointCard
+                key={point.id}
+                point={point}
+                onDelete={handleDelete}
+              />
+            ))
+          )}
         </div>
       </div>
     </div>

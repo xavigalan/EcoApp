@@ -80,7 +80,7 @@ const AddMapPointForm = () => {
       }
   
       toast.success('Location created successfully!');
-      navigate('/mappoints');
+      navigate('/points');
     } catch (error) {
       console.error('Error creating location:', error);
       toast.error('Failed to create location');

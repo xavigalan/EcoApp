@@ -1,7 +1,7 @@
-export const DEFAULT_POSITION: [number, number] = [41.152043, 1.105714]; // Reus coordinates
+export const DEFAULT_POSITION: [number, number] = [41.14092931002889, 1.1101341247558596]; // Reus coordinates
 
 export const MAP_CONFIG = {
-  zoom: 16,
+  zoom: 14,
   minZoom: 10,
   maxZoom: 18,
   scrollWheelZoom: true,
