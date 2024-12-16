@@ -64,7 +64,7 @@ const Notice: React.FC = () => {
   onClick={() => handleVolunteerClick(event.id)}
   className={`mt-4 px-4 py-2 ${volunteers[event.id] ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'} text-white rounded-lg transition-colors`}
 >
-  {volunteers[event.id] ? t('buttons.cancelVolunteer') : t('buttons.volunteer')}
+  {volunteers[event.id] ? t('events.buttons.cancelVolunteer') : t('events.buttons.volunteer')}
 </button>
 
                     </li>

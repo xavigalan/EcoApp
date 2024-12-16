@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { UserWithRoleDTO } from '../types/User';
 import { Users, Mail, Phone, Calendar, BadgeCheck, Loader2 } from 'lucide-react';
 import AddEmployeeButton from './AddEmployeeButton';
+import { useTranslation } from 'react-i18next';
 
 const Employees = () => {
+  const { t } = useTranslation();  // Este debe estar dentro del componente
   const [users, setUsers] = useState<UserWithRoleDTO[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -36,8 +38,8 @@ const Employees = () => {
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900">Our Team</h2>
-            <p className="mt-2 text-gray-600">Meet our talented team members</p>
+            <h2 className="text-3xl font-bold text-gray-900">{t('employees.team')}</h2>
+            <p className="mt-2 text-gray-600">{t('employees.meet')}</p>
           </div>
           <div className="flex items-center space-x-4">
             <AddEmployeeButton />

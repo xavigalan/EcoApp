@@ -112,5 +112,20 @@ export const caTranslations = {
       cancelVolunteer: "Cancel·la el voluntariat"
     }
   },
+  employees: {
+    team: "El nostre equip",
+    meet: "Coneix el nostre equip talentós",
+    addNew: "Afegir nou treballador",
+    firstName: "Nom",
+    lastName: "Cognom",
+    dni: "DNI",
+    phone: "Telèfon",
+    email: "Correu electrònic",
+    password: "Contrasenya",
+    save: "Guardar empleat",
+    back: "Tornar als empleats",
+    role: "Rol",
+    selectRole: "Seleccionar rol"
+  }
  
 };

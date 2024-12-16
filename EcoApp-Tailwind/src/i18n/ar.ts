@@ -95,16 +95,33 @@ export const arTranslations = {
     success: 'تم التسجيل بنجاح!',
     error: 'حدث خطأ أثناء التسجيل.',
   },
-  buttons: {
-    volunteer: 'انضم كمتطوع',
-    cancelVolunteer: 'إلغاء التطوع',
-  },
+
   events: {
+    eventList: "قائمة الأحداث",
     concert: 'حفل خيري',
     concertDescription: 'ساعد في تنظيف المكان بعد الحفل.',
     beachCleanUp: 'تنظيف الشاطئ',
     beachCleanUpDescription: 'انضم إلينا لتنظيف شواطئنا والحفاظ على البيئة.',
     carnivalCleanUp: 'تنظيف بقايا الكرنفال',
     carnivalCleanUpDescription: 'ساعد في تنظيف الشوارع بعد الحدث.',
+    buttons: {
+      volunteer: 'انضم كمتطوع',
+      cancelVolunteer: 'إلغاء التطوع',
+    }
   },
+ employees: {
+    team: "فريقنا",
+    meet: "تعرف على فريقنا الموهوب",
+    addNew: "إضافة موظف جديد",
+    firstName: "الاسم الأول",
+    lastName: "اسم العائلة",
+    dni: "الرقم الوطني",
+    phone: "الهاتف",
+    email: "البريد الإلكتروني",
+    password: "كلمة المرور",
+    save: "حفظ الموظف",
+    back: "الرجوع إلى الموظفين",
+    role: "الدور",
+    selectRole: "اختر الدور"
+  }
 };

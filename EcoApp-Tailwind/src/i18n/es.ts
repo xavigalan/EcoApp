@@ -1,3 +1,5 @@
+import Employees from "../components/Employees";
+
 export const esTranslations = {
   nav: {
     services: 'Servicios',
@@ -106,7 +108,23 @@ export const esTranslations = {
     carnivalCleanUpDescription: "Únete a limpiar las calles después del evento.",
     buttons: {
       volunteer: "Apuntate como voluntario",
-      cancelVolunteer: "Cancela el voluntariado"
+      cancelVolunteer: "Cancela el voluntariado",
     }
   },
+  employees: {
+    team: "Nuestro Equipo",
+    meet: "Conoce nuestro equipo talentoso",
+    addNew: "Agregar Nuevo Empleado",
+    firstName: "Nombre",
+    lastName: "Apellido",
+    dni: "DNI",
+    phone: "Teléfono",
+    email: "Correo electrónico",
+    password: "Contraseña",
+    save: "Guardar Empleado",
+    back: "Volver a Empleados",
+    role: "Rol",
+    selectRole: "Seleccionar Rol"
+  }
+  
   };

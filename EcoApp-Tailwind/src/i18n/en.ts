@@ -95,16 +95,33 @@ export const enTranslations = {
     success: 'Registration Successful!',
     error: 'An error occurred during registration.',
   },
-  buttons: {
-    volunteer: 'Sign Up as a Volunteer',
-    cancelVolunteer: 'Cancel Volunteering',
-  },
+  
   events: {
+    eventList: "List of Events",
     concert: 'Charity Concert',
     concertDescription: 'Help clean up the area after the concert.',
     beachCleanUp: 'Beach Clean-Up',
     beachCleanUpDescription: 'Join to clean our beaches and care for the environment.',
     carnivalCleanUp: 'Carnival Trash Collection',
     carnivalCleanUpDescription: 'Join to clean the streets after the event.',
+    buttons: {
+      volunteer: 'Sign Up as a Volunteer',
+      cancelVolunteer: 'Cancel Volunteering',
+    },
   },
+  employees: {
+    team: "Our Team",
+    meet: "Meet our talented team",
+    addNew: "Add New Employee",
+    firstName: "First Name",
+    lastName: "Last Name",
+    dni: "DNI",
+    phone: "Phone",
+    email: "Email",
+    password: "Password",
+    save: "Save Employee",
+    back: "Back to Employees",
+    role: "Role",
+    selectRole: "Select Role"
+  }
 };
