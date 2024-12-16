@@ -1,44 +1,64 @@
-// es.ts
+import { report } from "process";
+import Services from "../components/Services/Services";
+
 export const esTranslations = {
-  services: "Servicios",
-  geolocation_not_supported: "La geolocalización no es compatible",
-  location_access_denied: "Acceso a la ubicación denegado",
-  unable_to_get_location: "No se pudo obtener la ubicación",
-  failed_to_submit_report: "Error al enviar el reporte",
-  select_location: "Seleccionar ubicación",
-  logout: "Cerrar sesión",
-  login: "Iniciar sesión",
-  register: "Registrarse",
-  points: "Puntos",
-  employees: "Empleados",
-  about: "Acerca de la aplicación",
-  contact: "Contáctanos",
-  email_address: "Correo electrónico",
-  
+  "Services": "Servicios",
+  "Fecha ": "Fecha ",
+
   nav: {
-    services: "Servicios",
-    notice: "Notificaciones",
-    contact: "Contáctanos",
-    employees: "Empleados",
-    points: "Puntos",
-    logout: "Cerrar sesión",
-    login: "Iniciar sesión",
-    register: "Registrarse",
+    services: 'Servicios',
+    notice: 'Avisos',
+    contact: 'Contacto',
+    employees: 'Empleados',
+    points: 'Puntos',
+    login: 'Iniciar Sesión',
+    register: 'Registrarse',
+    logout: 'Cerrar Sesión'
   },
-  errors: {
-    invalid_email_or_password: "Correo electrónico o contraseña incorrectos",
-    registration_error: "Error al registrarse",
-    login_error: "Error al iniciar sesión",
+  contact: {
+    title: 'Contacta con ECOAPP',
+    subtitle: 'Únete a nuestra misión para crear un futuro sostenible. Si tienes preguntas, sugerencias o quieres colaborar, estamos aquí para ayudarte.',
+    about: {
+      title: 'Sobre ECOAPP',
+      description: 'Fundada en 2020, ECOAPP surgió de un grupo apasionado de entusiastas del medio ambiente decididos a revolucionar las prácticas globales de gestión y reciclaje de residuos.'
+    },
+    mission: {
+      title: 'Nuestra Misión',
+      description: 'Hacer que el reciclaje sea accesible, eficiente y gratificante para todos mientras promovemos prácticas sostenibles en todo el mundo.'
+    },
+    whatWeDo: {
+      title: 'Qué Hacemos',
+      description: 'Desarrollamos soluciones innovadoras de reciclaje, educamos a las comunidades y conectamos recicladores con empresas sostenibles.'
+    },
+    impact: {
+      title: 'Nuestro Impacto',
+      description: 'Desde nuestro inicio, hemos ayudado a reciclar más de 1 millón de toneladas de residuos y nos hemos asociado con más de 500 organizaciones globalmente.'
+    },
+    team: {
+      title: 'Conoce a Nuestro Equipo',
+      subtitle: 'Nuestro talentoso equipo combina experiencia técnica con pasión por la sostenibilidad para crear soluciones innovadoras para un futuro más verde.'
+    },
+    form: {
+      title: 'Ponte en Contacto',
+      name: 'Nombre',
+      email: 'Correo electrónico',
+      message: 'Mensaje',
+      send: 'Enviar Mensaje'
+    },
   },
-  placeholders: {
-    email: "Ingresa tu correo electrónico",
-    password: "Ingresa tu contraseña",
-    firstName: "Ingresa tu nombre",
-    lastName: "Ingresa tu apellido",
-  },
-  messages: {
-    welcome: "¡Bienvenido a la aplicación!",
-    registration_success: "¡Registro exitoso!",
-    invalid_form: "Por favor, completa todos los campos correctamente.",
+  type:{
+    tree:"Poda",
+    furniture:'Muebles',
+    event:'Eventos',
+    trash:'Residuos',
+    description:'Descripción',
+    image:'Imagen (opcional)',
+    enviar:'Enviar reporte',
+    reporte:'Tipo de reporte',
+    location:'Modo de localización',
+    actual:'Tú ubicacion actual',
+    click:'Clica en el mapa',
+    buscar:'Busca la dirección',
+
   },
 };

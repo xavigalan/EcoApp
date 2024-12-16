@@ -25,7 +25,7 @@ public class MapPoint implements Serializable {
 
 	private String name;
 
-	@Column(name = "type_id", nullable = false) // Solo almacena el ID de TypePoint
+	@Column(name = "type_id", nullable = false)
 	private Long typeId;
 
 	@Column(nullable = false, precision = 10, scale = 8)

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { MapServices } from '../components/MapServices';
+import { MapServices } from '../map/MapServices';
 import { ReportForm } from './ReportForm';
-import { LocationMode, Report, ReportType } from '../types';
+import { LocationMode, Report, ReportType } from '../../types';
 import { useTranslation } from 'react-i18next';
 
 const defaultPosition: [number, number] = [41.1561, 1.1069];
@@ -58,7 +58,7 @@ function Services() {
   return (
       <div className="min-h-screen bg-gray-100 py-8 px-4" style={{ position: 'fixed', width: '-webkit-fill-available', height: '-webkit-fill-available' }}>
           <div className="w-full mx-auto space-y-8">
-              <h1 className="text-3xl font-bold text-center text-gray-900">{t('services')}</h1>
+              <h1 className="text-3xl font-bold text-center text-gray-900">{t('Services')}</h1>
 
               {error && (
                   <div className="bg-red-50 border-l-4 border-red-400 p-4">

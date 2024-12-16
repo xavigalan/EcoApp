@@ -3,10 +3,10 @@ import Cookies from "js-cookie";
 
 interface ProtectedRouteProps {
   element: JSX.Element;
-  requiredRoleId: number; // Este será el rol necesario para acceder a esta ruta
+  requiredRoleIds: number[]; // Cambiado de 'requiredRoleId' a 'requiredRoleIds' para aceptar un array
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element, requiredRoleId }) => {
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element, requiredRoleIds }) => {
   // Obtener la sesión del usuario desde la cookie
   const userSession = Cookies.get("userSession");
 
@@ -24,9 +24,9 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element, requiredRoleId
 
   // Verificar si el usuario está autenticado
   if (isAuthenticated) {
-    // Verificar si el rol del usuario es suficiente para acceder a la ruta
-    if (isAuthenticated.roleId === requiredRoleId) { // Ejemplo: 4 es para administrador
-      return element; // Permitir acceso
+    // Verificar si el rol del usuario está en el array de roles requeridos
+    if (requiredRoleIds.includes(isAuthenticated.roleId)) {
+      return element; // Permitir acceso si el rol está en el array de roles permitidos
     } else {
       // Si no tiene el rol adecuado, redirigir a una página de acceso denegado
       return <Navigate to="/" />;

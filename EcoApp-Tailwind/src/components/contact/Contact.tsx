@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Github, Linkedin, Mail, Users, Send } from 'lucide-react';
 import { Recycle, Leaf, Globe } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
-// Componente de miembros del equipo
-interface Employees {
+// Team member interface
+interface TeamMember {
   name: string;
   role: string;
   image: string;
@@ -13,7 +14,7 @@ interface Employees {
   email?: string;
 }
 
-function TeamMember({ name, role, image, bio, github, linkedin, email }: Employees) {
+function TeamMemberCard({ name, role, image, bio, github, linkedin, email }: TeamMember) {
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105">
       <div className="aspect-w-3 aspect-h-4">
@@ -50,8 +51,7 @@ function TeamMember({ name, role, image, bio, github, linkedin, email }: Employe
   );
 }
 
-// Datos de los miembros del equipo
-const teamMembers = [
+const teamMembers: TeamMember[] = [
   {
     name: "Alex Rivera",
     role: "Full Stack Lead Developer",
@@ -81,8 +81,8 @@ const teamMembers = [
   }
 ];
 
-// Formulario de contacto
 export default function Contact() {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -109,57 +109,46 @@ export default function Contact() {
         
         <div className="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
           <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
-            Contact ECOAPP
+            {t('contact.title')}
           </h1>
           <p className="mt-6 text-xl text-gray-100 max-w-3xl">
-            Join us in our mission to create a sustainable future. Whether you have questions, 
-            suggestions, or want to collaborate, we're here to help.
+            {t('contact.subtitle')}
           </p>
         </div>
       </div>
 
-    {/* Company Info Section */}
-<div className="space-y-8 max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
-  <div className="text-center space-y-4">
-    <h1 className="text-4xl font-bold text-gray-900">
-      About ECOAPP
-    </h1>
-    <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-      Founded in 2020, ECOAPP emerged from a passionate group of environmental enthusiasts determined to revolutionize waste management and recycling practices globally.
-    </p>
-  </div>
+      {/* Company Info Section */}
+      <div className="space-y-8 max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
+        <div className="text-center space-y-4">
+          <h1 className="text-4xl font-bold text-gray-900">
+            {t('contact.about.title')}
+          </h1>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            {t('contact.about.description')}
+          </p>
+        </div>
 
-  {/* Section with 3 main pillars: Mission, What We Do, Impact */}
-  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-    <div className="p-8 bg-white rounded-lg shadow-lg transform transition duration-300 hover:scale-105">
-      <Recycle className="w-12 h-12 text-green-600 mb-4" />
-      <h3 className="text-xl font-semibold mb-4">Our Mission</h3>
-      <p className="text-gray-600">
-        To make recycling accessible, efficient, and rewarding for everyone while promoting 
-        sustainable practices worldwide.
-      </p>
-    </div>
+        {/* Three Pillars Section */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="p-8 bg-white rounded-lg shadow-lg transform transition duration-300 hover:scale-105">
+            <Recycle className="w-12 h-12 text-green-600 mb-4" />
+            <h3 className="text-xl font-semibold mb-4">{t('contact.mission.title')}</h3>
+            <p className="text-gray-600">{t('contact.mission.description')}</p>
+          </div>
 
-    <div className="p-8 bg-white rounded-lg shadow-lg transform transition duration-300 hover:scale-105">
-      <Leaf className="w-12 h-12 text-green-600 mb-4" />
-      <h3 className="text-xl font-semibold mb-4">What We Do</h3>
-      <p className="text-gray-600">
-        We develop innovative recycling solutions, educate communities, and connect 
-        recyclers with sustainable businesses.
-      </p>
-    </div>
+          <div className="p-8 bg-white rounded-lg shadow-lg transform transition duration-300 hover:scale-105">
+            <Leaf className="w-12 h-12 text-green-600 mb-4" />
+            <h3 className="text-xl font-semibold mb-4">{t('contact.whatWeDo.title')}</h3>
+            <p className="text-gray-600">{t('contact.whatWeDo.description')}</p>
+          </div>
 
-    <div className="p-8 bg-white rounded-lg shadow-lg transform transition duration-300 hover:scale-105">
-      <Globe className="w-12 h-12 text-green-600 mb-4" />
-      <h3 className="text-xl font-semibold mb-4">Our Impact</h3>
-      <p className="text-gray-600">
-        Since our inception, we've helped recycle over 1 million tons of waste and 
-        partnered with 500+ organizations globally.
-      </p>
-    </div>
-  </div>
-</div>
-
+          <div className="p-8 bg-white rounded-lg shadow-lg transform transition duration-300 hover:scale-105">
+            <Globe className="w-12 h-12 text-green-600 mb-4" />
+            <h3 className="text-xl font-semibold mb-4">{t('contact.impact.title')}</h3>
+            <p className="text-gray-600">{t('contact.impact.description')}</p>
+          </div>
+        </div>
+      </div>
 
       {/* Team Section */}
       <section className="py-16 bg-gray-50">
@@ -168,16 +157,15 @@ export default function Contact() {
             <div className="flex justify-center mb-4">
               <Users className="w-12 h-12 text-green-600" />
             </div>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Meet Our Team</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">{t('contact.team.title')}</h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Our talented team combines technical expertise with a passion for sustainability
-              to create innovative solutions for a greener future.
+              {t('contact.team.subtitle')}
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {teamMembers.map((member) => (
-              <TeamMember key={member.name} {...member} />
+              <TeamMemberCard key={member.name} {...member} />
             ))}
           </div>
         </div>
@@ -185,64 +173,63 @@ export default function Contact() {
 
       {/* Contact Form Section */}
       <main className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
-  <div className="grid grid-cols-1 lg:grid-cols-1 gap-8">
-    <div className="bg-white p-8 rounded-lg shadow-lg mx-auto w-full">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Get in Touch</h2>
-      <form onSubmit={handleSubmit} className="space-y-6 w-full">
-        <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-            Name
-          </label>
-          <input
-            type="text"
-            id="name"
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 bg-white p-2"
-            required
-          />
+        <div className="grid grid-cols-1 lg:grid-cols-1 gap-8">
+          <div className="bg-white p-8 rounded-lg shadow-lg mx-auto w-full">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">{t('contact.form.title')}</h2>
+            <form onSubmit={handleSubmit} className="space-y-6 w-full">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                  {t('contact.form.name')}
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 bg-white p-2"
+                  required
+                />
+              </div>
+
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  {t('contact.form.email')}
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 bg-white p-2"
+                  required
+                />
+              </div>
+
+              <div>
+                <label htmlFor="message" className="block text-sm font-medium text-gray-700">
+                  {t('contact.form.message')}
+                </label>
+                <textarea
+                  id="message"
+                  rows={4}
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 bg-white p-2"
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 w-full"
+              >
+                <Send className="w-4 h-4 mr-2" />
+                {t('contact.form.send')}
+              </button>
+            </form>
+          </div>
         </div>
-
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 bg-white p-2"
-            required
-          />
-        </div>
-
-        <div>
-          <label htmlFor="message" className="block text-sm font-medium text-gray-700">
-            Message
-          </label>
-          <textarea
-            id="message"
-            rows={4}
-            value={formData.message}
-            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 bg-white p-2"
-            required
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 w-full"
-        >
-          <Send className="w-4 h-4 mr-2" />
-          Send Message
-        </button>
-      </form>
-    </div>
-  </div>
-</main>
-
+      </main>
     </div>
   );
 }

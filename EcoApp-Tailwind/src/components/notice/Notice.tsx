@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface Event {
     id: number;
@@ -45,18 +46,20 @@ const Notice: React.FC = () => {
             return newVolunteers;
         });
     };
+    const { t } = useTranslation();
 
     return (
         <div className="mx-auto p-6 flex flex-col items-center"style={{ height: "-webkit-fill-availablevh", width: "-webkit-fill-available", position: "fixed", zIndex: 2 }}>
             <h1 className="text-4xl font-extrabold text-gray-800 mb-6 text-center">
-                Lista de Eventos
+                {t('Lista de Eventos')}
             </h1>
+
             <ul className = "w-2/4">
                 {events.map((event) => (
                     <li key={event.id} className="mb-6 p-4 border rounded-lg shadow-sm bg-white hover:shadow-lg transition-shadow">
                         <h2 className="text-2xl font-medium text-gray-800">{event.title}</h2>
                         <p className="text-sm text-gray-500">{event.description}</p>
-                        <p className="text-sm text-gray-600 mt-2"><strong>Fecha:</strong> {event.date}</p>
+                        <p className="text-sm text-gray-600 mt-2"><strong>{t('Fecha ')}</strong> {event.date}</p>
                         <button
                             onClick={() => handleVolunteerClick(event.id)}
                             className={`mt-4 px-4 py-2 ${volunteers[event.id] ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'} text-white rounded-lg transition-colors`}

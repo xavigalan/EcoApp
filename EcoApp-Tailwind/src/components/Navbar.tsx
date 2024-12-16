@@ -316,6 +316,7 @@ const Navbar: React.FC = () => {
           <Link to="/contact" className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700" onClick={handleLinkClick}>
             {t('nav.contact')}
           </Link>
+<<<<<<< HEAD
           {userProfile.roleId == 4 && (
               <>
                 <Link to="/employees" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
@@ -326,6 +327,14 @@ const Navbar: React.FC = () => {
                 </Link>
               </>
             )}
+=======
+          <Link to="/employees" className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700">
+            {t('nav.employees')}
+          </Link>
+          <Link to="/points" className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700" >
+            {t('nav.points')}
+          </Link>
+>>>>>>> cbe57c1c6aee6cfa7b812827196fdb98638641a8
         </div>
       </div>
 

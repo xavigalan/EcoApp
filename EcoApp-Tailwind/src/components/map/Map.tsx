@@ -2,16 +2,14 @@ import { useState, useEffect } from 'react';
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup, Polygon } from 'react-leaflet';
 import L, { LatLngTuple } from 'leaflet';
-import { getIconByType } from '../utils/iconUtils';
-import { DEFAULT_POSITION, REUS_PERIMETER } from '../constants/map';
+import { getIconByType } from '../../utils/iconUtils';
+import { DEFAULT_POSITION, REUS_PERIMETER } from '../../constants/map';
 
 
 
 const Map = () => {
   const [position, setPosition] = useState<[number, number] | null>(null);
   const [mapPoints, setMapPoints] = useState<any[]>([]); // Estado para almacenar los puntos del mapa
-
-
 
   // LLAMAR BACKEND
   useEffect(() => {

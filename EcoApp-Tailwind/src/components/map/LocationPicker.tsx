@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { LocationMode } from '../types';
-import { searchAddress } from '../services/geocoding';
+import { LocationMode } from '../../types';
+import { searchAddress } from '../../services/geocoding';
 import { Search } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 type LocationPickerProps = {
   mode: LocationMode;
@@ -31,21 +32,21 @@ export function LocationPicker({ mode, onModeChange, onLocationSelect }: Locatio
       setIsSearching(false);
     }
   };
-
+  const { t } = useTranslation();
   return (
     <div className="space-y-4">
       <div className="flex flex-col space-y-2">
         <label className="text-sm font-medium text-gray-700">
-          Location Mode:
+        {t('type.location')}
         </label>
         <select 
           value={mode}
           onChange={(e) => onModeChange(e.target.value as LocationMode)}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         >
-          <option value="current">Use Current Location</option>
-          <option value="map">Click on Map</option>
-          <option value="manual">Search Address</option>
+          <option value="current"> {t('type.actual')}</option>
+          <option value="map">{t('type.click')}</option>
+          <option value="manual">{t('type.buscar')}</option>
         </select>
       </div>
 

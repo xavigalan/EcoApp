@@ -29,10 +29,10 @@ public class TypeController {
 	@Autowired
 	TypePointService typepointService;
 
-	@GetMapping("/typepoints")
-	public List<TypePoint> getTypePoints() {
-		logger.info("Request to /typepoints endpoint (GET)");
-		return typepointService.findAllTypePoints();
+	@GetMapping
+	public ResponseEntity<List<TypePoint>> getTypePoints() {
+		List<TypePoint> typePoints = typepointService.findAllTypePoints();
+		return ResponseEntity.ok(typePoints);
 	}
 
 	@GetMapping("/{id}")

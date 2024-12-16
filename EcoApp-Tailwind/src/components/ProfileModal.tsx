@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from "react";
+=======
+import React from "react";
+>>>>>>> cbe57c1c6aee6cfa7b812827196fdb98638641a8
 import { UserWithRoleDTO } from "../types/User";
 
 interface ProfileModalProps {
@@ -73,6 +77,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, user, onUp
         </div>
 
         <div className="space-y-4">
+<<<<<<< HEAD
           {/* Foto de perfil */}
           <div className="text-center">
             <img
@@ -141,6 +146,16 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, user, onUp
                 Edit
               </button>
             )}
+=======
+          {/* User Information */}
+          <div className="space-y-2">
+            <InfoField label="First Name" value={user.firstName} />
+            <InfoField label="Last Name" value={user.lastName} />
+            <InfoField label="Email" value={user.email} />
+            <InfoField label="Phone" value={user.phone} />
+            <InfoField label="DNI" value={user.dni} />
+            <InfoField label="Role" value={user.role.name} />
+>>>>>>> cbe57c1c6aee6cfa7b812827196fdb98638641a8
           </div>
         </div>
       </div>
