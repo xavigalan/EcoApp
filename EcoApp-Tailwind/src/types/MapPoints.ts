@@ -10,8 +10,9 @@ export interface MapPoint {
   latitude: number;
   longitude: number;
   description: string;
-  typePoint: TypePoint;
+  typePoint: TypePoint; // Cambiado de string a TypePoint
 }
+
 
 export interface MapPointFormData {
   name: string;

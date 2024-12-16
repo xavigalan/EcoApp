@@ -19,12 +19,12 @@ const MapPointsList = () => {
     try {
       const data = await fetchMapPoints();
       setMapPoints(data);
-      
+
       // Extract unique types from map points
       const uniqueTypes = Array.from(
         new Set(data.map(point => JSON.stringify(point.typePoint)))
       ).map(type => JSON.parse(type));
-      
+
       setTypes(uniqueTypes);
       setSelectedTypes(uniqueTypes.map(type => type.id));
     } catch (error) {
@@ -47,6 +47,15 @@ const MapPointsList = () => {
     } catch (error) {
       console.error('Error deleting location:', error);
       toast.error('Failed to delete location');
+    }
+  };
+  const handleUpdate = async (id: number) => {
+    try {
+      await loadMapPoints(); // Recargar los puntos del mapa tras una actualización
+      toast.success('Location updated successfully');
+    } catch (error) {
+      console.error('Error updating location:', error);
+      toast.error('Failed to update location');
     }
   };
 
@@ -103,7 +112,7 @@ const MapPointsList = () => {
             onSearchChange={setSearchTerm}
           />
         </div>
-        
+
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filteredMapPoints.length === 0 ? (
             <div className="col-span-full text-center py-12">
@@ -118,7 +127,9 @@ const MapPointsList = () => {
               <MapPointCard
                 key={point.id}
                 point={point}
+                types={types} // Pasar la lista de tipos
                 onDelete={handleDelete}
+                onUpdate={handleUpdate}
               />
             ))
           )}

@@ -79,6 +79,7 @@ public class MapPointController {
 			mapPointToUpdate.setLatitude(mapPointDetails.getLatitude());
 			mapPointToUpdate.setLongitude(mapPointDetails.getLongitude());
 			mapPointToUpdate.setDescription(mapPointDetails.getDescription());
+			mapPointToUpdate.setTypeId(mapPointDetails.getTypeId());
 			return ResponseEntity.ok(mapPointService.addMapPoint(mapPointToUpdate));
 		} else {
 			return ResponseEntity.notFound().build();

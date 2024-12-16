@@ -11,7 +11,7 @@ import { PointFormData } from '../../types/MapPoints';
 
 const initialFormData: PointFormData = {
   name: '',
-  typeId: '', // Cambiado de typePointId a typeId
+  typeId: 0, // Cambiado de typePointId a typeId
   latitude: 0,
   longitude: 0,
   description: '',

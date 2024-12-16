@@ -63,12 +63,12 @@ const MapPointCard: React.FC<MapPointCardProps> = ({ point, types, onDelete, onU
       [e.target.name]: value
     });
   };
-
+  
   const handleTypeChange = (typeId: number) => {
-    setEditData({
-      ...editData,
-      typeId: typeId
-    });
+    setEditData((prev) => ({
+      ...prev,
+      typeId: typeId, // Actualiza el campo typeId correctamente
+    }));
   };
 
   return (
@@ -98,8 +98,8 @@ const MapPointCard: React.FC<MapPointCardProps> = ({ point, types, onDelete, onU
           )}
           {isEditing ? (
             <TypePointSelect
-              typePoints={types || []} // Asegúrate de pasar siempre un array
-              value={editData.typeId.toString()}
+              typePoints={types || []}
+              value={editData.typeId.toString()} // Convertimos a string para el select
               onChange={(e) => handleTypeChange(parseInt(e.target.value))}
             />
 
