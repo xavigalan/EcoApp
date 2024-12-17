@@ -53,6 +53,8 @@ public class UserService {
 	        userToUpdate.setFirstName(userDetails.getFirstName());
 	        userToUpdate.setLastName(userDetails.getLastName());
 	        userToUpdate.setEmail(userDetails.getEmail()); // Actualizar el correo electrónico solo si es válido
+	        userToUpdate.setRoleId(userDetails.getRoleId());
+	        userToUpdate.setPhone(userDetails.getPhone());
 
 	        // Guardar el usuario actualizado
 	        return userRepository.save(userToUpdate);
