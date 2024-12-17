@@ -200,7 +200,7 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* Desktop Links */}
-          <div className="hidden md:flex space-x-12">
+          <div className="hidden md:flex space-x-10">
             <Link to="/services" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
               {t('nav.services')}
             </Link>
