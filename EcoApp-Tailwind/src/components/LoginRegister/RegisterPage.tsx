@@ -28,7 +28,7 @@ export default function RegisterPage() {
         const newErrors = {
             firstName: firstName.length > 50 ? "First name is too long (max 50 characters)." : "",
             lastName: lastName.length > 50 ? "Last name is too long (max 50 characters)." : "",
-            dni: /^\d{8}[A-Za-z]$/.test(dni) ? "DNI must be exactly 8 digits." : "",
+            dni: /^\d{8}[A-Za-z]$/.test(dni) ? "DNI must be exactly 8 digits and 1 character." : "",
             phone: !/^\d{9}$/.test(phone) ? "Phone number must be exactly 9 digits." : "",
             email: !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? "Invalid email format." : "",
             password: password.length < 8 ? "Password must be at least 8 characters long." : "",
