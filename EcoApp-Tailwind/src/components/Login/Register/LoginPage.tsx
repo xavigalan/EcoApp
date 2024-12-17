@@ -87,7 +87,7 @@ const LoginPage: React.FC = () => {
                                 autoComplete="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm"
                             />
                         </div>
                     </div>
@@ -126,7 +126,7 @@ const LoginPage: React.FC = () => {
                             type="submit"
                             className="flex w-full justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
                         >
-                            {t('login')} {/* Using translation for 'Sign in' */}
+                            {t('login.sign_in')} {/* Using translation for 'Sign in' */}
                         </button>
                         <div className="text-sm mt-4 me-4 text-right">
                             <a href="#" className="font-semibold text-green-600 hover:text-green-500">{t('login.forgot_password')}</a> {/* Using translation for 'Forgot password?' */}

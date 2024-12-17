@@ -53,7 +53,7 @@ const Notice: React.FC = () => {
     return (
         <div className="mx-auto p-6 flex flex-col items-center" style={{ height: "-webkit-fill-availablevh", width: "-webkit-fill-available", position: "fixed", zIndex: 2 }}>
             <h1 className="text-4xl font-extrabold text-gray-800 mb-6 text-center">
-                {t('Lista de Eventos')}
+                {t('events.eventList')}
             </h1>
 
             <ul className="w-2/4">

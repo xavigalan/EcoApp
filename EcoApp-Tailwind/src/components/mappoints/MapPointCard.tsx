@@ -4,6 +4,7 @@ import { MapPin, Navigation, Info, Map as MapIcon, Edit2, Trash2, X, Check } fro
 import { toast } from 'react-toastify';
 import { updateMapPoint } from '../../api/mappoints';
 import TypePointSelect from './TypePointSelect';
+import { useTranslation } from 'react-i18next';
 
 interface MapPointCardProps {
   point: MapPoint;
@@ -13,6 +14,7 @@ interface MapPointCardProps {
 }
 
 const MapPointCard: React.FC<MapPointCardProps> = ({ point, types, onDelete, onUpdate }) => {
+  const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState<MapPointUpdateDTO>({
     name: point.name,
@@ -32,10 +34,10 @@ const MapPointCard: React.FC<MapPointCardProps> = ({ point, types, onDelete, onU
           typePoint: types.find(t => t.id === editData.typeId)!
         };
         onUpdate(point.id, updatedPoint);
-        toast.success('Location updated successfully');
+        toast.success(t('messages.updateSuccess'));
         setIsEditing(false);
       } catch (error) {
-        toast.error('Failed to update location');
+        toast.error(t('messages.updateError'));
       }
     } else {
       setIsEditing(true);
@@ -43,12 +45,12 @@ const MapPointCard: React.FC<MapPointCardProps> = ({ point, types, onDelete, onU
   };
 
   const handleDelete = async () => {
-    if (window.confirm('Are you sure you want to delete this location?')) {
+    if (window.confirm(t('messages.deleteConfirmation'))) {
       try {
         await onDelete(point.id);
-        toast.success('Location deleted successfully');
+        toast.success(t('messages.deleteSuccess'));
       } catch (error) {
-        toast.error('Failed to delete location');
+        toast.error(t('messages.deleteError'));
       }
     }
   };
@@ -67,7 +69,7 @@ const MapPointCard: React.FC<MapPointCardProps> = ({ point, types, onDelete, onU
   const handleTypeChange = (typeId: number) => {
     setEditData((prev) => ({
       ...prev,
-      typeId: typeId, // Actualiza el campo typeId correctamente
+      typeId: typeId,
     }));
   };
 
@@ -89,7 +91,7 @@ const MapPointCard: React.FC<MapPointCardProps> = ({ point, types, onDelete, onU
               value={editData.name}
               onChange={handleChange}
               className="flex-1 mr-4 px-2 py-1 border rounded"
-              placeholder="Location Name"
+              placeholder={t('labels.locationName')}
             />
           ) : (
             <h3 className="text-xl font-semibold text-gray-900">
@@ -99,10 +101,9 @@ const MapPointCard: React.FC<MapPointCardProps> = ({ point, types, onDelete, onU
           {isEditing ? (
             <TypePointSelect
               typePoints={types || []}
-              value={editData.typeId.toString()} // Convertimos a string para el select
+              value={editData.typeId.toString()}
               onChange={(e) => handleTypeChange(parseInt(e.target.value))}
             />
-
           ) : (
             <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
               <MapPin className="w-4 h-4 mr-1" />
@@ -122,7 +123,7 @@ const MapPointCard: React.FC<MapPointCardProps> = ({ point, types, onDelete, onU
                   value={editData.latitude}
                   onChange={handleChange}
                   className="w-[calc(50%-0.25rem)] px-2 py-1 border rounded"
-                  placeholder="Latitude"
+                  placeholder={t('labels.latitude')}
                   step="any"
                 />
                 <input
@@ -131,7 +132,7 @@ const MapPointCard: React.FC<MapPointCardProps> = ({ point, types, onDelete, onU
                   value={editData.longitude}
                   onChange={handleChange}
                   className="w-[calc(50%-0.25rem)] px-2 py-1 border rounded"
-                  placeholder="Longitude"
+                  placeholder={t('labels.longitude')}
                   step="any"
                 />
               </div>
@@ -150,7 +151,7 @@ const MapPointCard: React.FC<MapPointCardProps> = ({ point, types, onDelete, onU
                 value={editData.description}
                 onChange={handleChange}
                 className="flex-1 px-2 py-1 border rounded"
-                placeholder="Description"
+                placeholder={t('labels.description')}
                 rows={2}
               />
             ) : (
@@ -167,7 +168,7 @@ const MapPointCard: React.FC<MapPointCardProps> = ({ point, types, onDelete, onU
                 className="inline-flex items-center text-blue-600 hover:text-blue-800"
               >
                 <MapIcon className="w-4 h-4 mr-1" />
-                View on Maps
+                {t('buttons.viewOnMaps')}
               </a>
             )}
 
@@ -178,7 +179,7 @@ const MapPointCard: React.FC<MapPointCardProps> = ({ point, types, onDelete, onU
                   ? 'text-green-600 hover:text-green-700 bg-green-50 hover:bg-green-100'
                   : 'text-yellow-600 hover:text-yellow-700 bg-yellow-50 hover:bg-yellow-100'
                   }`}
-                title={isEditing ? 'Save' : 'Edit'}
+                title={isEditing ? t('buttons.save') : t('buttons.edit')}
               >
                 {isEditing ? <Check className="w-5 h-5" /> : <Edit2 className="w-5 h-5" />}
               </button>
@@ -195,7 +196,7 @@ const MapPointCard: React.FC<MapPointCardProps> = ({ point, types, onDelete, onU
                     });
                   }}
                   className="p-2 text-gray-600 hover:text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-full"
-                  title="Cancel"
+                  title={t('buttons.cancel')}
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -203,7 +204,7 @@ const MapPointCard: React.FC<MapPointCardProps> = ({ point, types, onDelete, onU
                 <button
                   onClick={handleDelete}
                   className="p-2 text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 rounded-full"
-                  title="Delete"
+                  title={t('buttons.delete')}
                 >
                   <Trash2 className="w-5 h-5" />
                 </button>

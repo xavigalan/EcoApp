@@ -7,8 +7,11 @@ import MapPointCard from './MapPointCard';
 import MapPointSearchBar from '../filters/MapPointSearchBar';
 import TypePointFilter from '../filters/TyePointFilter';
 import { fetchMapPoints, deleteMapPoint } from '../../api/mappoints';
+import { useTranslation } from 'react-i18next';
 
 const MapPointsList = () => {
+  const { t } = useTranslation();
+
   const [mapPoints, setMapPoints] = useState<MapPoint[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -20,7 +23,6 @@ const MapPointsList = () => {
       const data = await fetchMapPoints();
       setMapPoints(data);
 
-      // Extract unique types from map points
       const uniqueTypes = Array.from(
         new Set(data.map(point => JSON.stringify(point.typePoint)))
       ).map(type => JSON.parse(type));
@@ -29,7 +31,7 @@ const MapPointsList = () => {
       setSelectedTypes(uniqueTypes.map(type => type.id));
     } catch (error) {
       console.error("Error fetching map points:", error);
-      toast.error('Failed to load locations');
+      toast.error(t('messages.loadingError')); // Traducción de error
     } finally {
       setLoading(false);
     }
@@ -42,20 +44,21 @@ const MapPointsList = () => {
   const handleDelete = async (id: number) => {
     try {
       await deleteMapPoint(id);
-      toast.success('Location deleted successfully');
+      toast.success(t('messages.deleteSuccess')); // Traducción de éxito
       loadMapPoints();
     } catch (error) {
       console.error('Error deleting location:', error);
-      toast.error('Failed to delete location');
+      toast.error(t('messages.deleteError')); // Traducción de error
     }
   };
+
   const handleUpdate = async (id: number) => {
     try {
-      await loadMapPoints(); // Recargar los puntos del mapa tras una actualización
-      toast.success('Location updated successfully');
+      await loadMapPoints(); 
+      toast.success(t('messages.updateSuccess')); // Traducción de éxito
     } catch (error) {
       console.error('Error updating location:', error);
-      toast.error('Failed to update location');
+      toast.error(t('messages.updateError')); // Traducción de error
     }
   };
 
@@ -92,8 +95,8 @@ const MapPointsList = () => {
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900">Map Points</h2>
-            <p className="mt-2 text-gray-600">Manage your map locations</p>
+            <h2 className="text-3xl font-bold text-gray-900">{t('labels.locationType')}</h2> {/* Traducción de título */}
+            <p className="mt-2 text-gray-600">{t('messages.adjustSearchOrFilter')}</p> {/* Traducción de descripción */}
           </div>
           <div className="flex items-center space-x-4">
             <AddMapPointButton />
@@ -110,6 +113,7 @@ const MapPointsList = () => {
           <MapPointSearchBar
             searchTerm={searchTerm}
             onSearchChange={setSearchTerm}
+            placeholder={t('placeholders.search')} // Traducción del placeholder
           />
         </div>
 
@@ -117,17 +121,15 @@ const MapPointsList = () => {
           {filteredMapPoints.length === 0 ? (
             <div className="col-span-full text-center py-12">
               <MapIcon className="mx-auto h-12 w-12 text-gray-400" />
-              <h3 className="mt-2 text-sm font-medium text-gray-900">No locations found</h3>
-              <p className="mt-1 text-sm text-gray-500">
-                Try adjusting your search or filter criteria
-              </p>
+              <h3 className="mt-2 text-sm font-medium text-gray-900">{t('messages.noLocationsFound')}</h3> {/* Traducción de no resultados */}
+              <p className="mt-1 text-sm text-gray-500">{t('messages.adjustSearchOrFilter')}</p> {/* Traducción de sugerencia */}
             </div>
           ) : (
             filteredMapPoints.map((point) => (
               <MapPointCard
                 key={point.id}
                 point={point}
-                types={types} // Pasar la lista de tipos
+                types={types} 
                 onDelete={handleDelete}
                 onUpdate={handleUpdate}
               />
