@@ -71,13 +71,13 @@ const LoginPage: React.FC = () => {
         <div className="flex flex-col justify-center items-center" style={{ height: "100vh", width: "100vw", position: "fixed", zIndex: 2 }}>
             <div className="sm:mx-auto sm:w-full">
                 <img alt="EcoApp" src="/images/LogoSolo.png" className="mx-auto h-20" />
-                <h2 className="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900">{t('login.sign_in')}</h2> {/* Using translation for 'Sign in to your account' */}
+                <h2 className="mt-10 text-center text-2xl font-bold tracking-tight text-green-600 dark:text-white">{t('login.sign_in')}</h2> {/* Cambié el color dinámico para que sea verde o blanco según el tema */}
             </div>
 
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                        <label htmlFor="email" className="block text-left text-sm font-medium text-gray-900">{t('login.email_address')}</label> {/* Using translation for 'Email Address' */}
+                        <label htmlFor="email" className="block text-left text-sm font-medium text-green-600 dark:text-white">{t('login.email_address')}</label> {/* Cambié el color dinámico de la etiqueta */}
                         <div className="mt-2">
                             <input
                                 id="email"
@@ -87,14 +87,14 @@ const LoginPage: React.FC = () => {
                                 autoComplete="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm"
+                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm"
                             />
                         </div>
                     </div>
 
                     <div>
                         <div className="flex items-center justify-between">
-                            <label htmlFor="password" className="block text-sm font-medium text-gray-900">{t('login.password')}</label> {/* Using translation for 'Password' */}
+                            <label htmlFor="password" className="block text-sm font-medium text-green-600 dark:text-white">{t('login.password')}</label> {/* Cambié el color dinámico de la etiqueta */}
                         </div>
                         <div className="mt-2 relative">
                             <input
@@ -105,7 +105,7 @@ const LoginPage: React.FC = () => {
                                 autoComplete="current-password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm"
+                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm"
                             />
                             <button
                                 type="button"
@@ -113,9 +113,9 @@ const LoginPage: React.FC = () => {
                                 className="absolute inset-y-0 right-0 flex items-center pr-3"
                             >
                                 {showPassword ? (
-                                    <EyeSlashIcon className="h-5 w-5 text-gray-500" />
+                                    <EyeSlashIcon className="h-5 w-5 text-gray-500 dark:text-white" />
                                 ) : (
-                                    <EyeIcon className="h-5 w-5 text-gray-500" />
+                                    <EyeIcon className="h-5 w-5 text-gray-500 dark:text-white" />
                                 )}
                             </button>
                         </div>
@@ -124,12 +124,12 @@ const LoginPage: React.FC = () => {
                     <div>
                         <button
                             type="submit"
-                            className="flex w-full justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+                            className="flex w-full justify-center rounded-md bg-green-600 dark:bg-gray-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500 dark:hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
                         >
-                            {t('login.sign_in')} {/* Using translation for 'Sign in' */}
+                            {t('login.sign_in')} {/* Usando traducción para 'Iniciar sesión' */}
                         </button>
                         <div className="text-sm mt-4 me-4 text-right">
-                            <a href="#" className="font-semibold text-green-600 hover:text-green-500">{t('login.forgot_password')}</a> {/* Using translation for 'Forgot password?' */}
+                            <a href="#" className="font-semibold text-green-600 dark:text-white hover:text-green-500">{t('login.forgot_password')}</a> {/* Cambié el color dinámico del enlace */}
                         </div>
                     </div>
                 </form>

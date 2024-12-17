@@ -1,13 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css'; // Importa Tailwind aquí
+import './index.css'; // Asegúrate de que Tailwind esté importado aquí
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
+import { ThemeProvider } from './context/ThemeContext'; // Importar el ThemeProvider
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <ThemeProvider> {/* Envolvemos App con ThemeProvider */}
+        <App />
+      </ThemeProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

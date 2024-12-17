@@ -5,25 +5,16 @@ import { useTranslation } from 'react-i18next';
 import LanguageSelector from './LanguageSelector';
 import ProfileModal from "./ProfileModal";
 import { UserWithRoleDTO } from "../types/User";
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-
-
+import { useTheme } from '../context/ThemeContext'; // Asegúrate de que esta importación sea correcta
+import { Sun, Moon } from 'react-feather';
 
 const Navbar: React.FC = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // Estado para el menú móvil
-  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false); // Estado para el modal de perfil
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); 
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false); 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { t } = useTranslation();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const { darkMode, toggleDarkMode } = useTheme(); // Usar el hook de tema
 
   const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
@@ -49,17 +40,12 @@ const Navbar: React.FC = () => {
 
   useEffect(() => {
     const userSession = Cookies.get("userSession");
-    console.log("User Session:", userSession);
-
-
-
     if (userSession) {
-      const parsedSession = JSON.parse(userSession); // Asegúrate de parsear la cookie
+      const parsedSession = JSON.parse(userSession); 
       setIsLoggedIn(true);
 
       const fetchUserData = async () => {
-        const userId = parsedSession.id;// Asegúrate de que el userId esté disponible
-
+        const userId = parsedSession.id;
         if (!userId) {
           console.error("El ID del usuario no está disponible.");
           return;
@@ -100,23 +86,9 @@ const Navbar: React.FC = () => {
     }
   }, []);
 
-
-
   const handleLogout = () => {
     Cookies.remove("userSession");
     setIsLoggedIn(false);
-    // setUserProfile({
-    //   id: "",
-    //   firstName: "",
-    //   lastName: "",
-    //   email: "",
-    //   phone: "",
-    //   dni: "",
-    //   role: 0,
-    //   profilePicture: "",
-    //   creationDate: ""
-    // });
-    // setIsOpen(false);
     window.location.href = "/";
   };
 
@@ -147,7 +119,7 @@ const Navbar: React.FC = () => {
         creationDate: data.creationDate,
       });
 
-      setIsProfileModalOpen(true); // Abre el modal después de cargar los datos
+      setIsProfileModalOpen(true); 
     } catch (error) {
       console.error("Error fetching user profile:", error);
     }
@@ -176,9 +148,7 @@ const Navbar: React.FC = () => {
       }
 
       const data = await response.json();
-      console.log(data);
-      
-      setUserProfile(data); // Actualiza el estado con los datos del servidor
+      setUserProfile(data); 
     } catch (error) {
       console.error("Error updating user profile:", error);
     }
@@ -189,7 +159,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="bg-green-800 text-white">
+    <nav className={`transition-colors duration-300 ${darkMode ? 'bg-gray-900 text-white' : 'bg-green-800 text-white'}`}>
       <div className="px-6">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -228,25 +198,14 @@ const Navbar: React.FC = () => {
             <LanguageSelector />
             {isLoggedIn ? (
               <div className="flex items-center space-x-4">
-                {/* User Profile Picture */}
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                    <Avatar alt="User" src={userProfile.profilePicture} />
                   </IconButton>
                 </Tooltip>
                 <Menu
                   sx={{ mt: '45px' }}
-                  id="menu-appbar"
                   anchorEl={anchorElUser}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
                 >
@@ -256,9 +215,9 @@ const Navbar: React.FC = () => {
                       onClick={() => {
                         handleCloseUserMenu();
                         if (setting === "Profile") {
-                          openProfileModal(); // Llama a la función para cargar datos y abrir el modal
+                          openProfileModal(); // Open profile modal
                         } else if (setting === "Logout") {
-                          handleLogout(); // Maneja el logout
+                          handleLogout(); // Logout
                         }
                       }}
                     >
@@ -277,24 +236,17 @@ const Navbar: React.FC = () => {
                 </Link>
               </>
             )}
-          </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center space-x-2">
-            <LanguageSelector />
+            {/* Dark Mode Toggle */}
             <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md bg-green-800 text-white hover:text-white hover:bg-green-700 focus:outline-none"
+              onClick={toggleDarkMode}
+              className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200"
+              aria-label="Toggle dark mode"
             >
-              <span className="sr-only">Open main menu</span>
-              {isMobileMenuOpen ? (
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
+              {darkMode ? (
+                <Sun className="h-5 w-5 text-yellow-300" />
               ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
+                <Moon className="h-5 w-5 text-gray-500" />
               )}
             </button>
           </div>
@@ -317,15 +269,15 @@ const Navbar: React.FC = () => {
             {t('nav.contact')}
           </Link>
           {userProfile.roleId == 4 && (
-              <>
-                <Link to="/employees" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
-                  {t('nav.employees')}
-                </Link>
-                <Link to="/points" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
-                  {t('nav.points')}
-                </Link>
-              </>
-            )}
+            <>
+              <Link to="/employees" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+                {t('nav.employees')}
+              </Link>
+              <Link to="/points" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+                {t('nav.points')}
+              </Link>
+            </>
+          )}
         </div>
       </div>
 
@@ -333,8 +285,8 @@ const Navbar: React.FC = () => {
       <ProfileModal
         isOpen={isProfileModalOpen}
         onClose={() => setIsProfileModalOpen(false)}
-        user={userProfile} // Pasa los datos del usuario
-        onUpdate={handleUpdateUser} // Pasa la función aquí
+        user={userProfile} 
+        onUpdate={handleUpdateUser} 
       />
     </nav>
   );

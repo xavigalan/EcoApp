@@ -49,7 +49,7 @@ export default function Contact() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900"> {/* Background color based on dark mode */}
       {/* Hero Section */}
       <div className="relative">
         <div className="absolute inset-0">
@@ -71,52 +71,39 @@ export default function Contact() {
       {/* About Us Section */}
       <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
         <div className="text-center space-y-4">
-          <h2 className="text-3xl font-bold text-gray-900">{t('contact.about.title')}</h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">{t('contact.about.description')}</p>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">{t('contact.about.title')}</h2>
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">{t('contact.about.description')}</p>
         </div>
       </div>
 
       {/* Three Pillars Section */}
       <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            {
-              title: t('contact.mission.title'),
-              description: t('contact.mission.description'),
-              icon: <Recycle className="w-12 h-12 text-green-600 mb-4" />,
-            },
-            {
-              title: t('contact.whatWeDo.title'),
-              description: t('contact.whatWeDo.description'),
-              icon: <Leaf className="w-12 h-12 text-green-600 mb-4" />,
-            },
-            {
-              title: t('contact.impact.title'),
-              description: t('contact.impact.description'),
-              icon: <Globe className="w-12 h-12 text-green-600 mb-4" />,
-            },
-          ].map((pillar) => (
-            <div
-              key={pillar.title}
-              className="p-8 bg-white rounded-lg shadow-lg transform transition duration-300 hover:scale-105"
-            >
-              {pillar.icon}
-              <h3 className="text-xl font-semibold mb-4">{pillar.title}</h3>
-              <p className="text-gray-600">{pillar.description}</p>
-            </div>
-          ))}
+          {[{ title: t('contact.mission.title'), description: t('contact.mission.description'), icon: <Recycle className="w-12 h-12 text-green-600 mb-4" /> },
+            { title: t('contact.whatWeDo.title'), description: t('contact.whatWeDo.description'), icon: <Leaf className="w-12 h-12 text-green-600 mb-4" /> },
+            { title: t('contact.impact.title'), description: t('contact.impact.description'), icon: <Globe className="w-12 h-12 text-green-600 mb-4" /> }]
+            .map((pillar) => (
+              <div
+                key={pillar.title}
+                className="p-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg transform transition duration-300 hover:scale-105"
+              >
+                {pillar.icon}
+                <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">{pillar.title}</h3>
+                <p className="text-gray-600 dark:text-gray-300">{pillar.description}</p>
+              </div>
+            ))}
         </div>
       </div>
 
       {/* Team Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-gray-50 dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">{t('contact.team.title')}</h2>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 text-center mb-8">{t('contact.team.title')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {teamMembers.map((member) => (
               <div
                 key={member.name}
-                className="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105"
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105"
               >
                 <div className="aspect-w-3 aspect-h-4">
                   <img
@@ -126,9 +113,9 @@ export default function Contact() {
                   />
                 </div>
                 <div className="p-4">
-                  <h3 className="text-lg font-semibold">{member.name}</h3>
-                  <p className="text-gray-600 mb-2">{member.role}</p>
-                  <p className="text-sm text-gray-500 mb-2">{member.bio}</p>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{member.name}</h3>
+                  <p className="text-gray-600 dark:text-gray-300 mb-2">{member.role}</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">{member.bio}</p>
                 </div>
               </div>
             ))}
@@ -140,14 +127,14 @@ export default function Contact() {
       <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
         <form onSubmit={handleSubmit} className="space-y-6">
           <input
-            className="border rounded-lg px-4 py-2 w-full"
+            className="border rounded-lg px-4 py-2 w-full text-gray-900 dark:text-gray-100 dark:bg-gray-800"
             placeholder={t('contact.form.name')}
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             required
           />
           <input
-            className="border rounded-lg px-4 py-2 w-full"
+            className="border rounded-lg px-4 py-2 w-full text-gray-900 dark:text-gray-100 dark:bg-gray-800"
             type="email"
             placeholder={t('contact.form.email')}
             value={formData.email}
@@ -155,7 +142,7 @@ export default function Contact() {
             required
           />
           <textarea
-            className="border rounded-lg px-4 py-2 w-full"
+            className="border rounded-lg px-4 py-2 w-full text-gray-900 dark:text-gray-100 dark:bg-gray-800"
             rows={4}
             placeholder={t('contact.form.message')}
             value={formData.message}

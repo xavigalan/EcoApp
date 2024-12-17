@@ -2,3 +2,20 @@
   width: -webkit-fill-available;
   height: 100vh;
 }
+.dark {
+  background-color: #1a202c; /* Ejemplo de color de fondo en dark mode */
+  color: white;
+}
+
+.dark .bg-gray-100 {
+  background-color: #2d3748; /* Fondo gris oscuro para dark mode */
+}
+/* Este es el estilo para la clase dark en toda la app */
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark {
+  background-color: #2D3748; /* Color de fondo oscuro */
+  color: white; /* Color de texto blanco */
+}
