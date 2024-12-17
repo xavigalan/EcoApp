@@ -1,4 +1,4 @@
-import Navbar from './components/Navbar';
+import Navbar from './components/NaBar/Navbar';
 import Map from './components/map/Map';
 import './App.css';
 import './i18n/Config';
