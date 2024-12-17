@@ -2,13 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Cookies from 'js-cookie';
 import { ArrowLeft, Save } from 'lucide-react';
 import { Role, UserFormData } from '../../types/User';
+import { FormErrors } from '../../types/FormErrors';
 import { registerUser, fetchRoles } from '../../api/users';
 import FormInput from '../forms/FormInput';
 import RoleSelect from '../forms/RoleSelect';
 import { useTranslation } from 'react-i18next';
+import {
+  validateDNI,
+  validatePhone,
+  validateEmail,
+  validatePassword,
+  validateName,
+} from '../../utils/validaitons';
 
 const initialFormData: UserFormData = {
   firstName: '',
@@ -20,18 +27,27 @@ const initialFormData: UserFormData = {
   roleId: '',
 };
 
+const initialErrors: FormErrors = {
+  firstName: '',
+  lastName: '',
+  dni: '',
+  phone: '',
+  email: '',
+  password: '',
+  roleId: '',
+};
+
 const AddEmployeeForm = () => {
-  const { t } = useTranslation(); // Obtén la función de traducción
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [roles, setRoles] = useState<Role[]>([]);
   const [formData, setFormData] = useState<UserFormData>(initialFormData);
+  const [errors, setErrors] = useState<FormErrors>(initialErrors);
 
   useEffect(() => {
-
     const loadRoles = async () => {
       try {
         const rolesData = await fetchRoles();
-        console.log(rolesData); // Verifica que los roles se están cargando correctamente
         setRoles(rolesData);
       } catch (error) {
         toast.error(t('employees.failedRoles'));
@@ -41,31 +57,74 @@ const AddEmployeeForm = () => {
     loadRoles();
   }, [t]);
 
+  const validateField = (name: string, value: string): string => {
+    switch (name) {
+      case 'firstName':
+      case 'lastName':
+        return validateName(value, name === 'firstName' ? 'First name' : 'Last name');
+      case 'dni':
+        return validateDNI(value);
+      case 'phone':
+        return validatePhone(value);
+      case 'email':
+        return validateEmail(value);
+      case 'password':
+        return validatePassword(value);
+      default:
+        return '';
+    }
+  };
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    // Validate field on change
+    const error = validateField(name, value);
+    setErrors(prev => ({
+      ...prev,
+      [name]: error,
+    }));
   };
 
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {
+      firstName: validateName(formData.firstName, 'First name'),
+      lastName: validateName(formData.lastName, 'Last name'),
+      dni: validateDNI(formData.dni),
+      phone: validatePhone(formData.phone),
+      email: validateEmail(formData.email),
+      password: validatePassword(formData.password),
+      roleId: formData.roleId ? '' : 'Role is required',
+    };
+
+    setErrors(newErrors);
+    return !Object.values(newErrors).some(error => error !== '');
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
+    if (!validateForm()) {
+      toast.error('Please fix the errors before submitting.');
+      return;
+    }
+
     try {
       const response = await registerUser(formData);
       console.log('Usuario creado correctamente:', response);
-  
       toast.success('¡Usuario creado con éxito!');
+      navigate('/employees');
     } catch (error) {
       console.error('Error en el registro:', error);
       toast.error('Error en el registro del usuario');
     }
   };
-  
-
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
@@ -95,6 +154,7 @@ const AddEmployeeForm = () => {
                 type="text"
                 value={formData.firstName}
                 onChange={handleChange}
+                error={errors.firstName}
               />
               <FormInput
                 label={t('employees.lastName')}
@@ -102,6 +162,7 @@ const AddEmployeeForm = () => {
                 type="text"
                 value={formData.lastName}
                 onChange={handleChange}
+                error={errors.lastName}
               />
               <FormInput
                 label={t('employees.dni')}
@@ -109,6 +170,7 @@ const AddEmployeeForm = () => {
                 type="text"
                 value={formData.dni}
                 onChange={handleChange}
+                error={errors.dni}
               />
               <FormInput
                 label={t('employees.phone')}
@@ -116,6 +178,7 @@ const AddEmployeeForm = () => {
                 type="tel"
                 value={formData.phone}
                 onChange={handleChange}
+                error={errors.phone}
               />
               <FormInput
                 label={t('employees.email')}
@@ -123,6 +186,7 @@ const AddEmployeeForm = () => {
                 type="email"
                 value={formData.email}
                 onChange={handleChange}
+                error={errors.email}
               />
               <FormInput
                 label={t('employees.password')}
@@ -130,11 +194,13 @@ const AddEmployeeForm = () => {
                 type="password"
                 value={formData.password}
                 onChange={handleChange}
+                error={errors.password}
               />
               <RoleSelect
                 roles={roles}
                 value={formData.roleId}
                 onChange={handleChange}
+                error={errors.roleId}
               />
             </div>
 
