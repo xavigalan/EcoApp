@@ -37,8 +37,8 @@ function App() {
         <Route path="/employees" element={<ProtectedRoute element={<Employees />} requiredRoleIds={[4]} />} />
         <Route path="/add/employees" element={<ProtectedRoute element={<AddEmployeeForm />} requiredRoleIds={[4]} />} />
 
-        <Route path="/points" element={<ProtectedRoute element={<MapPointsList />} requiredRoleIds={[4]} />} />
-        <Route path="/add/mappoint" element={<ProtectedRoute element={<AddMapPointForm />} requiredRoleIds={[4]} />} />
+        <Route path="/points" element={<ProtectedRoute element={<MapPointsList />} requiredRoleIds={[1,2,3,4]} />} />
+        <Route path="/add/mappoint" element={<ProtectedRoute element={<AddMapPointForm />} requiredRoleIds={[1,2,3,4]} />} />
 
 
       </Routes>

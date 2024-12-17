@@ -21,6 +21,7 @@ const MapPointCard: React.FC<MapPointCardProps> = ({ point, types, onDelete, onU
     description: point.description,
     typeId: point.typePoint.id
   });
+  
 
   const handleEdit = async () => {
     if (isEditing) {
@@ -102,7 +103,6 @@ const MapPointCard: React.FC<MapPointCardProps> = ({ point, types, onDelete, onU
               value={editData.typeId.toString()} // Convertimos a string para el select
               onChange={(e) => handleTypeChange(parseInt(e.target.value))}
             />
-
           ) : (
             <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
               <MapPin className="w-4 h-4 mr-1" />
@@ -170,46 +170,46 @@ const MapPointCard: React.FC<MapPointCardProps> = ({ point, types, onDelete, onU
                 View on Maps
               </a>
             )}
-
-            <div className="flex items-center space-x-2 ml-auto">
-              <button
-                onClick={handleEdit}
-                className={`p-2 rounded-full ${isEditing
-                  ? 'text-green-600 hover:text-green-700 bg-green-50 hover:bg-green-100'
-                  : 'text-yellow-600 hover:text-yellow-700 bg-yellow-50 hover:bg-yellow-100'
-                  }`}
-                title={isEditing ? 'Save' : 'Edit'}
-              >
-                {isEditing ? <Check className="w-5 h-5" /> : <Edit2 className="w-5 h-5" />}
-              </button>
-              {isEditing ? (
+              <div className="flex items-center space-x-2 ml-auto">
                 <button
-                  onClick={() => {
-                    setIsEditing(false);
-                    setEditData({
-                      name: point.name,
-                      latitude: point.latitude,
-                      longitude: point.longitude,
-                      description: point.description,
-                      typeId: point.typePoint.id
-                    });
-                  }}
-                  className="p-2 text-gray-600 hover:text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-full"
-                  title="Cancel"
+                  onClick={handleEdit}
+                  className={`p-2 rounded-full ${isEditing
+                    ? 'text-green-600 hover:text-green-700 bg-green-50 hover:bg-green-100'
+                    : 'text-yellow-600 hover:text-yellow-700 bg-yellow-50 hover:bg-yellow-100'
+                    }`}
+                  title={isEditing ? 'Save' : 'Edit'}
                 >
-                  <X className="w-5 h-5" />
+                  {isEditing ? <Check className="w-5 h-5" /> : <Edit2 className="w-5 h-5" />}
                 </button>
-              ) : (
-                <button
-                  onClick={handleDelete}
-                  className="p-2 text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 rounded-full"
-                  title="Delete"
-                >
-                  <Trash2 className="w-5 h-5" />
-                </button>
-              )}
-            </div>
+                {isEditing ? (
+                  <button
+                    onClick={() => {
+                      setIsEditing(false);
+                      setEditData({
+                        name: point.name,
+                        latitude: point.latitude,
+                        longitude: point.longitude,
+                        description: point.description,
+                        typeId: point.typePoint.id
+                      });
+                    }}
+                    className="p-2 text-gray-600 hover:text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-full"
+                    title="Cancel"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleDelete}
+                    className="p-2 text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 rounded-full"
+                    title="Delete"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </button>
+                )}
+              </div>
           </div>
+          
         </div>
       </div>
     </div>

@@ -215,11 +215,12 @@ const Navbar: React.FC = () => {
                 <Link to="/employees" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
                   {t('nav.employees')}
                 </Link>
-                <Link to="/points" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
-                  {t('nav.points')}
-                </Link>
+                
               </>
             )}
+            <Link to="/points" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+                  {t('nav.points')}
+                </Link>
           </div>
 
           {/* User Profile and Authentication */}
