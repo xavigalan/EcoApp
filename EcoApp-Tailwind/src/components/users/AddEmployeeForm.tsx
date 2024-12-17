@@ -27,6 +27,7 @@ const AddEmployeeForm = () => {
   const [formData, setFormData] = useState<UserFormData>(initialFormData);
 
   useEffect(() => {
+
     const loadRoles = async () => {
       try {
         const rolesData = await fetchRoles();
@@ -49,26 +50,22 @@ const AddEmployeeForm = () => {
     });
   };
 
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+  
     try {
       const response = await registerUser(formData);
-      if (response.token && response.userId) {
-        // Set cookies
-        Cookies.set('userToken', response.token, { expires: 7 });
-        Cookies.set('userId', response.userId, { expires: 7 });
-        Cookies.set('userSession', response.token, { expires: 7 });
-
-        toast.success(t('employees.success'));
-        setTimeout(() => navigate('/'), 2000);
-      } else {
-        toast.error(t('employees.failedRegistration'));
-      }
+      console.log('Usuario creado correctamente:', response);
+  
+      toast.success('¡Usuario creado con éxito!');
     } catch (error) {
-      toast.error(t('employees.failedRegistration'));
-      console.error('Registration error:', error);
+      console.error('Error en el registro:', error);
+      toast.error('Error en el registro del usuario');
     }
   };
+  
+
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">

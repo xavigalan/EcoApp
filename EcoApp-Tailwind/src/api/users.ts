@@ -48,6 +48,7 @@ export async function registerUser(userData: UserFormData): Promise<ApiResponse>
   return response.json();
 }
 
+
 export async function fetchRoles() {
   const response = await fetch(`${API_BASE_URL}/roles`);
   if (!response.ok) {
