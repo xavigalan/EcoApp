@@ -1,14 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
+import { Modal, TextField, Button, Box, Typography, IconButton } from '@mui/material';
+import { Edit } from '@mui/icons-material'; // Importamos el ícono de lápiz
 import { UserWithRoleDTO } from "../types/User";
 
 interface ProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
-  user: UserWithRoleDTO | null;
+  user: UserWithRoleDTO;
   onUpdate: (updatedUser: Partial<UserWithRoleDTO>) => void;
+  onEditField: (field: string, value: string) => void;
+  editingField: string | null;
+  editedValue: string;
+  setEditedValue: Dispatch<SetStateAction<string>>;
 }
 
-const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, user, onUpdate }) => {
+const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, user, onUpdate, onEditField, editingField, editedValue, setEditedValue }) => {
   const initialState: Partial<UserWithRoleDTO> = {
     firstName: user?.firstName || "",
     lastName: user?.lastName || "",
@@ -19,20 +25,24 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, user, onUp
   };
 
   const [formData, setFormData] = useState<Partial<UserWithRoleDTO>>(initialState);
-  
-  // 'imagePreview' será siempre un string (ya sea una URL o una URL de objeto generado)
-  const [imagePreview, setImagePreview] = useState<string>(
-    typeof user?.profilePicture === "string" ? user.profilePicture : ""
-  );
+
+  const [imagePreview, setImagePreview] = useState<string>(typeof user?.profilePicture === "string" ? user.profilePicture : "");
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
   useEffect(() => {
     if (user) {
-      setFormData(initialState); // Actualizar los datos cuando el usuario cambia
+      setFormData({
+        firstName: user.firstName || "",
+        lastName: user.lastName || "",
+        email: user.email || "",
+        phone: user.phone || "",
+        dni: user.dni || "",
+        profilePicture: user.profilePicture || "",
+      });
       setImagePreview(user.profilePicture || "");
     }
-  }, [user]);
+  }, [user, isOpen]);
 
   if (!isOpen || !user) return null;
 
@@ -55,8 +65,10 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, user, onUp
     onClose(); // Cierra el modal después de guardar
   };
 
-  const handleEdit = () => {
-    setIsEditing(true); // Activar modo de edición
+  const handleEditField = (field: string) => {
+    setIsEditing(true);
+    setEditedValue(formData[field as keyof Partial<UserWithRoleDTO>] as string || "");
+    onEditField(field, formData[field as keyof Partial<UserWithRoleDTO>] as string || "");
   };
 
   return (
@@ -95,23 +107,33 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, user, onUp
 
           {/* Campos del formulario */}
           <div className="space-y-4">
-            {[
-              { label: "First Name", name: "firstName", value: formData.firstName },
-              { label: "Last Name", name: "lastName", value: formData.lastName },
-              { label: "Email", name: "email", value: formData.email },
-              { label: "Phone", name: "phone", value: formData.phone },
-              { label: "DNI", name: "dni", value: formData.dni },
+            {[{ label: "First Name", name: "firstName", value: formData.firstName },
+            { label: "Last Name", name: "lastName", value: formData.lastName },
+            { label: "Email", name: "email", value: formData.email },
+            { label: "Phone", name: "phone", value: formData.phone },
+            { label: "DNI", name: "dni", value: formData.dni },
             ].map((field) => (
-              <div key={field.name} className="flex flex-col">
-                <label className="text-sm font-medium text-gray-500">{field.label}</label>
-                <input
-                  type="text"
-                  name={field.name}
-                  value={field.value || ""}
-                  onChange={handleInputChange}
-                  disabled={!isEditing} // Solo habilitar si está en modo de edición
-                  className="border rounded-md p-2 text-gray-900"
-                />
+              <div key={field.name} className="flex items-center justify-between">
+                <div className="flex flex-col w-full">
+                  <label className="text-sm font-medium text-gray-500">{field.label}</label>
+                  <input
+                    type="text"
+                    name={field.name}
+                    value={field.value || ""}
+                    onChange={handleInputChange}
+                    disabled={editingField !== null && editingField !== field.name} // Habilitar solo cuando se está editando
+                    className="border rounded-md p-2 text-gray-900"
+                  />
+                </div>
+                {/* Icono de lápiz para editar */}
+                {editingField !== field.name && (
+                  <IconButton
+                    onClick={() => handleEditField(field.name)}
+                    className="ml-2 flex items-center justify-center"
+                  >
+                    <Edit fontSize="small" />
+                  </IconButton>
+                )}
               </div>
             ))}
           </div>
@@ -134,12 +156,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, user, onUp
                 </button>
               </>
             ) : (
-              <button
-                onClick={handleEdit}
-                className="px-4 py-2 bg-blue-500 text-white rounded-md"
-              >
-                Edit
-              </button>
+              <></> // No necesitamos un botón de editar si ya se muestran los iconos de lápiz
             )}
           </div>
         </div>
