@@ -17,8 +17,10 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({ user, index, onDelete }) =>
     lastName: user.lastName,
     email: user.email,
     phone: user.phone,
-    roleId: user.role.id,
+    roleId: user.role.id.toString(), // Convertimos el ID a string
   });
+  
+
   const [roles, setRoles] = useState<Role[]>([]);
 
   useEffect(() => {
@@ -176,11 +178,10 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({ user, index, onDelete }) =>
           <div className="flex justify-end space-x-2 pt-4 border-t">
             <button
               onClick={handleEdit}
-              className={`p-2 rounded-full ${
-                isEditing
+              className={`p-2 rounded-full ${isEditing
                   ? 'text-green-600 hover:text-green-700 bg-green-50 hover:bg-green-100'
                   : 'text-yellow-600 hover:text-yellow-700 bg-yellow-50 hover:bg-yellow-100'
-              }`}
+                }`}
               title={isEditing ? 'Save' : 'Edit'}
             >
               {isEditing ? <Check className="w-5 h-5" /> : <Edit2 className="w-5 h-5" />}
