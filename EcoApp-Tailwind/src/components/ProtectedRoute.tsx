@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 
 interface ProtectedRouteProps {
   element: JSX.Element;
-  requiredRoleIds: number[]; // Cambiado de 'requiredRoleId' a 'requiredRoleIds' para aceptar un array
+  requiredRoleIds: number[]; 
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element, requiredRoleIds }) => {
