@@ -86,7 +86,7 @@ const Navbar: React.FC = () => {
               email: data.email,
               phone: data.phone || "",
               dni: data.dni,
-              roleId: data.roleId,
+              role: data.roleId,
               profilePicture: data.profilePicture || "/images/default-avatar.png",
               creationDate: data.creationDate,
             });
@@ -135,7 +135,7 @@ const Navbar: React.FC = () => {
         email: data.email,
         phone: data.phone || "",
         dni: data.dni,
-        roleId: data.roleId,
+        role: data.roleId,
         profilePicture: data.profilePicture || "/images/default-avatar.png",
         creationDate: data.creationDate,
       });
@@ -210,7 +210,7 @@ const Navbar: React.FC = () => {
             <Link to="/contact" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
               {t('nav.contact')}
             </Link>
-            {userProfile.roleId == 4 && (
+            {userProfile.role == 4 && (
               <>
                 <Link to="/employees" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
                   {t('nav.employees')}
@@ -367,7 +367,7 @@ const Navbar: React.FC = () => {
           <Link to="/contact" className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700" onClick={handleLinkClick}>
             {t('nav.contact')}
           </Link>
-          {userProfile.roleId == 4 && (
+          {userProfile.role == 4 && (
               <>
                 <Link to="/employees" className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700" onClick={handleLinkClick}>
                   {t('nav.employees')}
