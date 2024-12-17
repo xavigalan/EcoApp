@@ -200,7 +200,7 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* Desktop Links */}
-          <div className="hidden md:flex space-x-10">
+          <div className="hidden md:flex space-x-10 justify-around">
             <Link to="/services" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
               {t('nav.services')}
             </Link>
@@ -215,11 +215,12 @@ const Navbar: React.FC = () => {
                 <Link to="/employees" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
                   {t('nav.employees')}
                 </Link>
-                <Link to="/points" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
-                  {t('nav.points')}
-                </Link>
+                
               </>
             )}
+            <Link to="/points" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+                  {t('nav.points')}
+                </Link>
           </div>
 
           {/* User Profile and Authentication */}
