@@ -135,5 +135,12 @@ export const enTranslations = {
     back: "Back to Employees",
     role: "Role",
     selectRole: "Select Role"
+  },
+  "errors": {
+    "fetch_services_failed": "Failed to load services",
+    "geolocation_not_supported": "Geolocation is not supported by your browser",
+    "location_access_denied": "Location access denied",
+    "unable_to_get_location": "Unable to get location",
+    "failed_to_submit_report": "Failed to submit report"
   }
 };

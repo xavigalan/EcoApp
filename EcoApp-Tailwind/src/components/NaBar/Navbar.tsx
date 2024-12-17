@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useTranslation } from 'react-i18next';
-import LanguageSelector from './LanguageSelector';
-import ProfileModal from "./ProfileModal";
-import { UserWithRoleDTO } from "../types/User";
+import LanguageSelector from '../LanguageSelector';
+import ProfileModal from "../ProfileModal";
+import { UserWithRoleDTO } from "../../types/User";
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import Avatar from '@mui/material/Avatar';
-import { IconButton, TextField, Tooltip } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 import MenuItem from '@mui/material/MenuItem';
 
 
