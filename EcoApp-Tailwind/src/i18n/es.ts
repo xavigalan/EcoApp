@@ -1,64 +1,135 @@
-import { report } from "process";
-import Services from "../components/Services/Services";
-
 export const esTranslations = {
   "Services": "Servicios",
   "Fecha ": "Fecha ",
 
   nav: {
-    services: 'Servicios',
-    notice: 'Avisos',
-    contact: 'Contacto',
-    employees: 'Empleados',
-    points: 'Puntos',
-    login: 'Iniciar Sesión',
-    register: 'Registrarse',
-    logout: 'Cerrar Sesión'
+    services: "Servicios",
+    notice: "Avisos",
+    contact: "Contacto",
+    employees: "Empleados",
+    points: "Puntos",
+    login: "Iniciar Sesión",
+    register: "Registrarse",
+    logout: "Cerrar Sesión",
   },
+  
   contact: {
-    title: 'Contacta con ECOAPP',
-    subtitle: 'Únete a nuestra misión para crear un futuro sostenible. Si tienes preguntas, sugerencias o quieres colaborar, estamos aquí para ayudarte.',
+    title: "Contacta con ECOAPP",
+    subtitle:
+      "Únete a nuestra misión para crear un futuro sostenible. Si tienes preguntas, sugerencias o quieres colaborar, estamos aquí para ayudarte.",
     about: {
-      title: 'Sobre ECOAPP',
-      description: 'Fundada en 2020, ECOAPP surgió de un grupo apasionado de entusiastas del medio ambiente decididos a revolucionar las prácticas globales de gestión y reciclaje de residuos.'
+      title: "Sobre ECOAPP",
+      description:
+        "Fundada en 2020, ECOAPP surgió de un grupo apasionado de entusiastas del medio ambiente decididos a revolucionar las prácticas globales de gestión y reciclaje de residuos.",
     },
     mission: {
-      title: 'Nuestra Misión',
-      description: 'Hacer que el reciclaje sea accesible, eficiente y gratificante para todos mientras promovemos prácticas sostenibles en todo el mundo.'
+      title: "Nuestra Misión",
+      description:
+        "Hacer que el reciclaje sea accesible, eficiente y gratificante para todos mientras promovemos prácticas sostenibles en todo el mundo.",
     },
     whatWeDo: {
-      title: 'Qué Hacemos',
-      description: 'Desarrollamos soluciones innovadoras de reciclaje, educamos a las comunidades y conectamos recicladores con empresas sostenibles.'
+      title: "Qué Hacemos",
+      description:
+        "Desarrollamos soluciones innovadoras de reciclaje, educamos a las comunidades y conectamos recicladores con empresas sostenibles.",
     },
     impact: {
-      title: 'Nuestro Impacto',
-      description: 'Desde nuestro inicio, hemos ayudado a reciclar más de 1 millón de toneladas de residuos y nos hemos asociado con más de 500 organizaciones globalmente.'
+      title: "Nuestro Impacto",
+      description:
+        "Desde nuestro inicio, hemos ayudado a reciclar más de 1 millón de toneladas de residuos y nos hemos asociado con más de 500 organizaciones globalmente.",
     },
     team: {
-      title: 'Conoce a Nuestro Equipo',
-      subtitle: 'Nuestro talentoso equipo combina experiencia técnica con pasión por la sostenibilidad para crear soluciones innovadoras para un futuro más verde.'
+      title: "Conoce a nuestro equipo",
+      subtitle: "Conoce al grupo de profesionales detrás de EcoApp",
+      members: {
+        alex: {
+          role: "Líder Desarrollador Full Stack",
+          bio:
+            "Alex es líder técnico con amplia experiencia en desarrollo full-stack y enfoque en soluciones sostenibles.",
+        },
+        sarah: {
+          role: "Desarrolladora Frontend y Diseñadora UX",
+          bio:
+            "Sarah aporta 5 años de experiencia en diseño UX, creando interfaces intuitivas y accesibles.",
+        },
+        marcus: {
+          role: "Desarrollador Frontend y Diseñador UI",
+          bio:
+            "Marcus se especializa en crear interfaces hermosas y responsivas con React y CSS.",
+        },
+      },
     },
     form: {
-      title: 'Ponte en Contacto',
-      name: 'Nombre',
-      email: 'Correo electrónico',
-      message: 'Mensaje',
-      send: 'Enviar Mensaje'
+      title: "Ponte en Contacto",
+      name: "Nombre",
+      email: "Correo Electrónico",
+      message: "Mensaje",
+      send: "Enviar Mensaje",
     },
   },
-  type:{
-    tree:"Poda",
-    furniture:'Muebles',
-    event:'Eventos',
-    trash:'Residuos',
-    description:'Descripción',
-    image:'Imagen (opcional)',
-    enviar:'Enviar reporte',
-    reporte:'Tipo de reporte',
-    location:'Modo de localización',
-    actual:'Tú ubicacion actual',
-    click:'Clica en el mapa',
-    buscar:'Busca la dirección',
 
+  type: {
+    tree: "Poda",
+    furniture: "Muebles",
+    event: "Eventos",
+    trash: "Residuos",
+    description: "Descripción",
+    image: "Imagen (opcional)",
+    enviar: "Enviar reporte",
+    reporte: "Tipo de reporte",
+    location: "Modo de localización",
+    actual: "Tu ubicación actual",
+    click: "Clica en el mapa",
+    buscar: "Busca la dirección",
+  },
+
+  login: {
+    sign_in: "Inicia Sesión en tu Cuenta",
+    email_address: "Correo Electrónico",
+    password: "Contraseña",
+    forgot_password: "¿Olvidaste tu contraseña?",
+    submit: "Iniciar Sesión",
+  },
+
+  register: {
+    sign_up: "Regístrate en tu Cuenta",
+    first_name: "Nombre",
+    last_name: "Apellido",
+    dni: "DNI",
+    phone: "Teléfono",
+    email_address: "Correo Electrónico",
+    password: "Contraseña",
+    submit: "Registrarse",
+    success: "¡Registro exitoso!",
+    error: "Ocurrió un error durante el registro.",
+  },
+
+  events: {
+    eventList: "Lista de Eventos",
+    concert: "Concierto benéfico",
+    concertDescription: "Ayuda a limpiar el lugar después del concierto.",
+    beachCleanUp: "Recogida de basura en la playa",
+    beachCleanUpDescription: "Únete para limpiar nuestras playas y cuidar el entorno.",
+    carnivalCleanUp: "Recogida de basura del Carnaval",
+    carnivalCleanUpDescription: "Únete a limpiar las calles después del evento.",
+    buttons: {
+      volunteer: "Apúntate como voluntario",
+      cancelVolunteer: "Cancela el voluntariado",
+    },
+  },
+
+  employees: {
+    team: "Nuestro Equipo",
+    meet: "Conoce nuestro equipo talentoso",
+    addNew: "Agregar Nuevo Empleado",
+    firstName: "Nombre",
+    lastName: "Apellido",
+    dni: "DNI",
+    phone: "Teléfono",
+    email: "Correo electrónico",
+    password: "Contraseña",
+    save: "Guardar Empleado",
+    back: "Volver a Empleados",
+    role: "Rol",
+    selectRole: "Seleccionar Rol",
   },
 };

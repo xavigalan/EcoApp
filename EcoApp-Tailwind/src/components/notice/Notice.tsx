@@ -7,30 +7,33 @@ interface Event {
     date: string;
     description: string;
 }
-
-const events: Event[] = [
-    {
-        id: 1,
-        title: "Concierto benéfico",
-        date: "2024-12-15",
-        description: "Ayuda a limpiar el lugar tras el concierto.",
-    },
-    {
-        id: 2,
-        title: "Recogida de Basura en la Playa",
-        date: "2024-12-20",
-        description: "Únete para limpiar nuestras playas y cuidar el medio ambiente.",
-    },
-    {
-        id: 3,
-        title: "Recogida de basura Carnaval",
-        date: "2024-12-22",
-        description: "Únete para limpiar las calles tras el evento.",
-    },
-];
+const { t } = useTranslation();
 
 const Notice: React.FC = () => {
-    // Estado para manejar si un usuario está apuntado como voluntario en un evento
+    // Usamos el hook dentro del componente
+
+    const events: Event[] = [
+        
+        {
+            id: 1,
+            title: t('events.concert'), // Usar 'title' en lugar de 'concert'
+            date: "2024-12-15",
+            description: t('events.concertDescription'), // Usar 'description' en lugar de 'concertDescription'
+        },
+        {
+            id: 2,
+            title: t('events.beachCleanUp'),
+            date: "2024-12-20",
+            description: t('events.beachCleanUpDescription'),
+        },
+        {
+            id: 3,
+            title: t('events.carnivalCleanUp'),
+            date: "2024-12-22",
+            description: t('events.carnivalCleanUpDescription'),
+        },
+    ];
+
     const [volunteers, setVolunteers] = useState<{ [key: number]: boolean }>({});
 
     const handleVolunteerClick = (eventId: number) => {
@@ -46,15 +49,14 @@ const Notice: React.FC = () => {
             return newVolunteers;
         });
     };
-    const { t } = useTranslation();
 
     return (
-        <div className="mx-auto p-6 flex flex-col items-center"style={{ height: "-webkit-fill-availablevh", width: "-webkit-fill-available", position: "fixed", zIndex: 2 }}>
+        <div className="mx-auto p-6 flex flex-col items-center" style={{ height: "-webkit-fill-availablevh", width: "-webkit-fill-available", position: "fixed", zIndex: 2 }}>
             <h1 className="text-4xl font-extrabold text-gray-800 mb-6 text-center">
                 {t('Lista de Eventos')}
             </h1>
 
-            <ul className = "w-2/4">
+            <ul className="w-2/4">
                 {events.map((event) => (
                     <li key={event.id} className="mb-6 p-4 border rounded-lg shadow-sm bg-white hover:shadow-lg transition-shadow">
                         <h2 className="text-2xl font-medium text-gray-800">{event.title}</h2>
@@ -64,8 +66,9 @@ const Notice: React.FC = () => {
                             onClick={() => handleVolunteerClick(event.id)}
                             className={`mt-4 px-4 py-2 ${volunteers[event.id] ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'} text-white rounded-lg transition-colors`}
                         >
-                            {volunteers[event.id] ? 'Cancelar Voluntariado' : 'Apúntate como Voluntario'}
+                            {volunteers[event.id] ? t('events.buttons.cancelVolunteer') : t('events.buttons.volunteer')}
                         </button>
+
                     </li>
                 ))}
             </ul>
@@ -74,3 +77,4 @@ const Notice: React.FC = () => {
 };
 
 export default Notice;
+

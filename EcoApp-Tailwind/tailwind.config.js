@@ -1,17 +1,10 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+// tailwind.config.js
+export default {
   content: [
-    "./index.html",
-    "./src/**/*.{ts,tsx}",
+    './src/**/*.{html,js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {
-      dropShadow: {
-        'yellow-glow': '0 0 10px rgba(255, 255, 0, 0.6)'
-      }
-    },
+    extend: {},
   },
-  plugins: [
-    require('@tailwindcss/forms'),
-  ],
+  plugins: [],
 };

@@ -8,6 +8,7 @@ import { Role, UserFormData } from '../../types/User';
 import { registerUser, fetchRoles } from '../../api/users';
 import FormInput from '../forms/FormInput';
 import RoleSelect from '../forms/RoleSelect';
+import { useTranslation } from 'react-i18next';
 
 const initialFormData: UserFormData = {
   firstName: '',
@@ -20,6 +21,7 @@ const initialFormData: UserFormData = {
 };
 
 const AddEmployeeForm = () => {
+  const { t } = useTranslation(); // Obtén la función de traducción
   const navigate = useNavigate();
   const [roles, setRoles] = useState<Role[]>([]);
   const [formData, setFormData] = useState<UserFormData>(initialFormData);
@@ -28,14 +30,15 @@ const AddEmployeeForm = () => {
     const loadRoles = async () => {
       try {
         const rolesData = await fetchRoles();
+        console.log(rolesData); // Verifica que los roles se están cargando correctamente
         setRoles(rolesData);
       } catch (error) {
-        toast.error('Failed to load roles. Please try again later.');
+        toast.error(t('employees.failedRoles'));
       }
     };
 
     loadRoles();
-  }, []);
+  }, [t]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -50,16 +53,19 @@ const AddEmployeeForm = () => {
     e.preventDefault();
     try {
       const response = await registerUser(formData);
-      
-      // Set cookies
-      Cookies.set('userToken', response.token, { expires: 7 });
-      Cookies.set('userId', response.userId, { expires: 7 });
-      Cookies.set('userSession', response.token, { expires: 7 });
+      if (response.token && response.userId) {
+        // Set cookies
+        Cookies.set('userToken', response.token, { expires: 7 });
+        Cookies.set('userId', response.userId, { expires: 7 });
+        Cookies.set('userSession', response.token, { expires: 7 });
 
-      toast.success('Employee registered successfully!');
-      setTimeout(() => navigate('/'), 2000);
+        toast.success(t('employees.success'));
+        setTimeout(() => navigate('/'), 2000);
+      } else {
+        toast.error(t('employees.failedRegistration'));
+      }
     } catch (error) {
-      toast.error('Failed to register employee. Please try again.');
+      toast.error(t('employees.failedRegistration'));
       console.error('Registration error:', error);
     }
   };
@@ -73,56 +79,56 @@ const AddEmployeeForm = () => {
             className="inline-flex items-center text-gray-600 hover:text-gray-800"
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
-            Back to Employees
+            {t('employees.back')}
           </button>
         </div>
 
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="sm:mx-auto sm:w-full">
             <h2 className="text-2xl font-bold text-gray-900 text-center mb-8">
-              Add New Employee
+              {t('employees.addNew')}
             </h2>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               <FormInput
-                label="First Name"
+                label={t('employees.firstName')}
                 name="firstName"
                 type="text"
                 value={formData.firstName}
                 onChange={handleChange}
               />
               <FormInput
-                label="Last Name"
+                label={t('employees.lastName')}
                 name="lastName"
                 type="text"
                 value={formData.lastName}
                 onChange={handleChange}
               />
               <FormInput
-                label="DNI"
+                label={t('employees.dni')}
                 name="dni"
                 type="text"
                 value={formData.dni}
                 onChange={handleChange}
               />
               <FormInput
-                label="Phone"
+                label={t('employees.phone')}
                 name="phone"
                 type="tel"
                 value={formData.phone}
                 onChange={handleChange}
               />
               <FormInput
-                label="Email"
+                label={t('employees.email')}
                 name="email"
                 type="email"
                 value={formData.email}
                 onChange={handleChange}
               />
               <FormInput
-                label="Password"
+                label={t('employees.password')}
                 name="password"
                 type="password"
                 value={formData.password}
@@ -141,7 +147,7 @@ const AddEmployeeForm = () => {
                 className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors duration-200 shadow-sm"
               >
                 <Save className="w-5 h-5 mr-2" />
-                Save Employee
+                {t('employees.save')}
               </button>
             </div>
           </form>
