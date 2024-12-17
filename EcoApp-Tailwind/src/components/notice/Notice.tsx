@@ -7,10 +7,10 @@ interface Event {
     date: string;
     description: string;
 }
-const { t } = useTranslation();
 
 const Notice: React.FC = () => {
     // Usamos el hook dentro del componente
+    const { t } = useTranslation();
 
     const events: Event[] = [
         
