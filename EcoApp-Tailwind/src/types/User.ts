@@ -11,14 +11,14 @@ export interface ApiResponse {
 }
 
 export interface UserWithRoleDTO {
-  id: number;
+  id: string;
   firstName: string;
   lastName: string;
   dni: string;
   phone: string;
   email: string;
   creationDate: string;
-  roleId: number;
+  role: number;
   profilePicture: string | File;
 }
 
@@ -30,6 +30,6 @@ export interface UserFormData {
   phone: string;
   email: string;
   password: string;
-  roleId: string;
+  role: Role;
 }
 
