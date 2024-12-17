@@ -31,7 +31,7 @@ public class ServiceService {
     }
 
     // ELIMINAR SERVICIO
-    public void deleteMapPoint(Long id) {
+    public void deleteService(Long id) {
         if (serviceRepository.existsById(id)) {
             serviceRepository.deleteById(id);
         } else {

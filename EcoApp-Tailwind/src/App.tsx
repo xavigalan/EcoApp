@@ -9,7 +9,7 @@ import Notice from './components/notice/Notice';
 import MapPointsList from './components/mappoints/MapPointsList';
 import ProfileModal from './components/ProfileModal';
 import Contact from './components/contact/Contact';
-import Services from './components/Services/Services';
+import Services from './components/services/Services';
 import Employees from './components/users/Employees';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './components/users/AuthContext';

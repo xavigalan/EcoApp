@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { LocationMode } from '../../types';
-import { searchAddress } from '../../services/geocoding';
+import { searchAddress } from '../../utils/geocoding';
 import { Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
