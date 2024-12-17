@@ -8,7 +8,7 @@ import { UserWithRoleDTO } from "../types/User";
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import Avatar from '@mui/material/Avatar';
-import { IconButton, TextField, Tooltip } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 import MenuItem from '@mui/material/MenuItem';
 
 
@@ -215,11 +215,12 @@ const Navbar: React.FC = () => {
                 <Link to="/employees" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
                   {t('nav.employees')}
                 </Link>
-                <Link to="/points" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
-                  {t('nav.points')}
-                </Link>
+                
               </>
             )}
+            <Link to="/points" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+                  {t('nav.points')}
+                </Link>
           </div>
 
           {/* User Profile and Authentication */}

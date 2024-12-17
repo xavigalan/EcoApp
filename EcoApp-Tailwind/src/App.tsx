@@ -7,12 +7,10 @@ import LoginPage from './components/Login/Register/LoginPage';
 import RegisterPage from './components/Login/Register/RegisterPage';
 import Notice from './components/notice/Notice';
 import MapPointsList from './components/mappoints/MapPointsList';
-import ProfileModal from './components/ProfileModal';
 import Contact from './components/contact/Contact';
 import Services from './components/services/Services';
 import Employees from './components/users/Employees';
 import ProtectedRoute from './components/ProtectedRoute';
-import { AuthProvider } from './components/users/AuthContext';
 import AddEmployeeForm from './components/users/AddEmployeeForm';
 import AddMapPointForm from './components/mappoints/AddMapPointForm';
 
