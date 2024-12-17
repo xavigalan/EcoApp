@@ -5,15 +5,10 @@ import { useTranslation } from 'react-i18next';
 import LanguageSelector from './LanguageSelector';
 import ProfileModal from "./ProfileModal";
 import { UserWithRoleDTO } from "../types/User";
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
-import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Tooltip from '@mui/material/Tooltip';
+import { IconButton, TextField, Tooltip } from "@mui/material";
 import MenuItem from '@mui/material/MenuItem';
 
 
@@ -24,8 +19,9 @@ const Navbar: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { t } = useTranslation();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const [userId, setUserId] = useState(null);
 
-  const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+  const settings = ['Profile', 'Logout'];
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -42,87 +38,82 @@ const Navbar: React.FC = () => {
     email: "",
     phone: "",
     dni: "",
-    roleId: 0,
+    role: 1,
     profilePicture: "",
     creationDate: ""
   });
 
+  const [editingField, setEditingField] = useState<string | null>(null); // Para saber qué campo estamos editando
+  const [editedValue, setEditedValue] = useState<string>("");
+
   useEffect(() => {
     const userSession = Cookies.get("userSession");
-    console.log("User Session:", userSession);
-
-
-
+    console.log("User Session:", userSession);  // Verifica que esta cookie contenga el ID esperado
+  
     if (userSession) {
-      const parsedSession = JSON.parse(userSession); // Asegúrate de parsear la cookie
-      setIsLoggedIn(true);
-
-      const fetchUserData = async () => {
-        const userId = parsedSession.id;// Asegúrate de que el userId esté disponible
-
-        if (!userId) {
-          console.error("El ID del usuario no está disponible.");
-          return;
-        }
-
-        try {
-          const response = await fetch(`http://localhost:8080/users/${userId}`, {
-            method: "GET",
-            headers: {
-              "Authorization": `Bearer ${Cookies.get("userSession")}`,
-              "Content-Type": "application/json",
-            },
-          });
-
-          if (!response.ok) {
-            throw new Error("No se pudo obtener el perfil del usuario");
+      const parsedSession = JSON.parse(userSession);  // Parseamos la cookie a un objeto JavaScript
+      if (parsedSession && parsedSession.id) { // Verifica que parsedSession y parsedSession.id existan
+        setIsLoggedIn(true);
+  
+        const fetchUserData = async () => {
+          const userId = parsedSession.id; // Asegúrate de que el userId esté disponible
+          setUserId(userId);
+  
+          if (!userId) {
+            console.error("El ID del usuario no está disponible.");
+            return;
           }
-
-          const data = await response.json();
-
-          setUserProfile({
-            id: data.id,
-            firstName: data.firstName,
-            lastName: data.lastName,
-            email: data.email,
-            phone: data.phone || "",
-            dni: data.dni,
-            roleId: data.roleId,
-            profilePicture: data.profilePicture || "/images/default-avatar.png",
-            creationDate: data.creationDate
-          });
-        } catch (error) {
-          console.error("Error al obtener los datos del usuario:", error);
-        }
-      };
-
-      fetchUserData();
+  
+          try {
+            const response = await fetch(`http://localhost:8080/users/${userId}`, {
+              method: "GET",
+              headers: {
+                "Authorization": `Bearer ${Cookies.get("userSession")}`,
+                "Content-Type": "application/json",
+              },
+            });
+  
+            if (!response.ok) {
+              throw new Error("No se pudo obtener el perfil del usuario");
+            }
+  
+            const data = await response.json();
+            console.log(data);
+            setUserProfile({
+              id: data.id,
+              firstName: data.firstName,
+              lastName: data.lastName,
+              email: data.email,
+              phone: data.phone || "",
+              dni: data.dni,
+              roleId: data.roleId,
+              profilePicture: data.profilePicture || "/images/default-avatar.png",
+              creationDate: data.creationDate,
+            });
+          } catch (error) {
+            console.error("Error al obtener los datos del usuario:", error);
+          }
+        };
+  
+        fetchUserData();
+      } else {
+        console.error("La sesión de usuario no contiene un ID válido.");
+      }
+    } else {
+      console.error("No hay una sesión de usuario activa.");
     }
   }, []);
-
 
 
   const handleLogout = () => {
     Cookies.remove("userSession");
     setIsLoggedIn(false);
-    // setUserProfile({
-    //   id: "",
-    //   firstName: "",
-    //   lastName: "",
-    //   email: "",
-    //   phone: "",
-    //   dni: "",
-    //   role: 0,
-    //   profilePicture: "",
-    //   creationDate: ""
-    // });
-    // setIsOpen(false);
     window.location.href = "/";
   };
 
   const openProfileModal = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/users/${userProfile.id}/with-role`, {
+      const response = await fetch(`http://localhost:8080/users/${userId}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${Cookies.get("userSession")}`,
@@ -135,7 +126,9 @@ const Navbar: React.FC = () => {
       }
 
       const data = await response.json();
+
       setUserProfile({
+        ...userProfile,
         id: data.id,
         firstName: data.firstName,
         lastName: data.lastName,
@@ -167,9 +160,10 @@ const Navbar: React.FC = () => {
         method: "PATCH",
         headers: {
           "Authorization": `Bearer ${Cookies.get("userSession")}`,
-        },
-        body: formData,
-      });
+        "Content-Type": "application/json", // Enviar datos como JSON
+      },
+      body: JSON.stringify(updatedUser), // Convertimos los datos a JSON
+    });
 
       if (!response.ok) {
         throw new Error("Failed to update user.");
@@ -182,6 +176,11 @@ const Navbar: React.FC = () => {
     } catch (error) {
       console.error("Error updating user profile:", error);
     }
+  };
+
+  const handleEditField = (field: string, value: string) => {
+    setEditingField(field);
+    setEditedValue(value);
   };
 
   const handleLinkClick = () => {
@@ -201,7 +200,7 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* Desktop Links */}
-          <div className="hidden md:flex space-x-12">
+          <div className="hidden md:flex space-x-10">
             <Link to="/services" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
               {t('nav.services')}
             </Link>
@@ -282,6 +281,58 @@ const Navbar: React.FC = () => {
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center space-x-2">
             <LanguageSelector />
+            {isLoggedIn ? (
+              <div className="flex items-center space-x-4">
+                {/* User Profile Picture */}
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: '45px' }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                  aria-hidden={!Boolean(anchorElUser)}
+                >
+                  {settings.map((setting) => (
+                    <MenuItem
+                      key={setting}
+                      onClick={() => {
+                        handleCloseUserMenu();
+                        if (setting === "Profile") {
+                          openProfileModal(); // Llama a la función para cargar datos y abrir el modal
+                        } else if (setting === "Logout") {
+                          handleLogout(); // Maneja el logout
+                        }
+                      }}
+                    >
+                      <Typography sx={{ textAlign: "center" }}>{setting}</Typography>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </div>
+            ) : (
+              <>
+                <Link to="/login" className="text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+                  {t('nav.login')}
+                </Link>
+                <Link to="/register" className="text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+                  {t('nav.register')}
+                </Link>
+              </>
+            )}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md bg-green-800 text-white hover:text-white hover:bg-green-700 focus:outline-none"
@@ -318,10 +369,10 @@ const Navbar: React.FC = () => {
           </Link>
           {userProfile.roleId == 4 && (
               <>
-                <Link to="/employees" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+                <Link to="/employees" className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700" onClick={handleLinkClick}>
                   {t('nav.employees')}
                 </Link>
-                <Link to="/points" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+                <Link to="/points" className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700" onClick={handleLinkClick}>
                   {t('nav.points')}
                 </Link>
               </>
@@ -333,8 +384,12 @@ const Navbar: React.FC = () => {
       <ProfileModal
         isOpen={isProfileModalOpen}
         onClose={() => setIsProfileModalOpen(false)}
-        user={userProfile} // Pasa los datos del usuario
-        onUpdate={handleUpdateUser} // Pasa la función aquí
+        user={userProfile}
+        onUpdate={handleUpdateUser}
+        onEditField={handleEditField}
+        editingField={editingField}
+        editedValue={editedValue}
+        setEditedValue={setEditedValue}
       />
     </nav>
   );
