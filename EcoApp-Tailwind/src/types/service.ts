@@ -13,8 +13,8 @@ export interface User {
 export interface Service {
   id: number;
   userId: number; // Si necesitas el ID del usuario
-  user: User;  // Incluye la información del usuario vinculado
   serviceTypeId: number;
+  tiposervicio: ServiceType;
   description: string;
   locationLatitude: number;
   locationLongitude: number;

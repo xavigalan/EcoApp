@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Service, User } from '../../types/service';
-import { UserWithRoleDTO } from '../../types/User';
+import { Service } from '../../types/service';
 import { formatDate, getStatusColor, getStatusIcon } from '../../utils/serviceUtils';
 import { MapPin, Calendar, Clock, ArrowUpDown } from 'lucide-react';
 
@@ -68,6 +67,8 @@ const ServicesHistory: React.FC = () => {
                 <div>
                   <h3 className="text-lg font-semibold text-gray-800">Servicio #{service.id}</h3>
                   <p className="text-gray-600">{service.description}</p>
+                  <p className='text-gray-600'> Tipo de Servicio: {service.serviceType?.name || 'Tipo de servicio desconocido'}</p>
+
                 </div>
                 <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(service.status)}`}>
                   {getStatusIcon(service.status)} {service.status}
@@ -79,6 +80,8 @@ const ServicesHistory: React.FC = () => {
                   <p>
                     <strong>Cliente:</strong> {service.user.firstName || 'Usuario desconocido'}
                   </p>
+
+
                   <p>
                     <strong>Teléfono:</strong> {service.user.phone || 'Teléfono desconocido'}
                   </p>
@@ -90,23 +93,20 @@ const ServicesHistory: React.FC = () => {
                 </div>
 
                 <div className="text-gray-600">
-                  <strong>Latitud:</strong> {service.locationLatitude || 'No disponible'}<br />
-                  <strong>Longitud:</strong> {service.locationLongitude || 'No disponible'}
+                  {service.startDate && (
+                    <>
+                      <Clock className="w-4 h-4 inline-block mr-2" />
+                      <strong>Inicio:</strong> {formatDate(service.startDate)}
+                    </>
+                  )}
+                  {service.endDate && (
+                    <>
+                      <Clock className="w-4 h-4 inline-block mr-2 ml-4" />
+                      <strong>Fin:</strong> {formatDate(service.endDate)}
+                    </>
+                  )}
                 </div>
 
-                {service.startDate && (
-                  <div className="text-gray-600">
-                    <Clock className="w-4 h-4 inline-block mr-2" />
-                    <strong>Inicio:</strong> {formatDate(service.startDate)}
-                  </div>
-                )}
-
-                {service.endDate && (
-                  <div className="text-gray-600">
-                    <Clock className="w-4 h-4 inline-block mr-2" />
-                    <strong>Fin:</strong> {formatDate(service.endDate)}
-                  </div>
-                )}
               </div>
 
               {(service.photoBefore || service.photoAfter) && (
