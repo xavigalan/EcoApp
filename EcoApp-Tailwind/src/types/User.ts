@@ -34,3 +34,14 @@ export interface UserFormData {
 }
 
 
+export interface UserFormDataCard {
+  id: number;
+  firstName: string;
+  lastName: string;
+  dni: string;
+  phone: string;
+  email: string;
+  password: string;
+  roleId: string; 
+  creationDate: string;
+}

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { UserWithRoleDTO, Role } from '../../types/User';
+import { UserFormDataCard, Role } from '../../types/User';
 import { Mail, Phone, Calendar, BadgeCheck, Edit2, Trash2, X, Check } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { updateUser, deleteUser, fetchRoles } from '../../api/users';
 
 interface EmployeeCardProps {
-  user: UserWithRoleDTO;
+  user: UserFormDataCard;
   index: number;
   onDelete: (id: number) => void;
 }
@@ -195,7 +195,7 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({ user, index, onDelete }) =>
                     lastName: user.lastName,
                     email: user.email,
                     phone: user.phone,
-                    roleId: user.role.id,
+                    roleId: user.role.id.toString(),
                   });
                 }}
                 className="p-2 text-gray-600 hover:text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-full"
