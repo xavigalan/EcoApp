@@ -8,7 +8,7 @@ export const enTranslations = {
     "services": "Services",
     "notice": "Notices",
     "contact": "Contact",
-    "employees": "Employees",
+    "employees": "Users",
     "points": "Points",
     "login": "Log In",
     "register": "Register",

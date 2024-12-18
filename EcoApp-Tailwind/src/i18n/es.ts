@@ -6,7 +6,7 @@ export const esTranslations = {
     services: "Servicios",
     notice: "Avisos",
     contact: "Contacto",
-    employees: "Empleados",
+    employees: "Usuarios",
     points: "Puntos",
     login: "Iniciar Sesión",
     register: "Registrarse",

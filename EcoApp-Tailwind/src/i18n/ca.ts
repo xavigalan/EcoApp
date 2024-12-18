@@ -7,7 +7,7 @@ export const caTranslations = {
     "services": "Serveis",
     "notice": "Avisos",
     "contact": "Contacta",
-    "employees": "Empleats",
+    "employees": "Usuaris",
     "points": "Punts",
     "login": "Iniciar Sessió",
     "register": "Registrar-se",
