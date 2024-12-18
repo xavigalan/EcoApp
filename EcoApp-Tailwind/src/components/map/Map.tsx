@@ -44,7 +44,7 @@ const Map = () => {
   return (
     <MapContainer
       center={DEFAULT_POSITION}
-      zoom={15}
+      zoom={14}
       scrollWheelZoom={true}
       className="w-full h-full absolute left-0"
       style={{

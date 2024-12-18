@@ -64,7 +64,7 @@ export function MapServices({ position, locationMode, onLocationSelect, reportTy
 
   return (
     <MapContainer
-      center={position}
+      center={DEFAULT_POSITION}
       zoom={MAP_CONFIG.zoom}
       scrollWheelZoom={MAP_CONFIG.scrollWheelZoom}
       className="h-[100px] w-full rounded-lg shadow-md"
