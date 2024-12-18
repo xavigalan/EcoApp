@@ -99,7 +99,7 @@ export const enTranslations = {
     sign_up: 'Sign Up to Your Account',
     first_name: 'First Name',
     last_name: 'Last Name',
-    dni: 'ID',
+    dni: 'DNI',
     phone: 'Phone',
     email_address: 'Email',
     password: 'Password',
