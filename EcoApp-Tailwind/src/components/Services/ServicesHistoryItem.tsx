@@ -1,5 +1,5 @@
 import React from 'react';
-import { Clock, MapPin, FileText } from 'lucide-react';
+import { Clock, MapPin, FileText, User } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Service } from '../../types/service';
 import { formatDate, getStatusColor } from '../../utils/serviceUtils';
@@ -26,6 +26,11 @@ const ServiceHistoryItem: React.FC<ServiceHistoryItemProps> = ({ service }) => {
 
       <div className="space-y-3 text-gray-600">
         <div className="flex items-center">
+          <User className="w-5 h-5 mr-2 text-gray-500" />
+          <p>{service.user?.name || t('unknown_user')}</p>
+        </div>
+
+        <div className="flex items-center">
           <FileText className="w-5 h-5 mr-2 text-gray-500" />
           <p>{service.description || t('no_description')}</p>
         </div>
@@ -41,7 +46,7 @@ const ServiceHistoryItem: React.FC<ServiceHistoryItemProps> = ({ service }) => {
 
         <div className="flex items-center">
           <Clock className="w-5 h-5 mr-2 text-gray-500" />
-          <p>{formatDate(service.timestamp)}</p>
+          <p>{formatDate(service.creationDate)}</p>
         </div>
       </div>
     </div>

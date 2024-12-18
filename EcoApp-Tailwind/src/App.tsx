@@ -14,6 +14,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import AddEmployeeForm from './components/users/AddEmployeeForm';
 import AddMapPointForm from './components/mappoints/AddMapPointForm';
 
+import ServicesHistory from './components/Services/ServicesHistory';
+import AddServiceForm from './components/Services/AddServiceForm';
 
 
 function App() {
@@ -31,7 +33,9 @@ function App() {
         <Route path="/notice" element={<ProtectedRoute element={<Notice />} requiredRoleIds={[1,2,3,4]} />} />
         
         <Route path="/services" element={<ProtectedRoute element={<Services />} requiredRoleIds={[1,2,3,4]} />} />
-        
+        <Route path="/add/services" element={<ProtectedRoute element={<AddServiceForm />} requiredRoleIds={[1,2,3,4]} />} />
+        <Route path="services-history" element={<ProtectedRoute element={<ServicesHistory />} requiredRoleIds={[1,2,3,4]} />} />
+
         <Route path="/employees" element={<ProtectedRoute element={<Employees />} requiredRoleIds={[4]} />} />
         <Route path="/add/employees" element={<ProtectedRoute element={<AddEmployeeForm />} requiredRoleIds={[4]} />} />
 

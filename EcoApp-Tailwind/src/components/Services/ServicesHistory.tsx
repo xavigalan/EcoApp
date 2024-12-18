@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Service } from '../../types/service';
+import { Service, User } from '../../types/service';
+import { UserWithRoleDTO } from '../../types/User';
 import { formatDate, getStatusColor, getStatusIcon } from '../../utils/serviceUtils';
 import { MapPin, Calendar, Clock, ArrowUpDown } from 'lucide-react';
 
@@ -65,9 +66,7 @@ const ServicesHistory: React.FC = () => {
             >
               <div className="flex justify-between items-start mb-3">
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-800">
-                    Servicio #{service.id}
-                  </h3>
+                  <h3 className="text-lg font-semibold text-gray-800">Servicio #{service.id}</h3>
                   <p className="text-gray-600">{service.description}</p>
                 </div>
                 <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(service.status)}`}>
@@ -76,20 +75,36 @@ const ServicesHistory: React.FC = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                <div className="flex items-center text-gray-600">
-                  <MapPin className="w-4 h-4 mr-2" />
-                  <span>{service.locationAddress || 'Sin dirección'}</span>
+                <div className="text-gray-600">
+                  <p>
+                    <strong>Cliente:</strong> {service.user.firstName || 'Usuario desconocido'}
+                  </p>
+                  <p>
+                    <strong>Teléfono:</strong> {service.user.phone || 'Teléfono desconocido'}
+                  </p>
                 </div>
+
+                <div className="text-gray-600">
+                  <MapPin className="w-4 h-4 inline-block mr-2" />
+                  <strong>Dirección:</strong> {service.locationAddress || 'Sin dirección'}
+                </div>
+
+                <div className="text-gray-600">
+                  <strong>Latitud:</strong> {service.locationLatitude || 'No disponible'}<br />
+                  <strong>Longitud:</strong> {service.locationLongitude || 'No disponible'}
+                </div>
+
                 {service.startDate && (
-                  <div className="flex items-center text-gray-600">
-                    <Clock className="w-4 h-4 mr-2" />
-                    <span>Inicio: {formatDate(service.startDate)}</span>
+                  <div className="text-gray-600">
+                    <Clock className="w-4 h-4 inline-block mr-2" />
+                    <strong>Inicio:</strong> {formatDate(service.startDate)}
                   </div>
                 )}
+
                 {service.endDate && (
-                  <div className="flex items-center text-gray-600">
-                    <Clock className="w-4 h-4 mr-2" />
-                    <span>Fin: {formatDate(service.endDate)}</span>
+                  <div className="text-gray-600">
+                    <Clock className="w-4 h-4 inline-block mr-2" />
+                    <strong>Fin:</strong> {formatDate(service.endDate)}
                   </div>
                 )}
               </div>
@@ -120,12 +135,6 @@ const ServicesHistory: React.FC = () => {
               )}
             </div>
           ))}
-
-          {services.length === 0 && (
-            <div className="text-center py-8 text-gray-500">
-              No hay servicios registrados
-            </div>
-          )}
         </div>
       </div>
     </div>

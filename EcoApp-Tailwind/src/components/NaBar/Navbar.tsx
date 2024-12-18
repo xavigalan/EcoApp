@@ -356,7 +356,7 @@ const Navbar: React.FC = () => {
       {/* Mobile Links */}
       <div
         className={`${isMobileMenuOpen ? "max-h-screen opacity-100 visibility-visible" : "max-h-0 opacity-0 visibility-hidden pointer-events-none"} transition-all ease-in-out duration-300 md:hidden bg-green-800`}
-        style={{ position: "fixed", zIndex: 10, width: "100%" }}
+        style={{ zIndex: 10, width: "100%" }}
       >
         <div className="space-y-1 px-2 pb-3 pt-2">
           <Link to="/services" className="text-white block px-3 p-2 rounded-md text-base font-medium hover:text-white hover:bg-green-700" onClick={handleLinkClick}>
