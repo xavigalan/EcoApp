@@ -200,28 +200,27 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* Desktop Links */}
-          <div className="hidden md:flex space-x-10 justify-around">
-            <Link to="/services" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
-              {t('nav.services')}
-            </Link>
-            <Link to="/notice" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
-              {t('nav.notice')}
-            </Link>
-            <Link to="/contact" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
-              {t('nav.contact')}
-            </Link>
-            {userProfile.role == 4 && (
-              <>
-                <Link to="/employees" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
-                  {t('nav.employees')}
-                </Link>
-                
-              </>
-            )}
-            <Link to="/points" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
-                  {t('nav.points')}
-                </Link>
-          </div>
+<div className="hidden md:flex flex-1 justify-around items-center px-12">
+  <div className="flex gap-x-6 lg:gap-x-20">
+    <Link to="/services" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+      {t('nav.services')}
+    </Link>
+    <Link to="/notice" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+      {t('nav.notice')}
+    </Link>
+    <Link to="/contact" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+      {t('nav.contact')}
+    </Link>
+    {userProfile.role === 4 && (
+      <Link to="/employees" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+        {t('nav.employees')}
+      </Link>
+    )}
+    <Link to="/points" className="text-white hover:text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+      {t('nav.points')}
+    </Link>
+  </div>
+</div>
 
           {/* User Profile and Authentication */}
           <div className="hidden md:flex items-center space-x-6">
@@ -269,10 +268,10 @@ const Navbar: React.FC = () => {
               </div>
             ) : (
               <>
-                <Link to="/login" className="text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+                <Link to="/login" className="text-white hover:bg-green-700 p-2 m-2 rounded-md text-sm font-medium">
                   {t('nav.login')}
                 </Link>
-                <Link to="/register" className="text-white hover:bg-green-700 p-2 rounded-md text-sm font-medium">
+                <Link to="/register" className="text-white hover:bg-green-700 p-2 m-2 rounded-md text-sm font-medium">
                   {t('nav.register')}
                 </Link>
               </>
