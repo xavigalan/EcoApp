@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Polygon, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Polygon, useMapEvents } from 'react-leaflet';
 import { LocationMode, ReportType } from '../../types';
-import { getIconByType } from '../../utils/iconUtils';
-import 'leaflet/dist/leaflet.css';
-import { MapMarker } from './MapMarker';
+import { fetchServices } from '../../api/services';
 import { DEFAULT_POSITION, MAP_CONFIG, REUS_PERIMETER } from '../../constants/map';
+import L from 'leaflet'; // Asegúrate de importar Leaflet
+import defaultIconUrl from '../marker-icon.png';
 
 type MapProps = {
   position: [number, number];
@@ -25,42 +25,61 @@ function MapClickHandler({ onLocationSelect }: { onLocationSelect?: (lat: number
 }
 
 export function MapServices({ position, locationMode, onLocationSelect, reportType }: MapProps) {
-  const [mapPoints, setMapPoints] = useState<any[]>([]); // Estado para almacenar los puntos del mapa
+  const [services, setServices] = useState<any[]>([]);
+  const [positione, setPositione] = useState<[number, number] | null>(null);
   const [current, setCurrent] = useState<[number, number] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (locationMode === 'current') {
-      if (!navigator.geolocation) {
-        setError('Geolocation is not supported by your browser');
-        setCurrent(DEFAULT_POSITION);
-        return;
-      }
-
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          setCurrent([pos.coords.latitude, pos.coords.longitude]);
-          setError(null);
-        },
-        (error) => {
-          console.error('Geolocation error:', error);
-          setError(error.code === 1 ? 'Location access denied' : 'Unable to get location');
-          setCurrent(DEFAULT_POSITION);
-        },
-        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
-      );
-    }
-  }, [locationMode]);
-
-  useEffect(() => {
-    fetch('http://localhost:8080/mappoints/types')
-      .then((response) => response.json())
+    fetchServices()
       .then((data) => {
+        setServices(data);
         console.log(data);
-        setMapPoints(data);
       })
-      .catch((error) => console.error('Error al obtener los puntos del mapa:', error));
+      .catch((error) => {
+        console.error('Error al obtener los servicios:', error);
+        setError('Error al cargar los servicios');
+      });
   }, []);
+
+  // GEOLOCALIZACIÓN
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        ({ coords }) => setPositione([coords.latitude, coords.longitude]),
+        (error) => {
+          console.error('Error al obtener la ubicación:', error);
+          setPositione([41.15612, 1.10687]); // Ubicación predeterminada
+          alert('No se ha podido obtener tu ubicación. Se ha usado una ubicación predeterminada.');
+        }
+      );
+    } else {
+      console.error('La geolocalización no está soportada en este navegador.');
+      setPositione([41.15612, 1.10687]); // Ubicación predeterminada
+      alert('La geolocalización no es soportada por tu navegador. Se ha usado una ubicación predeterminada.');
+    }
+  }, []);
+
+  // Función para crear un ícono personalizado
+  const createIcon = (imageUrl: string | null) => {
+    if (imageUrl) {
+      return L.icon({
+        iconUrl: imageUrl,
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32],
+      });
+    } else {
+      // Retorna el ícono predeterminado de Leaflet
+      return L.icon({
+        iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
+      });
+    }
+  };
 
   return (
     <MapContainer
@@ -76,30 +95,50 @@ export function MapServices({ position, locationMode, onLocationSelect, reportTy
       <Polygon positions={REUS_PERIMETER} color="blue" />
 
       {current && (
-        <MapMarker
-          position={current}
-          icon={getIconByType('person')}
-          name="Current Location"
-        />
+        <Marker position={current} icon={createIcon('/assets/personIcon.png')}>
+          <Popup>Ubicación actual</Popup>
+        </Marker>
       )}
 
+      {/* {position && (
+        <Marker position={position} icon={createIcon('/assets/selected.png')}>
+          <Popup>Ubicación seleccionada</Popup>
+        </Marker>
+      )} */}
+
+
+      {/* Marcador de la ubicación actual */}
       {position && (
-        <MapMarker
-          position={position}
-          icon={getIconByType('selected', reportType)}
-          name="Selected Location"
-        />
+        <Marker position={position} icon={createIcon('/assets/selected.png')}>
+          <Popup>
+            <p>Current location</p>
+            <a
+              href={`https://www.google.com/maps?q=${position[0]},${position[1]}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Google Maps
+            </a>
+          </Popup>
+        </Marker>
       )}
 
       {locationMode === 'map' && <MapClickHandler onLocationSelect={onLocationSelect} />}
-      {mapPoints.map((point) => (
-        <MapMarker
-          key={point.id}
-          position={[point.latitude, point.longitude]}
-          icon={getIconByType(point.typePoint.name)}
-          name={point.name}
-          description={point.description}
-        />
+
+      {services.map((service) => (
+        <Marker
+          key={service.id}
+          position={[service.locationLatitude, service.locationLongitude]}
+          icon={createIcon(service.photoBefore)}
+        >
+          <Popup>
+            <div>
+              <h4>{service.serviceType.name}</h4>
+              <p>{service.description}</p>
+              {/* <small>{service.locationAddress}</small> */}
+            </div>
+          </Popup>
+        </Marker>
       ))}
     </MapContainer>
   );

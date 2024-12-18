@@ -53,9 +53,9 @@ public class ServiceEntity implements Serializable {
 
     @Lob
     @Column(name = "photo_before")
-    private byte[] photoBefore;
+    private String photoBefore;
 
     @Lob
     @Column(name = "photo_after")
-    private byte[] photoAfter;
+    private String photoAfter;
 }
