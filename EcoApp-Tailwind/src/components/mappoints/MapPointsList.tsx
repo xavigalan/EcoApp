@@ -7,8 +7,10 @@ import MapPointCard from './MapPointCard';
 import MapPointSearchBar from '../filters/MapPointSearchBar';
 import TypePointFilter from '../filters/TyePointFilter';
 import { fetchMapPoints, deleteMapPoint } from '../../api/mappoints';
+import { useTranslation } from 'react-i18next';
 
 const MapPointsList = () => {
+  const { t } = useTranslation();
   const [mapPoints, setMapPoints] = useState<MapPoint[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -92,8 +94,8 @@ const MapPointsList = () => {
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900">Map Points</h2>
-            <p className="mt-2 text-gray-600">Manage your map locations</p>
+          <h2 className="text-3xl font-bold text-gray-900">{t('labels.locationType')}</h2> {/* Traducción de título */}
+          <p className="mt-2 text-gray-600">{t('labels.selectType')}</p> {/* Traducción de descripción */}
           </div>
           <div className="flex items-center space-x-4">
             <AddMapPointButton />
@@ -117,10 +119,8 @@ const MapPointsList = () => {
           {filteredMapPoints.length === 0 ? (
             <div className="col-span-full text-center py-12">
               <MapIcon className="mx-auto h-12 w-12 text-gray-400" />
-              <h3 className="mt-2 text-sm font-medium text-gray-900">No locations found</h3>
-              <p className="mt-1 text-sm text-gray-500">
-                Try adjusting your search or filter criteria
-              </p>
+              <h3 className="mt-2 text-sm font-medium text-gray-900">{t('messages.noLocationsFound')}</h3> {/* Traducción de no resultados */}
+              <p className="mt-1 text-sm text-gray-500">{t('messages.adjustSearchOrFilter')}</p> {/* Traducción de sugerencia */}
             </div>
           ) : (
             filteredMapPoints.map((point) => (

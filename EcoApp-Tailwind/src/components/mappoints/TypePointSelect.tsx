@@ -1,17 +1,19 @@
 import React from 'react';
 import { TypePoint } from '../../types/MapPoints';
+import { useTranslation } from 'react-i18next'; // Importa el hook de i18next
 
 interface TypePointSelectProps {
   typePoints: TypePoint[];
   value: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
+const { t } = useTranslation(); // Usamos el hook para la traducción
 
 const TypePointSelect: React.FC<TypePointSelectProps> = ({ typePoints = [], value, onChange }) => {
   return (
     <div>
       <label htmlFor="typePointId" className="block text-sm font-medium text-gray-900">
-        Location Type
+        {t("labels.selectTipo")}
       </label>
       <select
         id="typePointId"

@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { updateMapPoint } from '../../api/mappoints';
 import TypePointSelect from './TypePointSelect';
 import Cookies from 'js-cookie'; // Para acceder a la cookie con la sesión del usuario
+import { useTranslation } from 'react-i18next';
 
 interface MapPointCardProps {
   point: MapPoint;
@@ -77,7 +78,9 @@ const MapPointCard: React.FC<MapPointCardProps> = ({ point, types, onDelete, onU
       ...prev,
       typeId: typeId, // Actualiza el campo typeId correctamente
     }));
-  };
+  };  
+  const { t } = useTranslation();
+  
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
@@ -173,9 +176,7 @@ const MapPointCard: React.FC<MapPointCardProps> = ({ point, types, onDelete, onU
                 rel="noopener noreferrer"
                 className="inline-flex items-center text-blue-600 hover:text-blue-800"
               >
-                <MapIcon className="w-4 h-4 mr-1" />
-                View on Maps
-              </a>
+                <MapIcon className="w-4 h-4 mr-1" />{t('buttons.viewOnMaps')}</a>
             )}
             <div className="flex items-center space-x-2 ml-auto">
               {/* Mostrar botones solo si el usuario es administrador */}
