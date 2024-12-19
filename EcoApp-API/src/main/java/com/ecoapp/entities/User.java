@@ -40,6 +40,9 @@ public class User implements Serializable {
     @Column(name = "role_id", nullable = false)
     private Long roleId;  // Aquí almacenamos el ID del rol
 
+    @Column(name = "profile_picture", nullable = true)
+    private String profilePicture;
+    
     private LocalDateTime creationDate;
 
     @PrePersist

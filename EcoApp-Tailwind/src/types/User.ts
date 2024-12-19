@@ -19,7 +19,7 @@ export interface UserWithRoleDTO {
   email: string;
   creationDate: string;
   role: number;
-  profilePicture: string | File;
+  profilePicture: string;
 }
 
 

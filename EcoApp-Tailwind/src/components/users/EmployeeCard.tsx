@@ -39,16 +39,18 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({ user, index, onDelete }) =>
   const handleEdit = async () => {
     if (isEditing) {
       try {
-        await updateUser(user.id, editData);
+        const updatedData = { ...editData, id: user.id }; // Incluye el ID del usuario
+        await updateUser(user.id, updatedData);
         toast.success('Employee updated successfully');
         setIsEditing(false);
       } catch (error) {
-        toast.error('Failed to update employee');
+        toast.error(error.message || 'Failed to update employee');
       }
     } else {
       setIsEditing(true);
     }
   };
+  
 
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete this employee?')) {
@@ -71,12 +73,12 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({ user, index, onDelete }) =>
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-      <div className="aspect-w-16 aspect-h-9">
+      <div className="aspect-w-16 aspect-h-9 mb-4">
         {/* Mostrar imagen del usuario o imagen por defecto */}
         <img
           src={user.profilePicture ? user.profilePicture : `https://source.unsplash.com/400x400/?professional,headshot&sig=${index}`}
           alt={`${user.firstName} ${user.lastName}`}
-          className="w-full h-48 object-cover"
+          className="w-full h-48 object-cover rounded-lg"
         />
       </div>
       <div className="p-6">

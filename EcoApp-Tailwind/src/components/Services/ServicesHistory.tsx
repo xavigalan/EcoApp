@@ -8,6 +8,10 @@ const ServicesHistory: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [sortField, setSortField] = useState<keyof Service>('creationDate');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
+  
+  // Obtener el rol y el ID del usuario autenticado
+  const userRoleId = 4; // Cambiar según el rol del usuario autenticado. 4 = Manager, 3 = Customer.
+  const userId = 1; // Cambiar con el id del usuario autenticado.
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -30,7 +34,10 @@ const ServicesHistory: React.FC = () => {
     setSortField(field);
   };
 
-  const sortedServices = [...services].sort((a, b) => {
+  // Filtrar servicios según el rol del usuario
+  const filteredServices = userRoleId === 4 ? services : services.filter(service => service.user.id === userId);
+
+  const sortedServices = [...filteredServices].sort((a, b) => {
     const compareValue = sortDirection === 'asc' ? 1 : -1;
     return a[sortField] > b[sortField] ? compareValue : -compareValue;
   });
@@ -68,7 +75,6 @@ const ServicesHistory: React.FC = () => {
                   <h3 className="text-lg font-semibold text-gray-800">Servicio #{service.id}</h3>
                   <p className="text-gray-600">{service.description}</p>
                   <p className='text-gray-600'> Tipo de Servicio: {service.serviceType?.name || 'Tipo de servicio desconocido'}</p>
-
                 </div>
                 <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(service.status)}`}>
                   {getStatusIcon(service.status)} {service.status}
@@ -80,8 +86,6 @@ const ServicesHistory: React.FC = () => {
                   <p>
                     <strong>Cliente:</strong> {service.user.firstName || 'Usuario desconocido'}
                   </p>
-
-
                   <p>
                     <strong>Teléfono:</strong> {service.user.phone || 'Teléfono desconocido'}
                   </p>
@@ -106,7 +110,6 @@ const ServicesHistory: React.FC = () => {
                     </>
                   )}
                 </div>
-
               </div>
 
               {(service.photoBefore || service.photoAfter) && (
