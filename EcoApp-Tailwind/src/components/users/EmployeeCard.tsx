@@ -3,6 +3,7 @@ import { UserFormDataCard, Role } from '../../types/User';
 import { Mail, Phone, Calendar, BadgeCheck, Edit2, Trash2, X, Check } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { updateUser, deleteUser, fetchRoles } from '../../api/users';
+import RoleFilter from '../filters/RoleFilter';
 
 interface EmployeeCardProps {
   user: UserFormDataCard;

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Role } from '../../types/User';
 import { Users, UserCheck, Briefcase, Recycle, Leaf } from 'lucide-react';
 
 interface RoleFilterProps {
@@ -9,9 +8,9 @@ interface RoleFilterProps {
 
 const RoleFilter: React.FC<RoleFilterProps> = ({ selectedRoles, onRoleToggle }) => {
   const roleFilters = [
-    { id: 1, name: 'Customers', icon: Users },
+    { id: 1, name: 'Waste Collectors', icon:Recycle  },
     { id: 2, name: 'Gardeners', icon: Leaf },
-    { id: 3, name: 'Waste Collectors', icon: Recycle },
+    { id: 3, name: 'Customers', icon: Users },
     { id: 4, name: 'Managers', icon: Briefcase },
   ];
 
@@ -40,4 +39,5 @@ const RoleFilter: React.FC<RoleFilterProps> = ({ selectedRoles, onRoleToggle }) 
     </div>
   );
 };
+
 export default RoleFilter;
