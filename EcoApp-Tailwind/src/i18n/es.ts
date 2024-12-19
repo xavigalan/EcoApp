@@ -42,9 +42,9 @@ export const esTranslations = {
       subtitle: "Conoce al grupo de profesionales detrás de EcoApp",
       members: {
         alex: {
-          role: "Líder Desarrollador Full Stack",
+          role: "Líder Desarrollador de EcoApp",
           bio:
-            "Alex es líder técnico con amplia experiencia en desarrollo full-stack y enfoque en soluciones sostenibles.",
+            "Xavi es líder de desarrollo en EcoApp con enfoque en backend y frontend.",
         },
         sarah: {
           role: "Desarrolladora Frontend y Diseñadora UX",

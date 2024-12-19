@@ -20,13 +20,13 @@ export default function Contact() {
 
   const teamMembers = [
     {
-      name: 'Alex Rivera',
+      name: 'Xavi Galán',
       role: t('contact.team.members.alex.role'),
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      image: '/assets/xavi.png',
       bio: t('contact.team.members.alex.bio'),
-      github: 'https://github.com',
-      linkedin: 'https://linkedin.com',
-      email: 'alex@ecoapp.com',
+      github: 'https://github.com/xavigalan',
+      linkedin: 'https://www.linkedin.com/in/xavigalan/',
+      email: 'xavier.galan.perez@gmail.com',
     },
     {
       name: 'Sarah Chen',
@@ -135,41 +135,18 @@ export default function Contact() {
           </div>
         </div>
       </section>
+      <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">{t('contact.form.title')}</h2>
 
-      {/* Contact Form */}
-      <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <input
-            className="border rounded-lg px-4 py-2 w-full"
-            placeholder={t('contact.form.name')}
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            required
-          />
-          <input
-            className="border rounded-lg px-4 py-2 w-full"
-            type="email"
-            placeholder={t('contact.form.email')}
-            value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            required
-          />
-          <textarea
-            className="border rounded-lg px-4 py-2 w-full"
-            rows={4}
-            placeholder={t('contact.form.message')}
-            value={formData.message}
-            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-            required
-          />
-          <button
-            type="submit"
-            className="w-full px-4 py-2 bg-green-600 text-white rounded-lg"
-          >
-            <Send className="w-4 h-4 inline" /> {t('contact.form.send')}
-          </button>
-        </form>
+      <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 text-center">
+        <h1 className="text-2xl font-bold text-gray-800 mb-4">Contacto</h1>
+        <p className="text-lg text-gray-600">
+          <strong>Teléfono:</strong> <a href="tel:+34678173240" className="text-blue-500 hover:underline">678 173 240</a>
+        </p>
+        <p className="text-lg text-gray-600">
+          <strong>Correo Electrónico:</strong> <a href="mailto:ecoapp@gmail.com" className="text-blue-500 hover:underline">ecoapp@gmail.com</a>
+        </p>
       </div>
+
     </div>
   );
 }

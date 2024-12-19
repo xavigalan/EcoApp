@@ -38,8 +38,8 @@ export const caTranslations = {
       "subtitle": "Coneix el grup de professionals darrere de ECOAPP",
       "members": {
         "alex": {
-          "role": "Líder Desenvolupador Full Stack",
-          "bio": "Alex és líder tècnic amb àmplia experiència en desenvolupament full-stack i enfocament en solucions sostenibles."
+          "role": "Líder Desenvolupador de EcoApp",
+          "bio": "Xavi és líder tècnic desenvolupament de EcoApp amb enfocament en backend i frontend."
         },
         "sarah": {
           "role": "Desenvolupadora Frontend i Dissenyadora UX",

@@ -39,8 +39,8 @@ export const enTranslations = {
       "subtitle": "Meet the team behind ECOAPP",
       "members": {
         "alex": {
-          "role": "Lead Full Stack Developer",
-          "bio": "Alex is a technical leader with extensive experience in full-stack development, focusing on sustainable solutions."
+          "role": "Lead of EcoApp Developer",
+          "bio": "Xavi is a technical leader in EcoApp development, focusing on backend and fronted."
         },
         "sarah": {
           "role": "Frontend Developer and UX Designer",
