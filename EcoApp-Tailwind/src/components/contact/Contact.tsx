@@ -134,19 +134,16 @@ export default function Contact() {
             ))}
           </div>
         </div>
+        <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">{t('contact.form.title')}</h2>
+          <p className="text-lg text-gray-600">
+            <strong>Teléfono:</strong> <a href="tel:+34678173240" className="text-blue-500 hover:underline">678 173 250</a>
+          </p>
+          <p className="text-lg text-gray-600">
+            <strong>Correo Electrónico:</strong> <a href="mailto:ecoapp@gmail.com" className="text-blue-500 hover:underline">ecoapp@gmail.com</a>
+          </p>
+        </div>
       </section>
-      <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">{t('contact.form.title')}</h2>
-
-      <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 text-center">
-        <h1 className="text-2xl font-bold text-gray-800 mb-4">Contacto</h1>
-        <p className="text-lg text-gray-600">
-          <strong>Teléfono:</strong> <a href="tel:+34678173240" className="text-blue-500 hover:underline">678 173 240</a>
-        </p>
-        <p className="text-lg text-gray-600">
-          <strong>Correo Electrónico:</strong> <a href="mailto:ecoapp@gmail.com" className="text-blue-500 hover:underline">ecoapp@gmail.com</a>
-        </p>
-      </div>
-
     </div>
   );
 }
