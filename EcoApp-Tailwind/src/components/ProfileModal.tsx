@@ -88,7 +88,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, user, onUp
           {/* Foto de perfil */}
           <div className="text-center">
             <img
-              src={imagePreview}
+              src={user.profilePicture}
               alt="Profile"
               className="w-24 h-24 rounded-full mx-auto object-cover"
             />

@@ -23,9 +23,11 @@ CREATE TABLE IF NOT EXISTS `users` (
     `email` VARCHAR(255) NOT NULL UNIQUE,
     `password` VARCHAR(255) NOT NULL,
     `role_id` INT NOT NULL,
+    `profile_picture` VARCHAR(255) DEFAULT NULL,  -- Columna para la imagen de perfil
     `creation_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (`role_id`) REFERENCES `roles`(`id`)
 ) ENGINE = InnoDB;
+
 
 -- Crear la tabla de Tipos de Servicios
 CREATE TABLE IF NOT EXISTS `service_types` (
@@ -38,14 +40,15 @@ CREATE TABLE IF NOT EXISTS `services` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `user_id` INT NOT NULL,
     `service_type_id` INT NOT NULL,  
-    `location_latitude` DECIMAL(10, 8),  
-    `location_longitude` DECIMAL(11, 8),  
-    `location_address` VARCHAR(255),      
-    `start_date` DATETIME,              
-    `end_date` DATETIME,
+    `location_latitude` DECIMAL(10, 8) NULL,  
+    `location_longitude` DECIMAL(11, 8) NULL,  
+    `location_address` VARCHAR(255) NOT NULL,      
+    `start_date` DATETIME NULL,              
+    `end_date` DATETIME NULL,
     `description` VARCHAR(255),        
-    `photo_before` LONGBLOB NULL, -- Foto antes de realizar el servicio
-    `photo_after` LONGBLOB NULL,  -- Foto después de realizar el servicio
+    `photo_before` VARCHAR(255) NULL, -- Foto antes de realizar el servicio
+    `photo_after` VARCHAR(255) NULL,  -- Foto después de realizar el servicio
+	`creation_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
     FOREIGN KEY (`service_type_id`) REFERENCES `service_types`(`id`)
 ) ENGINE = InnoDB;
@@ -78,22 +81,22 @@ INSERT INTO `roles` (name, description) VALUES
 ('Manager', 'Role for users who are managers with administrative permissions');
 
 -- Insertar Usuarios
-INSERT INTO `users` (`first_name`, `last_name`, `dni`, `phone`, `email`, `password`, `role_id`) 
+INSERT INTO `users` (`first_name`, `last_name`, `dni`, `phone`, `email`, `password`, `role_id`, `profile_picture`) 
 VALUES 
-('Juan', 'Pérez Gómez', '12345678A', '612343678', 'juan.perez@email.com', 'password123', 
-(SELECT `id` FROM `roles` WHERE `name` = 'Waste Collector')),
+('Xavi', 'Galán Pérez', '61809633V', '678173240', 'test@gmail.com', '1234', 
+(SELECT `id` FROM `roles` WHERE `name` = 'Manager'), '/assets/xavi.png'),
 
 ('Laura', 'González Pérez', '56789012E', '656789012', 'laura.gonzalez@email.com', 'password202', 
-(SELECT `id` FROM `roles` WHERE `name` = 'Customer')),
+(SELECT `id` FROM `roles` WHERE `name` = 'Customer'), 'uploads/profile_pictures/laura.jpg'),
 
 ('Pedro', 'Martínez Sánchez', '67890123F', '667890123', 'pedro.martinez@email.com', 'password303', 
-(SELECT `id` FROM `roles` WHERE `name` = 'Customer')),
+(SELECT `id` FROM `roles` WHERE `name` = 'Customer'), '/uploads/profile_pictures/laura.jpg'),
 
 ('Carlos', 'García Sánchez', '34567890C', '634567890', 'carlos.garcia@email.com', 'password789', 
-(SELECT `id` FROM `roles` WHERE `name` = 'Manager')),
+(SELECT `id` FROM `roles` WHERE `name` = 'Manager'), 'uploads/profile_pictures/carlos.jpg'),
 
 ('Ana', 'Ramírez López', '23456789B', '612345678', 'ana.ramirez@email.com', 'password456', 
-(SELECT `id` FROM `roles` WHERE `name` = 'Gardener'));
+(SELECT `id` FROM `roles` WHERE `name` = 'Gardener'), 'uploads/profile_pictures/ana.jpg');
 
 -- Insertar Tipos de Servicios
 INSERT INTO `service_types` (`name`, `description`) VALUES
@@ -105,27 +108,27 @@ INSERT INTO `service_types` (`name`, `description`) VALUES
 -- Inserción de un servicio de reciclaje
 INSERT INTO `services` (`user_id`, `service_type_id`, `location_latitude`, `location_longitude`, `location_address`, `start_date`, `end_date`, `description`, `photo_before`, `photo_after`)
 VALUES 
-(1, 1, 41.15612, 1.10687, 'Reciclaje central', '2024-12-01 10:00:00', '2024-12-01 14:00:00', 'Reciclaje de materiales plásticos', NULL, NULL);
+(1, 1, 41.155042, 1.105063, 'Reciclaje central', '2024-12-01 10:00:00', '2024-12-01 14:00:00', 'Reciclaje de materiales plásticos', '/assets/home-furniture.png', '/assets/home-furniture.png');
 
 -- Inserción de un servicio de jardinería
 INSERT INTO `services` (`user_id`, `service_type_id`, `location_latitude`, `location_longitude`, `location_address`, `start_date`, `end_date`, `description`, `photo_before`, `photo_after`)
 VALUES 
-(2, 2, 41.15700, 1.10700, 'Parque Central de Tarragona', '2024-12-02 08:00:00', '2024-12-02 11:30:00', 'Mantenimiento de jardines', NULL, NULL);
+(2, 2, 41.15700, 1.10700, 'Parque Central de Tarragona', '2024-12-02 08:00:00', '2024-12-02 11:30:00', 'Mantenimiento de jardines', '/assets/arbol.png', '/assets/arbol.png');
 
 -- Inserción de un servicio de limpieza
 INSERT INTO `services` (`user_id`, `service_type_id`, `location_latitude`, `location_longitude`, `location_address`, `start_date`, `end_date`, `description`, `photo_before`, `photo_after`)
 VALUES 
-(3, 3, 41.15900, 1.10800, 'Zona industrial Reus', '2024-12-03 09:00:00', '2024-12-03 12:00:00', 'Limpieza de residuos industriales', NULL, NULL);
+(3, 3, 41.15900, 1.10800, 'Zona industrial Reus', '2024-12-03 09:00:00', '2024-12-03 12:00:00', 'Limpieza de residuos industriales', '/assets/bolsabasura.png', '/assets/bolsabasura.png');
 
 -- Inserción de un servicio de reparación de calles
 INSERT INTO `services` (`user_id`, `service_type_id`, `location_latitude`, `location_longitude`, `location_address`, `start_date`, `end_date`, `description`, `photo_before`, `photo_after`)
 VALUES 
-(4, 4, 41.16000, 1.10900, 'Avenida de Cataluña', '2024-12-04 10:00:00', '2024-12-04 14:00:00', 'Reparación de baches en la carretera', NULL, NULL);
+(4, 4, 41.16000, 1.10900, 'Avenida de Cataluña', '2024-12-04 10:00:00', '2024-12-04 14:00:00', 'Reparación de baches en la carretera', '/assets/events.png', '/assets/events.png');
 
 -- Inserción de un servicio de reciclaje de textiles
 INSERT INTO `services` (`user_id`, `service_type_id`, `location_latitude`, `location_longitude`, `location_address`, `start_date`, `end_date`, `description`, `photo_before`, `photo_after`)
 VALUES 
-(5, 2, 41.16100, 1.11000, 'Centro de reciclaje de textiles', '2024-12-05 11:00:00', '2024-12-05 14:30:00', 'Reciclaje de ropa y textiles', NULL, NULL);
+(5, 2, 41.16100, 1.11000, 'Centro de reciclaje de textiles', '2024-12-05 11:00:00', '2024-12-05 14:30:00', 'Reciclaje de ropa y textiles', '/assets/ropa.png', '/assets/ropa.png');
 
 
 -- Insertar Tipos de Puntos
