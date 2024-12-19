@@ -67,13 +67,12 @@ function Services() {
     }
   };
 
-
   const goToHistory = () => {
     navigate('/services-history'); // Cambia la ruta a ServicesHistory
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8 px-4" style={{ position: 'fixed', width: '-webkit-fill-available', height: '-webkit-fill-available' }}>
+    <div className="min-h-screen bg-gray-100 py-8 px-4 static md:fixed w-full h-full">
       <div className="w-full mx-auto space-y-8">
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold text-gray-900">{t('Services')}</h1>
@@ -111,4 +110,5 @@ function Services() {
     </div>
   );
 }
+
 export default Services;
