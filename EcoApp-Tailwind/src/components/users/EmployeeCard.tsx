@@ -12,6 +12,7 @@ interface EmployeeCardProps {
 
 const EmployeeCard: React.FC<EmployeeCardProps> = ({ user, index, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [users, setUsers] = useState<UserFormDataCard[]>([]);
   const [editData, setEditData] = useState({
     firstName: user.firstName,
     lastName: user.lastName,
@@ -19,7 +20,6 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({ user, index, onDelete }) =>
     phone: user.phone,
     roleId: user.role.id.toString(), // Convertimos el ID a string
   });
-  
 
   const [roles, setRoles] = useState<Role[]>([]);
 
@@ -72,8 +72,9 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({ user, index, onDelete }) =>
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
       <div className="aspect-w-16 aspect-h-9">
+        {/* Mostrar imagen del usuario o imagen por defecto */}
         <img
-          src={`https://source.unsplash.com/400x400/?professional,headshot&sig=${index}`}
+          src={user.profilePicture ? user.profilePicture : `https://source.unsplash.com/400x400/?professional,headshot&sig=${index}`}
           alt={`${user.firstName} ${user.lastName}`}
           className="w-full h-48 object-cover"
         />
@@ -179,8 +180,8 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({ user, index, onDelete }) =>
             <button
               onClick={handleEdit}
               className={`p-2 rounded-full ${isEditing
-                  ? 'text-green-600 hover:text-green-700 bg-green-50 hover:bg-green-100'
-                  : 'text-yellow-600 hover:text-yellow-700 bg-yellow-50 hover:bg-yellow-100'
+                ? 'text-green-600 hover:text-green-700 bg-green-50 hover:bg-green-100'
+                : 'text-yellow-600 hover:text-yellow-700 bg-yellow-50 hover:bg-yellow-100'
                 }`}
               title={isEditing ? 'Save' : 'Edit'}
             >

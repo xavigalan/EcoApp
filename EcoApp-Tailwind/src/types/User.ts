@@ -43,5 +43,7 @@ export interface UserFormDataCard {
   email: string;
   password: string;
   roleId: string; 
+  profilePicture: string;
   creationDate: string;
+  
 }
